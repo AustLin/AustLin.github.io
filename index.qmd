@@ -1,7 +1,9 @@
 ---
-title: "quarto website"
+title: "Austin Lin Home"
 ---
 
-This is a Quarto website.
+Hi I'm busy
+
+![nerd](images/nerd.gif)
 
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
