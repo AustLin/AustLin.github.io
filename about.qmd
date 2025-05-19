@@ -2,14 +2,13 @@
 title: "Austin Lin"
 about:
   template: trestles
-  image: images/nerd.gif
+  image: images/lolAustin.gif
   links:
     - icon: github
-      text: Github
-      href: https://github.com
+      href: https://github.com/AustLin
 ---
 
-Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+Hi I'm Austin! I'm alive and well.
 
 ## Education
 
