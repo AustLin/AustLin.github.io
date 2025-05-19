@@ -8,7 +8,9 @@ about:
       href: https://github.com/AustLin
 ---
 
-Hi I'm Austin! I'm alive and well.
+## Hi I'm Austin!
+
+I'm alive and well.
 
 ## Education
 
@@ -22,8 +24,14 @@ B.S. Mechanical Engineering
 
 ## Experience
 
-**General Dynamics Electric Boat** | Systems Engineer | September 2024 - present
+**General Dynamics Electric Boat** | Systems Engineer
 
-**L3Harris C5** | Systems Engineering Intern | June 2023 - August 2023
+September 2024 - present
 
-**UMD Space Systems Laboratory** | Engineering Intern | May 2022 - September 2023
+**L3Harris C5** | Systems Engineering Intern
+
+June 2023 - August 2023
+
+**UMD Space Systems Laboratory** | Engineering Intern
+
+May 2022 - September 2023
