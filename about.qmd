@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "What is happening with this site?"
 ---
 
-About this site
+I'm working on it >_<
