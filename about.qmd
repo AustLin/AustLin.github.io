@@ -2,7 +2,7 @@
 title: "Austin Lin"
 about:
   template: trestles
-  image: images/lolAustin.gif
+  image: /images/AustinCoral.png
   links:
     - icon: github
       href: https://github.com/AustLin
@@ -13,8 +13,11 @@ Hi I'm Austin! I'm alive and well.
 ## Education
 
 **University of Maryland, College Park** | August 2020 - July 2024
+
 B.S. Mechanical Engineering
+
 *Minor in Robotics and Autonomous Systems*
+
 *Public Leadership Scholars Program*
 
 ## Experience
