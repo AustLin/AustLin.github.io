@@ -6,3 +6,6 @@ Still trying to figure out what to add here stay tuned!
 
 ![](images/nerd.gif)
 
+```{=html}
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/78EOUxhS8Hy9hgK9awMqCT?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+```
