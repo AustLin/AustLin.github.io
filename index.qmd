@@ -1,0 +1,9 @@
+---
+title: "alin website"
+---
+
+Hi I'm busy
+
+![](images/nerd.gif)
+
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
