@@ -1,5 +1,27 @@
 ---
-title: "What is happening with this site?"
+title: "Austin Lin"
+about:
+  template: trestles
+  image: images/nerd.gif
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com
 ---
 
-I'm working on it >_<
+Finley Malloc is the Chief Data Scientist at Wengo Analytics. When not innovating on data platforms, Finley enjoys spending time unicycling and playing with her pet iguana.
+
+## Education
+
+**University of Maryland, College Park** | August 2020 - July 2024
+B.S. Mechanical Engineering
+*Minor in Robotics and Autonomous Systems*
+*Public Leadership Scholars Program*
+
+## Experience
+
+**General Dynamics Electric Boat** | Systems Engineer | September 2024 - present
+
+**L3Harris Technologies** | Systems Engineer Intern | June 2023 - August 2023
+
+**UMD Space Systems Laboratory** | Engineering Intern | May 2022 - September 2023
