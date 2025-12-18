@@ -2,7 +2,7 @@
 title: "Austin Lin"
 about:
   template: trestles
-  image: /images/AustinCoral.png
+  image: /assets/AustinCoral.png
   links:
     - icon: github
       href: https://github.com/AustLin

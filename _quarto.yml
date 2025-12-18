@@ -5,9 +5,9 @@ project:
 website:
   navbar:
     left:
-      - href: index.qmd
+      - href: pages/index.qmd
         text: Home
-      - href: about.qmd
+      - href: pages/about.qmd
         text: About Me
 
 format:
