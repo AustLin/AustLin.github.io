@@ -5,10 +5,10 @@ project:
 website:
   navbar:
     left:
-      - href: pages/index.qmd
-        text: Home
-      - href: pages/projects_landing.qmd
+      - href: index.qmd
         text: Projects
+      - href: pages/about.qmd
+        text: About Me
 
 
 format:

@@ -1,0 +1,29 @@
+---
+title: "Austin Lin"
+about:
+  template: trestles
+  image: ../assets/AustinCoral.png
+  links:
+    - icon: github
+      href: https://github.com/AustLin
+---
+
+## Hi!
+
+## Education
+
+**University of Maryland, College Park** | 2020 - 2024  
+B.S. Mechanical Engineering  
+*Minor in Robotics and Autonomous Systems*  
+*Public Leadership Scholars Program*  
+
+## Experience
+
+**General Dynamics Electric Boat** | Systems Engineer  
+*September 2024 - Present*
+
+**L3Harris C5** | Systems Engineering Intern  
+*June 2023 - August 2023*
+
+**UMD Space Systems Laboratory** | Undergraduate Researcher  
+*May 2022 - September 2022*
