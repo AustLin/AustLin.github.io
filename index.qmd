@@ -3,7 +3,7 @@ title: "Projects"
 listing:
   contents: pages/projects
   type: default
-  fields: [title, description]
+  fields: [title, description, image]
   categories: true
   sort: "date desc"
 ---
