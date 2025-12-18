@@ -8,7 +8,6 @@ about:
       href: https://github.com/AustLin
 ---
 
-## Hi!
 
 ## Education
 
