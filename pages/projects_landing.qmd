@@ -1,0 +1,11 @@
+---
+title: "Projects"
+listing:
+  contents: projects
+  type: default
+  fields: [title, description]
+  categories: true
+  sort: "date desc"
+---
+
+My favorite projects from exploring all aspects of engineering!

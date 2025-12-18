@@ -7,8 +7,9 @@ website:
     left:
       - href: pages/index.qmd
         text: Home
-      - href: pages/about.qmd
-        text: About Me
+      - href: pages/projects_landing.qmd
+        text: Projects
+
 
 format:
   html:

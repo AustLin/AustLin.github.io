@@ -1,0 +1,32 @@
+---
+title: "Robot Arm"
+description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
+date: 2022-12-07
+categories: [Python, Embedded Systems, Robotics]
+---
+
+## Overview
+This project focused on the rapid prototyping of a small-scale robotic arm, including mechanical design, embedded control, and a custom graphical user interface for user interaction and testing.
+
+## System Architecture
+- **Mechanical:** 3D-printed arm with multiple degrees of freedom
+- **Control:** Embedded controller handling motor commands and feedback
+- **Software:** Python-based GUI for manual control and testing
+
+## What I Built
+- Designed and assembled the robotic arm hardware
+- Implemented embedded control logic for joint actuation
+- Developed a Python GUI to command joints and visualize system state
+- Integrated hardware and software into a functional prototype
+
+## Demo
+```{=html}
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+  <iframe 
+    src="https://www.youtube.com/embed/VY-bdd3kWyU" 
+    style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>

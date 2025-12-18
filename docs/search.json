@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "pages/about.html",
-    "href": "pages/about.html",
-    "title": "Austin Lin",
+    "objectID": "pages/projects_landing.html",
+    "href": "pages/projects_landing.html",
+    "title": "Projects",
     "section": "",
-    "text": "I’m alive and well."
+    "text": "My favorite projects from exploring all aspects of engineering!\n\n\n\n\n\n\n\n\n\nRobot Arm\n\n\nRapid prototyping of a robotic arm, controller, and graphical user interface.\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "pages/about.html#hi-im-austin",
-    "href": "pages/about.html#hi-im-austin",
-    "title": "Austin Lin",
+    "objectID": "pages/index.html",
+    "href": "pages/index.html",
+    "title": "Hi",
     "section": "",
-    "text": "I’m alive and well."
+    "text": "Still trying to figure out what to add here stay tuned!"
   },
   {
     "objectID": "pages/about.html#education",
@@ -28,8 +28,43 @@
     "text": "Experience\nGeneral Dynamics Electric Boat | Systems Engineer\nSeptember 2024 - Present\nL3Harris C5 | Systems Engineering Intern\nJune 2023 - August 2023\nUMD Space Systems Laboratory | Undergraduate Researcher\nMay 2022 - September 2022"
   },
   {
-    "objectID": "pages/index.html",
-    "href": "pages/index.html",
+    "objectID": "pages/projects/robot_arm.html",
+    "href": "pages/projects/robot_arm.html",
+    "title": "Robot Arm",
+    "section": "",
+    "text": "This project focused on the rapid prototyping of a small-scale robotic arm, including mechanical design, embedded control, and a custom graphical user interface for user interaction and testing."
+  },
+  {
+    "objectID": "pages/projects/robot_arm.html#overview",
+    "href": "pages/projects/robot_arm.html#overview",
+    "title": "Robot Arm",
+    "section": "",
+    "text": "This project focused on the rapid prototyping of a small-scale robotic arm, including mechanical design, embedded control, and a custom graphical user interface for user interaction and testing."
+  },
+  {
+    "objectID": "pages/projects/robot_arm.html#system-architecture",
+    "href": "pages/projects/robot_arm.html#system-architecture",
+    "title": "Robot Arm",
+    "section": "System Architecture",
+    "text": "System Architecture\n\nMechanical: 3D-printed arm with multiple degrees of freedom\nControl: Embedded controller handling motor commands and feedback\nSoftware: Python-based GUI for manual control and testing"
+  },
+  {
+    "objectID": "pages/projects/robot_arm.html#what-i-built",
+    "href": "pages/projects/robot_arm.html#what-i-built",
+    "title": "Robot Arm",
+    "section": "What I Built",
+    "text": "What I Built\n\nDesigned and assembled the robotic arm hardware\nImplemented embedded control logic for joint actuation\nDeveloped a Python GUI to command joints and visualize system state\nIntegrated hardware and software into a functional prototype"
+  },
+  {
+    "objectID": "pages/projects/robot_arm.html#demo",
+    "href": "pages/projects/robot_arm.html#demo",
+    "title": "Robot Arm",
+    "section": "Demo",
+    "text": "Demo"
+  },
+  {
+    "objectID": "pages/tidbits.html",
+    "href": "pages/tidbits.html",
     "title": "Hi",
     "section": "",
     "text": "Still trying to figure out what to add here stay tuned!"
