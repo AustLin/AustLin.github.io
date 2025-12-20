@@ -36,7 +36,7 @@ Joint angles are transmitted to the host computer, where the Processing applicat
 
 ### Initialization and Setup
 
-First the Processing environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.
+The environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.
 
 <details open>
 <summary>Show code</summary>
@@ -388,7 +388,7 @@ void setup() {
 </details>
 
 ### Main Loop
-During the loop, the microcontroller performs 4 actions:
+The microcontroller performs 4 main actions in the loop:
 
 * **Automatic Activation:** The ultrasonic sensor checks if a user is within 60cm. If no user is detected, the system displays "OFF" on the OLED and exits the loop with no motor commands sent, effectively deactivating motor control. When a user approaches, it displays "ON" and proceeds with normal operation.
 

@@ -218,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="processing-code">Processing Code</h2>
 <section id="initialization-and-setup" class="level3">
 <h3 class="anchored" data-anchor-id="initialization-and-setup">Initialization and Setup</h3>
-<p>First the Processing environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.</p>
+<p>The environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.</p>
 <details open="">
 <summary>
 Show code
@@ -559,7 +559,7 @@ Show code
 </section>
 <section id="main-loop" class="level3">
 <h3 class="anchored" data-anchor-id="main-loop">Main Loop</h3>
-<p>During the loop, the microcontroller performs 4 actions:</p>
+<p>The microcontroller performs 4 main actions in the loop:</p>
 <ul>
 <li><p><strong>Automatic Activation:</strong> The ultrasonic sensor checks if a user is within 60cm. If no user is detected, the system displays “OFF” on the OLED and exits the loop with no motor commands sent, effectively deactivating motor control. When a user approaches, it displays “ON” and proceeds with normal operation.</p></li>
 <li><p><strong>Joystick Control:</strong> The joystick’s X-axis always controls the first yaw joint (theta1). The Y-axis control is mode-dependent: in pitch mode, it controls the vertical pitch joint (theta2); otherwise, it controls the second yaw joint (theta3). All joint movements are constrained within 0-180 degrees due to the servo hardware.</p></li>
