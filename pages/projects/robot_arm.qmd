@@ -1,22 +1,24 @@
 ---
-title: "Robot Arm (W.I.P)"
+title: "Rapidly Prototyped Robot Arm"
 description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
 image: "../../assets/nerd.gif"
 ---
 
 ## Overview
-This project focused on the rapid prototyping of a small-scale robotic arm, including mechanical design, embedded control, and a custom graphical user interface for user interaction and testing.
+The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present, enabling convenient and power efficient operation. An onboard OLED display provides real-time feedback by indicating whether the robot is active or inactive.
+
+During operation, the user selects individual joints by pressing the joystick and controls joint motion by moving the joystick along its axes. A companion Processing-based visualization displays precise joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time.
 
 ## System Architecture
-- **Mechanical:** 3D-printed arm with multiple degrees of freedom
-- **Control:** Embedded controller handling motor commands and feedback
-- **Software:** Python-based GUI for manual control and testing
 
-## What I Built
-- Designed and assembled the robotic arm hardware
-- Implemented embedded control logic for joint actuation
-- Developed a Python GUI to visualize system state
-- Integrated hardware and software into a functional prototype
+- **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw motors and a pitch motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
+
+- **Controller:** The controller features an ultrasonic sensor, oled display and a joystick. The breadboard is used to connect the arm, controller, and arduino together. A 6V battery pack is used as the power supply for the motors and arduino. Future improvements to the controller include designing a custom PCB and controller enclosure for much better packaging, as well as incorporating a physical switch to turn on/off the entire system, and relays to disconnect the motors from the power supply when the arm is turned off automatically.
+
+- **Software:** The system software is divided between an Arduino-based controller and a Processing-based visualization that communicate over a serial connection. The Arduino handles sensing, control logic, and actuator commands, including user detection via an ultrasonic sensor and real-time joint control using a joystick with selectable control modes. An onboard OLED display provides immediate feedback on the system’s active state.
+
+Joint angles are transmitted to the host computer, where the Processing application parses the data, performs forward kinematics calculations, and renders a real-time visualization of joint angles and end-effector position. This separation allows reliable embedded control while providing clear, interactive feedback through the GUI.
+
 
 ## Demo
 ```{=html}
