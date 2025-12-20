@@ -8,7 +8,7 @@
 
 <meta name="description" content="Rapid prototyping of a robotic arm, controller, and graphical user interface.">
 
-<title>Wake &amp; Manipulate: Robot Arm – My Portfolio</title>
+<title>Wake &amp; Manipulate: Robot Arm – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -116,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">My Portfolio</span>
+    <span class="navbar-title">Austin Lin’s Portfolio</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -152,12 +152,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#architecture" id="toc-architecture" class="nav-link" data-scroll-target="#architecture">Architecture</a></li>
   <li><a href="#demo" id="toc-demo" class="nav-link" data-scroll-target="#demo">Demo</a></li>
-  <li><a href="#processing-code" id="toc-processing-code" class="nav-link" data-scroll-target="#processing-code">Processing Code</a>
+  <li><a href="#graphics-code" id="toc-graphics-code" class="nav-link" data-scroll-target="#graphics-code">Graphics Code</a>
   <ul class="collapse">
   <li><a href="#initialization-and-setup" id="toc-initialization-and-setup" class="nav-link" data-scroll-target="#initialization-and-setup">Initialization and Setup</a></li>
   <li><a href="#draw" id="toc-draw" class="nav-link" data-scroll-target="#draw">draw()</a></li>
   </ul></li>
-  <li><a href="#controller" id="toc-controller" class="nav-link" data-scroll-target="#controller">Controller</a>
+  <li><a href="#controller-code" id="toc-controller-code" class="nav-link" data-scroll-target="#controller-code">Controller Code</a>
   <ul class="collapse">
   <li><a href="#initialization-and-setup-1" id="toc-initialization-and-setup-1" class="nav-link" data-scroll-target="#initialization-and-setup-1">Initialization and Setup</a></li>
   <li><a href="#main-loop" id="toc-main-loop" class="nav-link" data-scroll-target="#main-loop">Main Loop</a></li>
@@ -214,8 +214,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </iframe>
 </div>
 </section>
-<section id="processing-code" class="level2">
-<h2 class="anchored" data-anchor-id="processing-code">Processing Code</h2>
+<section id="graphics-code" class="level2">
+<h2 class="anchored" data-anchor-id="graphics-code">Graphics Code</h2>
 <section id="initialization-and-setup" class="level3">
 <h3 class="anchored" data-anchor-id="initialization-and-setup">Initialization and Setup</h3>
 <p>The environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.</p>
@@ -344,8 +344,8 @@ Show code
 </details>
 </section>
 </section>
-<section id="controller" class="level2">
-<h2 class="anchored" data-anchor-id="controller">Controller</h2>
+<section id="controller-code" class="level2">
+<h2 class="anchored" data-anchor-id="controller-code">Controller Code</h2>
 <section id="initialization-and-setup-1" class="level3">
 <h3 class="anchored" data-anchor-id="initialization-and-setup-1">Initialization and Setup</h3>
 <p>Pins used for the motor and controller are defined on the arduino. Joystick deadzone and debounce, and ultrasonic sensing distance are also defined. The “on” and “off” image are also defined for the OLED display as a bitmap array.</p>

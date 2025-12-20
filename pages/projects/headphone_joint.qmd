@@ -1,0 +1,96 @@
+---
+title: "Headphone Joint repair"
+description: "Permanently fixing a common issue with early HIFIMAN Headphones."
+image: "../../assets/headphone_joint/headphone_thumbnail.png"
+---
+
+## Overview
+Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. The joint attaching the driver to the headband broke on my pair of HE-400s just weeks after purchase, and [this Head-Fi forum thread](https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226) shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.
+
+![Broken headphone joint from the [same Head-Fi forum thread](https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226))](../../assets/headphone_joint/broken_joint.jpg)
+
+I decided to fix my broken headphones by designing a new enclosure that reinforces the preexisting hardware, and even after years of abuse, the joints have held together strong!
+
+## Files
+
+I've attached the STL which can be printed as-is. Also attached is the Solidworks Model Part, so feel free to modify as you like!
+
+<script>
+  const container = document.getElementById("stl-viewer");
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f0f0);
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    10000
+  );
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(1, 1, 1);
+  scene.add(dirLight);
+
+  const loader = new THREE.STLLoader();
+  loader.load(
+    "../../assets/headphone_joint/jointfix_final.stl",
+    function (geometry) {
+
+      // 🔑 REQUIRED for many STLs
+      geometry.computeVertexNormals();
+
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x666666,
+        roughness: 0.5,
+        metalness: 0.1
+      });
+
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      // 🔑 Auto-center + auto-scale camera
+      const box = new THREE.Box3().setFromObject(mesh);
+      const size = box.getSize(new THREE.Vector3()).length();
+      const center = box.getCenter(new THREE.Vector3());
+
+      mesh.position.sub(center);
+
+      camera.near = size / 100;
+      camera.far = size * 100;
+      camera.updateProjectionMatrix();
+
+      camera.position.set(0, 0, size * 0.8);
+      controls.target.set(0, 0, 0);
+      controls.update();
+    }
+  );
+
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Handle resize (important for Quarto layouts)
+  window.addEventListener("resize", () => {
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+</script>
+
+
+[Download jointfix_final.stl](../../assets/headphone_joint/jointfix_final.stl)
+
+

@@ -1,7 +1,7 @@
 ---
 title: "Wake & Manipulate: Robot Arm"
 description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
-image: "../../assets/robot_arm.png"
+image: "../../assets/robot_arm/robot_arm.png"
 ---
 
 ## Overview
@@ -32,7 +32,7 @@ Joint angles are transmitted to the host computer, where the Processing applicat
   </iframe>
 </div>
 ```
-## Processing Code
+## Graphics Code
 
 ### Initialization and Setup
 
@@ -167,7 +167,7 @@ void draw () {
  ``` 
 </details>
 
-## Controller
+## Controller Code
 
 ### Initialization and Setup
 

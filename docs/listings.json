@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/pages/projects/headphone_joint.html",
       "/pages/projects/robot_arm.html"
     ]
   }

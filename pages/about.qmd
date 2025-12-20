@@ -2,7 +2,7 @@
 title: "Austin Lin"
 about:
   template: trestles
-  image: ../assets/AustinCoral.png
+  image: ../assets/about_page/AustinCoral.png
   links:
     - icon: github
       href: https://github.com/AustLin
@@ -28,5 +28,5 @@ B.S. Mechanical Engineering
 
 ---
 <div style="text-align:center; font-size:0.8em; color:gray; margin-top:2em;">
-This website was built with Quarto, and hosted on Github Pages!
+This website was built with Quarto, and hosted on Github Pages.
 </div>
