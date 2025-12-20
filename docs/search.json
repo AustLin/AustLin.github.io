@@ -4,14 +4,14 @@
     "href": "pages/projects/robot_arm.html",
     "title": "Wake & Manipulate: Robot Arm",
     "section": "",
-    "text": "The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present for convenience. An onboard OLED display provides real-time feedback by indicating whether the robot is active or inactive.\nDuring operation, the user selects individual joints by pressing the joystick and controls joint motion by moving the joystick along its axes. A companion Processing-based visualization displays precise joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time."
+    "text": "The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present for convenience. An onboard OLED display provides real-time indication of whether the robot is active or inactive.\nDuring operation, the user can choose to control either the pitch motor or second yaw motor by pressing into the stick. A companion Processing-based visualization lists joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time."
   },
   {
     "objectID": "pages/projects/robot_arm.html#overview",
     "href": "pages/projects/robot_arm.html#overview",
     "title": "Wake & Manipulate: Robot Arm",
     "section": "",
-    "text": "The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present for convenience. An onboard OLED display provides real-time feedback by indicating whether the robot is active or inactive.\nDuring operation, the user selects individual joints by pressing the joystick and controls joint motion by moving the joystick along its axes. A companion Processing-based visualization displays precise joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time."
+    "text": "The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present for convenience. An onboard OLED display provides real-time indication of whether the robot is active or inactive.\nDuring operation, the user can choose to control either the pitch motor or second yaw motor by pressing into the stick. A companion Processing-based visualization lists joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time."
   },
   {
     "objectID": "pages/projects/robot_arm.html#system-architecture",
