@@ -1,11 +1,12 @@
 ---
-title: "Projects"
+title: "Hi!"
 listing:
   contents: pages/projects
   type: default
   fields: [title, description, image]
-  categories: true
-  sort: "date desc"
+  categories: false
+  image-align: right
+  sort: "title"
 ---
 
-My favorite projects from exploring all aspects of engineering!
+Below are some of my favorite projects that I'd to share. Stay tuned for more to come!

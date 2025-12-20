@@ -8,7 +8,6 @@ about:
       href: https://github.com/AustLin
 ---
 
-
 ## Education
 
 **University of Maryland, College Park** | 2020 - 2024  
@@ -25,4 +24,9 @@ B.S. Mechanical Engineering
 *June 2023 - August 2023*
 
 **UMD Space Systems Laboratory** | Undergraduate Researcher  
-*May 2022 - September 2022*
+*May 2022 - September 2022*  
+
+---
+<div style="text-align:center; font-size:0.8em; color:gray; margin-top:2em;">
+This website was built with Quarto, and hosted on Github Pages!
+</div>

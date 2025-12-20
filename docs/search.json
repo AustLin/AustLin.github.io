@@ -44,9 +44,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Projects",
+    "title": "Hi!",
     "section": "",
-    "text": "My favorite projects from exploring all aspects of engineering!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWake & Manipulate: Robot Arm\n\n\nRapid prototyping of a robotic arm, controller, and graphical user interface.\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Below are some of my favorite projects that I’d to share. Stay tuned for more to come!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWake & Manipulate: Robot Arm\n\n\nRapid prototyping of a robotic arm, controller, and graphical user interface.\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "pages/about.html",
@@ -67,7 +67,7 @@
     "href": "pages/about.html#experience",
     "title": "Austin Lin",
     "section": "Experience",
-    "text": "Experience\nGeneral Dynamics Electric Boat | Systems Engineer\nSeptember 2024 - Present\nL3Harris C5 | Systems Engineering Intern\nJune 2023 - August 2023\nUMD Space Systems Laboratory | Undergraduate Researcher\nMay 2022 - September 2022"
+    "text": "Experience\nGeneral Dynamics Electric Boat | Systems Engineer\nSeptember 2024 - Present\nL3Harris C5 | Systems Engineering Intern\nJune 2023 - August 2023\nUMD Space Systems Laboratory | Undergraduate Researcher\nMay 2022 - September 2022\n\n\nThis website was built with Quarto, and hosted on Github Pages!"
   },
   {
     "objectID": "pages/projects/robot_arm.html#architecture",
