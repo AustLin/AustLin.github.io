@@ -64,16 +64,18 @@ void setup() {
 
 ### draw()
 
-The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are two components:
+The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are 3 main components:
 
-* Serial Communication: The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.
+* **Serial Communication:** The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.
 
-* Forward Kinematics: Using the received angles and the predefined arm length, the function calculates the 2D positions of key points on the robot arm:
+* **Forward Kinematics:** Using the received angles and the predefined arm length, the function calculates the 2D positions of key points on the robot arm:
   + Projects the arm length onto the 2D plane using the pitch angle
   + Computes x and y coordinates for the midpoint of the first link, the midpoint of the second link, and the end-effector position
   + Uses trigonometric calculations based on the joint angles to determine each position relative to the origin
 
-This allows the Processing visualization to accurately display where each part of the physical robot arm is positioned in real-time as the user controls it with the joystick.
+* **Arm Projection:** This code projects the arm in 2D space. The code centers the arm on the screen and then draws the base joint. Then for each link, the coordinate frame is moved and rotated to draw the rectangles correctly. pushMatrix() and popMatrix() isolate transformations for each segment.
+
+
 
 <details open>
 <summary>Show code</summary>

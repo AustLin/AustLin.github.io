@@ -243,17 +243,17 @@ Show code
 </section>
 <section id="draw" class="level3">
 <h3 class="anchored" data-anchor-id="draw">draw()</h3>
-<p>The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are two components:</p>
+<p>The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are 3 main components:</p>
 <ul>
-<li><p>Serial Communication: The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.</p></li>
-<li><p>Forward Kinematics: Using the received angles and the predefined arm length, the function calculates the 2D positions of key points on the robot arm:</p>
+<li><p><strong>Serial Communication:</strong> The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.</p></li>
+<li><p><strong>Forward Kinematics:</strong> Using the received angles and the predefined arm length, the function calculates the 2D positions of key points on the robot arm:</p>
 <ul>
 <li>Projects the arm length onto the 2D plane using the pitch angle</li>
 <li>Computes x and y coordinates for the midpoint of the first link, the midpoint of the second link, and the end-effector position</li>
 <li>Uses trigonometric calculations based on the joint angles to determine each position relative to the origin</li>
 </ul></li>
+<li><p><strong>Arm Projection:</strong> This code projects the arm in 2D space. The code centers the arm on the screen and then draws the base joint. Then for each link, the coordinate frame is moved and rotated to draw the rectangles correctly. pushMatrix() and popMatrix() isolate transformations for each segment.</p></li>
 </ul>
-<p>This allows the Processing visualization to accurately display where each part of the physical robot arm is positioned in real-time as the user controls it with the joystick.</p>
 <details open="">
 <summary>
 Show code
