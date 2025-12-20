@@ -5,17 +5,17 @@ image: "../../assets/nerd.gif"
 ---
 
 ## Overview
-The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present, enabling convenient and power efficient operation. An onboard OLED display provides real-time feedback by indicating whether the robot is active or inactive.
+The goal of this project is to demonstrate rapid prototyping of a small-scale robotic arm that can be controlled intuitively. The system automatically activates when a user is detected via an ultrasonic sensor and powers down when no user is present for convenience. An onboard OLED display provides real-time feedback by indicating whether the robot is active or inactive.
 
 During operation, the user selects individual joints by pressing the joystick and controls joint motion by moving the joystick along its axes. A companion Processing-based visualization displays precise joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time.
 
 ## System Architecture
 
-- **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw motors and a pitch motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
+* **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw motors and a pitch motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
 
-- **Controller:** The controller features an ultrasonic sensor, oled display and a joystick. The breadboard is used to connect the arm, controller, and arduino together. A 6V battery pack is used as the power supply for the motors and arduino. Future improvements to the controller include designing a custom PCB and controller enclosure for much better packaging, as well as incorporating a physical switch to turn on/off the entire system, and relays to disconnect the motors from the power supply when the arm is turned off automatically.
+* **Controller:** The controller features an ultrasonic sensor, oled display and a joystick. The breadboard is used to connect the arm, controller, and arduino together. A 6V battery pack is used as the power supply for the motors and arduino. Future improvements to the controller include designing a custom PCB and controller enclosure for much better packaging, as well as incorporating a physical switch to turn on/off the entire system, and relays to disconnect the motors from the power supply when the arm is turned off automatically.
 
-- **Software:** The system software is divided between an Arduino-based controller and a Processing-based visualization that communicate over a serial connection. The Arduino handles sensing, control logic, and actuator commands, including user detection via an ultrasonic sensor and real-time joint control using a joystick with selectable control modes. An onboard OLED display provides immediate feedback on the system’s active state.
+* **Software:** The system software is divided between an Arduino-based controller and a Processing-based visualization that communicate over a serial connection. The Arduino handles sensing, control logic, and actuator commands, including user detection via an ultrasonic sensor and real-time joint control using a joystick with selectable control modes. An onboard OLED display provides immediate feedback on the system’s active state.
 
 Joint angles are transmitted to the host computer, where the Processing application parses the data, performs forward kinematics calculations, and renders a real-time visualization of joint angles and end-effector position. This separation allows reliable embedded control while providing clear, interactive feedback through the GUI.
 
@@ -32,12 +32,12 @@ Joint angles are transmitted to the host computer, where the Processing applicat
   </iframe>
 </div>
 ```
-## GUI
+## Processing Code
 
-This page walks through the Processing code used to read joint angles from the microcontroller and compute manipulator positions. The code is split into sections to make it easy to follow.
+First the Processing environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.
 
 <details>
-<summary>Show the code</summary>
+<summary>Show code</summary>
 
 ```java
 import processing.serial.*; // add the serial library
@@ -53,7 +53,24 @@ void setup() {
   myPort = new Serial(this, Serial.list()[0], 9600); // define input port
   myPort.clear(); // clear the port of any initial junk
 }
+ ``` 
+</details>
 
+The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are two components:
+
+* Serial Communication: The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.
+
+* Forward Kinematics: Using the received angles and the predefined arm length, the function calculates the 2D positions of key points on the robot arm:
+  + Projects the arm length onto the 2D plane using the pitch angle
+  + Computes x and y coordinates for the midpoint of the first link, the midpoint of the second link, and the end-effector position
+  + Uses trigonometric calculations based on the joint angles to determine each position relative to the origin
+
+This allows the Processing visualization to accurately display where each part of the physical robot arm is positioned in real-time as the user controls it with the joystick.
+
+<details>
+<summary>Show code</summary>
+
+```java
 void draw () {
 
   if (myPort.available () <= 0) { // make sure port is open
