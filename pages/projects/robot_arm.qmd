@@ -1,7 +1,7 @@
 ---
 title: "Wake & Manipulate: Robot Arm"
 description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
-image: "../../assets/nerd.gif"
+image: "../../assets/robot_arm.png"
 ---
 
 ## Overview
@@ -9,7 +9,7 @@ The goal of this project is to demonstrate rapid prototyping of a small-scale ro
 
 During operation, the user selects individual joints by pressing the joystick and controls joint motion by moving the joystick along its axes. A companion Processing-based visualization displays precise joint angles and the calculated end-effector position, allowing the user to monitor the robot’s configuration in real time.
 
-## System Architecture
+## Architecture
 
 * **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw servo motors and a pitch servo motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
 
@@ -44,17 +44,21 @@ First the Processing environment is set up by defining basic arm parameters and 
 ```java
 import processing.serial.*; // add the serial library
 Serial myPort; // define a serial port object to monitor
-float armLength = 70; // length of arm in millimeters
+float armLength = 140; //length of arm in millimeters
 float[] armOrigin = {0, 0};
 final int armWidth = 10;
+final int windowWidth = 1000;
+final int windowLength = 1000;
 
 void setup() {
 
-  size(1000, 1000); // set the window size
+  size(1000, 1300); // set the window size
   println(Serial.list()); // list all available serial ports
-  myPort = new Serial(this, Serial.list()[0], 9600); // define input port
+  myPort = new Serial(this, Serial.list()[1], 9600); // define input port
   myPort.clear(); // clear the port of any initial junk
+  background(255);
 }
+
  ``` 
 </details>
 
@@ -77,30 +81,86 @@ This allows the Processing visualization to accurately display where each part o
 ```java
 void draw () {
 
-  if (myPort.available () <= 0) { // make sure port is open
+  if (myPort.available () <= 0) { //makes sure port is open
     return;
   }
 
   //input processing
-  String[] anglesInput = new String[3];
   String inString = myPort.readStringUntil('\n'); // read input string
   if (inString != null) { // ignore null strings
+    background(255);
+    textSize(40);
+     text("Top View: ", 70, 70);
     inString = trim(inString); // trim off any whitespace
-    anglesInput = splitTokens(inString, "\t"); // extract x & y into an array
-  }
-  float theta1 =  float(anglesInput[0]) * PI/180; //conversion to radians
-  float pitch =  float(anglesInput[1]) * PI/180;
-  float theta2 =  float(anglesInput[2]) * PI/180;
+    String[] anglesInput = splitTokens(inString, "\t"); // extract x & y into an array
 
-  //math to find link/manipulator positions using angles and given lengths relative to an origin
-  //unit vector directions same as window
-  int length2d = int(armLength * cos(pitch));
-  int link1_x = int(length2d * cos(theta1) / 2);
-  int link2_x = int( length2d * (cos(theta1) + cos(theta1 + theta2)/2));
-  int end_x = int( length2d * (cos(theta1) + cos(theta1 + theta2)));
-  int link1_y = int( -1 * length2d * sin(theta2) / 2);
-  int link2_y = int( -1 * length2d * (sin(theta1) + sin(theta1 + theta2)/2));
-  int end_y = int( -1 * length2d * (sin(theta1) + sin(theta1 + theta2)));
+    float theta1 =  float(anglesInput[0]) * PI/180; //conversion to radians
+    float pitch =  float(anglesInput[1]) * PI/180;
+    float theta2 =  float(anglesInput[2]) * PI/180;
+
+    //math to find link/manipulator positions using angles and given lengths relative to an origin
+    //unit vector directions same as window
+    int length2d = int(armLength * cos(pitch));
+    int link1_x = int(length2d * cos(theta1) / 2);
+    int link2_x = link1_x*2 + int(length2d * cos(theta1 + theta2)/2);
+    int end_x = link1_x*2 + int(length2d * cos(theta1 + theta2));
+    int link1_y = int(length2d * sin(theta1) / 2);
+    int link2_y = link1_y*2 + int(length2d * sin(theta1 + theta2)/2);
+    int end_y = link1_y*2 + int( length2d * sin(theta1 + theta2));
+
+    //display angles
+    fill(0, 0, 0);    
+    
+    text("Yaw 1:", 20, 930);
+    text(theta1*180/PI + "°", 140, 930);
+    fill(128,128,0);
+    
+    text("Yaw 2:", 320, 930);
+    text(theta2*180/PI + "°", 440, 930);
+    fill(0,0,0);
+    
+    text("Pitch :", 620, 930);
+    text(pitch*180/PI + "°", 740, 930);
+    
+    fill(0,128,128);
+    text("X:", 20, 970);
+    text("Y:", 320, 970);
+    text(end_x, 140, 970);
+    text(end_y, 440, 970);
+    fill(0,0,0);
+
+    //translates/rotates coordinate frame so that arm origin is at the center of the screen
+    pushMatrix();
+    translate(500, 600);
+    ellipse(0,0,10,10);
+    pushMatrix(); //save origin frame
+    
+    //link 1
+    pushMatrix(); //creates copy of origin frame for link 1
+    rectMode(CENTER); //sets coordinate args to center of rectangle
+    translate(link1_x, -link1_y);
+    rotate(-theta1);
+    rect(0, 0, length2d, armWidth);
+    popMatrix();
+
+    //link 2
+    pushMatrix();
+    translate(link2_x, -link2_y);
+    rotate(-1*(theta1 + theta2));
+    fill(128,128,0);
+    rect(0, 0, length2d, armWidth);// draw rectangle
+    popMatrix();
+    //end effector
+    translate(end_x, -end_y);
+      fill(0,128,128);
+    ellipse(0,0,10,10);
+
+    //clear stack
+    popMatrix();
+    popMatrix();
+    fill(0,0,0);
+
+  }
 }
  ``` 
 </details>
