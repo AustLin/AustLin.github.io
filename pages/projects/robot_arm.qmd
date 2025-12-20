@@ -11,9 +11,9 @@ During operation, the user selects individual joints by pressing the joystick an
 
 ## System Architecture
 
-* **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw motors and a pitch motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
+* **Robot Arm:** 3D-printed arm with multiple degrees of freedom. I initially tried to make the robot purely out of cardboard since this was the most widely available material I had the time, but later incorporated pencils to add more strength and rigidity to the structure. The robot arm has two yaw servo motors and a pitch servo motor, and connects directly to the controller. The next iteration would be to 3D print a enclosure for the electronics and the arm.
 
-* **Controller:** The controller features an ultrasonic sensor, oled display and a joystick. The breadboard is used to connect the arm, controller, and arduino together. A 6V battery pack is used as the power supply for the motors and arduino. Future improvements to the controller include designing a custom PCB and controller enclosure for much better packaging, as well as incorporating a physical switch to turn on/off the entire system, and relays to disconnect the motors from the power supply when the arm is turned off automatically.
+* **Controller:** The controller features an ultrasonic sensor, OLED display and a joystick. The breadboard is used to connect the arm, controller, and arduino together. A 6V battery pack is used as the power supply for the motors and arduino. Future improvements to the controller include designing a custom PCB and controller enclosure for much better packaging, as well as incorporating a physical switch to turn on/off the entire system, and relays to disconnect the motors from the power supply when the arm is turned off automatically.
 
 * **Software:** The system software is divided between an Arduino-based controller and a Processing-based visualization that communicate over a serial connection. The Arduino handles sensing, control logic, and actuator commands, including user detection via an ultrasonic sensor and real-time joint control using a joystick with selectable control modes. An onboard OLED display provides immediate feedback on the system’s active state.
 
@@ -34,9 +34,11 @@ Joint angles are transmitted to the host computer, where the Processing applicat
 ```
 ## Processing Code
 
+### Initialization and Setup
+
 First the Processing environment is set up by defining basic arm parameters and opening a serial connection to the microcontroller. The serial buffer is cleared to ensure only valid runtime data is processed.
 
-<details>
+<details open>
 <summary>Show code</summary>
 
 ```java
@@ -56,6 +58,8 @@ void setup() {
  ``` 
 </details>
 
+### draw()
+
 The draw() function handles real-time visualization of the robot arm by receiving joint angle data from the Arduino over serial communication. There are two components:
 
 * Serial Communication: The function first checks if data is available on the serial port, then reads a tab-delimited string containing three joint angles (theta1, pitch, theta2) and converts them from degrees to radians.
@@ -67,7 +71,7 @@ The draw() function handles real-time visualization of the robot arm by receivin
 
 This allows the Processing visualization to accurately display where each part of the physical robot arm is positioned in real-time as the user controls it with the joystick.
 
-<details>
+<details open>
 <summary>Show code</summary>
 
 ```java
@@ -98,14 +102,17 @@ void draw () {
   int link2_y = int( -1 * length2d * (sin(theta1) + sin(theta1 + theta2)/2));
   int end_y = int( -1 * length2d * (sin(theta1) + sin(theta1 + theta2)));
 }
-
  ``` 
 </details>
 
 ## Controller
 
-<details>
-<summary>Show the code</summary>
+### Initialization and Setup
+
+Here, pins used for the motor and controller are defined on the arduino. Joystick deadzone and debounce, and ultrasonic sensing distance are also defined. The "on" and "off" image are also defined for the OLED display as a bitmap array.
+
+<details open>
+<summary>Show code</summary>
 
 ```c
 #include <Wire.h>
@@ -128,8 +135,9 @@ void draw () {
 #define switchPin 2
 #define motorSpeed 2
  
-//deadzone for joystick
+//deadzone and debounce for joystick
 #define tolerance 200
+#define debounce 150
  
 Adafruit_SSD1306 display(128, 64, &Wire, OLED_RESET);
  
@@ -142,8 +150,13 @@ float theta2 = 0;
 float theta3 = 0;
 String dispImg = "";
 bool pitchMode = false;
- 
- 
+```
+</details>
+
+<details>
+<summary>Show OLED Bitmap</summary>
+
+```c
 //bitmaps generated from https://diyusthad.com/image2cpp
 // 'OFF, 128x64px
 const unsigned char offImg[] PROGMEM = {
@@ -282,12 +295,14 @@ const unsigned char onImg[] PROGMEM = {
   0xff, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff,
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
 };
- 
- 
- 
- 
- 
- 
+
+```
+</details>
+
+<details open>
+<summary>Show code</summary>
+
+```c
 void setup() {
   //setup timing loop, serial, and pin
   startTime = millis();
@@ -307,11 +322,25 @@ void setup() {
   servoControl(0, yaw1);
   servoControl(0, yaw2);
 }
- 
- 
+ ```
+</details>
+
+### Main Loop
+During the loop, the microcontroller performs 4 actions:
+
+* **Automatic Activation:** The ultrasonic sensor checks if a user is within 60cm. If no user is detected, the system displays "OFF" on the OLED and exits the loop with no motor commands sent, effectively deactivating motor control. When a user approaches, it displays "ON" and proceeds with normal operation.
+
+* **Joystick Control:** The joystick's X-axis always controls the first yaw joint (theta1). The Y-axis control is mode-dependent: in pitch mode, it controls the vertical pitch joint (theta2); otherwise, it controls the second yaw joint (theta3). All joint movements are constrained within 0-180 degrees due to the servo hardware.
+
+* **Mode Switching:** Pressing the joystick button toggles between pitch and yaw control modes for the Y-axis.
+
+* **Data Transmission:** At the end of each loop cycle, all three joint angles are sent via serial communication to the Processing visualization as tab-separated values.
+
+<details open>
+<summary>Show code</summary>
+
+```c
 void loop() {
- 
- 
  
   //ultrasonic activation
   if (ultraSonic() > 60) {
@@ -348,18 +377,34 @@ void loop() {
     theta3 += dY;
     servoControl(theta3, yaw2);
   }
+
   //toggle between modes
   if (analogRead(switchPin) <= 5) {
     pitchMode = !pitchMode;
-    delay(150);  //debounce
+    delay(debounce);  //debounce
   }
  
  
   //angles for processing
   Serial.println(String(theta1) + "\t" + String(theta2) + "\t" + String(theta3));
 }
- 
- 
+```
+</details>
+
+### Helper Functions
+
+* Joystick Reading (readAxis, readX, readY): Reads analog joystick input and converts it into directional commands. The function implements a deadzone (tolerance of 200 around the center value of 507) to ignore small unintentional movements, returning the motor speed multiplied by direction (-1 for left/down, 0 for center, +1 for right/up).
+
+* Servo Control (pwmPulse, servoControl): Generates PWM signals to control the servos without using a servo library. The servoControl function maps desired angles (0-330°) to pulse widths (550-2450 microseconds) and ensures a 20ms period between pulses, which is the standard servo control frequency.
+
+* Ultrasonic Sensing (ultraSonic): Measures distance using an ultrasonic sensor by sending a trigger pulse, measuring the echo return time, and converting it to distance in centimeters using the speed of sound at sea level (0.034 cm/microsecond divided by 2 for round-trip).
+
+* Display Functions (drawOn, drawOff, clearDisplay): Render the predefined "ON" and "OFF" bitmaps to the OLED display and handle display initialization and clearing.
+
+<details open>
+<summary>Show code</summary>
+
+```c
 int readAxis(int pin) {  //returns 1 if right, zero if centered, -1 if left
   int reading = analogRead(pin);
   if (reading < 507 - tolerance) {
