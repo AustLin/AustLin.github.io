@@ -8,7 +8,7 @@
 
 <meta name="description" content="Permanently fixing a common issue with early HIFIMAN Headphones.">
 
-<title>Headphone Joint repair – Austin Lin’s Portfolio</title>
+<title>Headphone Joint Upgrade – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -116,6 +116,13 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#files" id="toc-files" class="nav-link" data-scroll-target="#files">Files</a></li>
+  <li><a href="#previous-iterations" id="toc-previous-iterations" class="nav-link" data-scroll-target="#previous-iterations">Previous Iterations</a>
+  <ul class="collapse">
+  <li><a href="#tape-fix" id="toc-tape-fix" class="nav-link" data-scroll-target="#tape-fix">Tape Fix</a></li>
+  <li><a href="#proof-of-concept" id="toc-proof-of-concept" class="nav-link" data-scroll-target="#proof-of-concept">Proof of Concept</a></li>
+  <li><a href="#packaging" id="toc-packaging" class="nav-link" data-scroll-target="#packaging">Packaging</a></li>
+  <li><a href="#strength-and-finishing-features" id="toc-strength-and-finishing-features" class="nav-link" data-scroll-target="#strength-and-finishing-features">Strength and Finishing Features</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -124,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Headphone Joint repair</h1>
+<h1 class="title">Headphone Joint Upgrade</h1>
 </div>
 
 <div>
@@ -148,76 +155,82 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. The joint attaching the driver to the headband broke on my pair of HE-400s just weeks after purchase, and <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">this Head-Fi forum thread</a> shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.</p>
+<p>Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. Both joints attaching the driver to the headband failed on my pair of HE-400s just weeks after purchase, and <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">this Head-Fi forum thread</a> shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/broken_joint.jpg" class="img-fluid figure-img"></p>
+<p><img src="../../assets/headphone_joint/broken_joint.png" class="img-fluid figure-img"></p>
 <figcaption>Broken headphone joint from the <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">same Head-Fi forum thread</a>)</figcaption>
 </figure>
 </div>
 <p>I decided to fix my broken headphones by designing a new enclosure that reinforces the preexisting hardware, and even after years of abuse, the joints have held together strong!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/headphone_joint/headphone_thumbnail.png" class="img-fluid figure-img"></p>
+<figcaption>Final Headphone Joint Splint</figcaption>
+</figure>
+</div>
 </section>
 <section id="files" class="level2">
 <h2 class="anchored" data-anchor-id="files">Files</h2>
 <p>I’ve attached the STL which can be printed as-is. Also attached is the Solidworks Model Part, so feel free to modify as you like!</p>
-<div id="stl-viewer" style="width: 100%; height: 400px;">
-
+<p><a href="../../assets/headphone_joint/jointfix_final.stl">Download jointfix_final.STL</a></p>
+<p><a href="../../assets/headphone_joint/jointfix_final.sldprt">Download jointfix_final.SLDPRT</a></p>
+</section>
+<section id="previous-iterations" class="level2">
+<h2 class="anchored" data-anchor-id="previous-iterations">Previous Iterations</h2>
+<section id="tape-fix" class="level3">
+<h3 class="anchored" data-anchor-id="tape-fix">Tape Fix</h3>
+<p>I first tried using tape to hold the broken joint together, but it quickly became clear that it wasn’t going to work. Beyond the ✨<em>aesthetics</em>✨, the adhesive would weaken over time and the tape would begin to slide, eventually leaving the joint loosening. More importantly, the tape failed to address the underlying load path: instead of distributing the clamping force across the ear pads as intended, the headband concentrated that force into a small area at the end of the broken joint.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/headphone_joint/tape_fix.png" class="img-fluid figure-img"></p>
+<figcaption>Temporary Tape Fix</figcaption>
+</figure>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/STLLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
-<script>
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+<p>I then attempted to repair the joint using epoxy. This approach introduced its own challenges, particularly keeping the epoxy from intruding into and damaging the sliding joint mechanism. The geometry of the failure also worked against this solution. The joint had sheared along a very small surface area, creating a localized high-stress region. Any small imperfections in the cured epoxy likely acted as stress concentrators, allowing cracks to slowly propagate until the joint failed again.</p>
+<p>At that point, it became clear that simply restoring the original joint geometry was not sufficient. Rather than trying to recreate the failed interface, I shifted focus toward augmenting the joint by adding new structure carry the load more effectively in the form of a splint.</p>
+</section>
+<section id="proof-of-concept" class="level3">
+<h3 class="anchored" data-anchor-id="proof-of-concept">Proof of Concept</h3>
+<p>My initial concerns was function and sizing. Tolerancing had to be tight to prevent pieces from wiggling, and the splint had to be rigid enough to hold the parts together. Ergonomically, most of the pressure was along the top of the headband and earpads, but I also wanted to evaluate if adding thickness to then joint would impact comfort.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/headphone_joint/v1_tape.png" class="img-fluid figure-img"></p>
+<figcaption>Version 1 and Tape Side by Side</figcaption>
+</figure>
+</div>
+<div style="width:100%; height:140px;">
+    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Fjointfix_final.stl&amp;color=darkblue&amp;bgcolor=gray&amp;shading=flat&amp;rotation=no&amp;clean=yes&amp;orientation=right" style="border:0;margin:0;width:179px;height:120px;">
 
-  const camera = new THREE.PerspectiveCamera(
-    45,
-    document.getElementById("stl-viewer").clientWidth / 400,
-    0.1,
-    1000
-  );
-  camera.position.set(0, 0, 100);
+    </iframe>
+</div>
+</section>
+<section id="packaging" class="level3">
+<h3 class="anchored" data-anchor-id="packaging">Packaging</h3>
+<p>The initial splint held the two pieces tight and comfortably, but rocked back and forth. I modified its shape to conform better with the existing circular joint, and to make the overall splint smaller in size and more discrete.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../assets/headphone_joint/fix3img.png" class="img-fluid figure-img"></p>
+<figcaption>Version 3</figcaption>
+</figure>
+</div>
+<div style="width:100%; height:140px;">
+    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Fjointfix_final.stl&amp;color=darkblue&amp;bgcolor=gray&amp;shading=flat&amp;rotation=no&amp;clean=yes&amp;orientation=right" style="border:0;margin:0;width:179px;height:120px;">
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(
-    document.getElementById("stl-viewer").clientWidth,
-    400
-  );
-  document.getElementById("stl-viewer").appendChild(renderer.domElement);
+    </iframe>
+</div>
+</section>
+<section id="strength-and-finishing-features" class="level3">
+<h3 class="anchored" data-anchor-id="strength-and-finishing-features">Strength and Finishing Features</h3>
+<p>I noticed flexing in the joint/splint when I would stretch the drivers apart from eachother. Increasing the wall thickness and the radius of fillet reduced stress and increased rigidity drastically. Additional fillets and finishing touches were added to make the overall design more refined.</p>
+<div style="width:100%; height:140px;">
+    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Fjointfix_final.stl&amp;color=darkblue&amp;bgcolor=gray&amp;shading=flat&amp;rotation=no&amp;clean=yes&amp;orientation=right" style="border:0;margin:0;width:179px;height:120px;">
 
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-
-  const light1 = new THREE.DirectionalLight(0xffffff, 1);
-  light1.position.set(1, 1, 1);
-  scene.add(light1);
-
-  const light2 = new THREE.AmbientLight(0x404040);
-  scene.add(light2);
-
-  const loader = new THREE.STLLoader();
-  loader.load("../../assets/headphone_joint/jointfix_final.stl", function (geometry) {
-    const material = new THREE.MeshStandardMaterial({
-      color: 0x555555,
-      metalness: 0.2,
-      roughness: 0.6
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-
-    geometry.center();
-    scene.add(mesh);
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-  }
-  animate();
-</script>
-<p><a href="../../assets/headphone_joint/jointfix_final.stl">Download jointfix_final.stl</a></p>
+    </iframe>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
