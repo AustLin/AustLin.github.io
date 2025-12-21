@@ -1,0 +1,5 @@
+---
+title: "Battery Estimator"
+description: "Using MATLAB/Simulink to model a Battery"
+image: "../../assets/headphone_joint/headphone_thumbnail.png"
+---
