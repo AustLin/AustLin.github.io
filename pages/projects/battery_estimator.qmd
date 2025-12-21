@@ -305,11 +305,6 @@ plt.show()
 At 500 seconds for 0.5 Amps discharge, the difference between the estimate and true SOC is about 4.7% percent. At 500 seconds for 2.2 Amps discharge and charge, the difference is about 4.4%. Thus from our model and observer we can conclude that after 500 seconds, the Kalman filter predicts the true SOC within 5% for standard operation, and continues to converge. But before 500 seconds, the error is drastically greater when the initial estimate is set at 50% charge. Depending on the application, it could make sense to adjust the initial estimate closer to 0% charge (to get a more accurate battery reading if it is close to empty). 
 
 
-## References
-
-[^1]: [Tenergy 18650 Li-ion Battery](https://power.tenergy.com/tenergy-li-ion-18650-cylindrical-3-6v-2200mah-flat-top-rechargeable-battery-ul-listed/)
-[^2]: [Adafruit 18650 Li-ion Battery](https://www.adafruit.com/product/1781)
-
 ## Original Matlab Model
 <details>
 <summary>Show code</summary>
@@ -354,4 +349,5 @@ end
 ```
 </details>
 
-
+[^1]: [Tenergy 18650 Li-ion Battery](https://power.tenergy.com/tenergy-li-ion-18650-cylindrical-3-6v-2200mah-flat-top-rechargeable-battery-ul-listed/)
+[^2]: [Adafruit 18650 Li-ion Battery](https://www.adafruit.com/product/1781)
