@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Simulating a Battery and evaluating estimation accuracy under various parameters">
+<meta name="description" content="Simulating a Battery and evaluating estimator accuracy under various parameters">
 
 <title>Luenberger Observer for Battery Charge Estimation – Austin Lin’s Portfolio</title>
 <style>
@@ -178,8 +178,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#project-background" id="toc-project-background" class="nav-link" data-scroll-target="#project-background">Project Background</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
   <li><a href="#true-battery-soc-and-voltage-model" id="toc-true-battery-soc-and-voltage-model" class="nav-link" data-scroll-target="#true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</a></li>
   <li><a href="#soc-estimator-luenberger-observer" id="toc-soc-estimator-luenberger-observer" class="nav-link" data-scroll-target="#soc-estimator-luenberger-observer">SOC Estimator (Luenberger Observer)</a></li>
@@ -204,7 +203,7 @@ window.Quarto = {
 
 <div>
   <div class="description">
-    Simulating a Battery and evaluating estimation accuracy under various parameters
+    Simulating a Battery and evaluating estimator accuracy under various parameters
   </div>
 </div>
 
@@ -223,13 +222,9 @@ window.Quarto = {
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This project explores <strong>State of Charge (SOC) estimation</strong> for a lithium-ion battery using a simple electrical model and a Luenberger-style observer. The goal was to understand how noisy current and voltage measurements impact SOC estimation, and how feedback can be used to guarantee convergence.</p>
-<p>The model and estimator were implemented in <strong>MATLAB</strong>, with injected measurement noise to simulate real-world sensor behavior.</p>
-</section>
-<section id="project-background" class="level2">
-<h2 class="anchored" data-anchor-id="project-background">Project Background</h2>
-<p>This was originally a group project by me, Alex Miller, and Joseph Kirby for a senior elective (ENME489N battery operation, modeling, and reliability), where we made the Battery and Estimator model in MATLAB with a writeup. Estimating how much charge is left in a battery is an incredibly practical, yet surprisingly challenging problem to solve, which is why I decided to showcase what we did on my website. I’ve expanded on our original work by adapting our model into python, and expanding the background and math discussion.</p>
-<p>Our battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (OCV) vs.&nbsp;State of Charge (SOC) curves. However, in the real world, a wide variety of factors makes the “true” curve non-linear. For instance, different battery chemistries and physical properties have distinctive curves. One challenge with battery estimation is that sometimes the OCV-SOC curve has “plateaus” such that similar OCVs correspond drastically different SOCs, making the SOC effectively unobservable by OCV alone. Additionally, the temperature can drastically reduce the OCV even though the battery has not discharged any energy. Jeff Shepard has a <a href="https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/">fantastic article</a> with visuals of how these factors impact the OCV-SOC curve.</p>
+<p>Estimating battery State of Charge (SOC) is used every day in our battery powered devices. However, it’s impractical to directly “count” how much charge a battery has. One approach to this problem is the combination of a Luenberger Observer and a battery model that correlates Open Current Voltage (OCV) and State of Charge (SOC). The Luenberger Observer starts with a guess of the battery state of charge, and as it makes repeated measurements of OCV, it adjusts its SOC prediction until it converges to the true behavior measured by the battery estimator. This approach is effective if the behavior of the true battery is well understood, and if SOC can be observable by OCV.</p>
+<p>Our battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (OCV) vs.&nbsp;State of Charge (SOC) curves. But in actuallity, a wide variety of factors makes the “true” curve non-linear. For instance, different battery chemistries and physical properties have distinctive curves. One challenge with battery estimation is that sometimes the OCV-SOC curve has “plateaus” such that similar OCVs correspond drastically different SOCs, making the SOC effectively unobservable by OCV alone. Additionally, the temperature can drastically reduce the OCV even though the battery has not discharged any energy. Jeff Shepard has a <a href="https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/">fantastic article</a> with visuals of how these factors impact the OCV-SOC curve.</p>
+<p>This was originally a group project by me, Alex Miller, and Joseph Kirby for a senior elective (ENME489N battery operation, modeling, and reliability), where we made the Battery and Estimator model in MATLAB with a writeup. I’ve since expanded on our original work by adapting our model into python, adding to this overview, and to the breakdown with how our model and estimator works.</p>
 <section id="true-battery-soc-and-voltage-model" class="level3">
 <h3 class="anchored" data-anchor-id="true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</h3>
 <p>For our battery model, we chose to model the battery with a RC pair of 0.05 ohm and a 7920 coulomb. This is typical for a 2200 mAh battery, which usually operates at about 3.6v for lithium chemistries<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We set the initial estimate of the model to be at 50% SOC. The function for the true and estimated voltage are the same, albeit with the true and estimated SOC variables, respectively. We also set a gaussian distribution for voltage and current reading noise, of 100mV and 10 mA, respectively. For the true model, the SOC charge/discharge rate is calculated based on the input current and the charge capacity of the battery. The true rate is then added or subtracted to the actual SOC.</p>
@@ -251,7 +246,7 @@ V_\text{true}(t) = 2 + 2 \, SOC(t) + R_s \, I(t)
 </li>
 <li><span class="math inline">\(R_s\)</span> : Battery internal series resistance (Ω)</li>
 </ul>
-<p><strong>Discrete-time (Euler integration):</strong></p>
+<p><strong>Discrete-time (Euler’s Method):</strong></p>
 <p><span class="math display">\[
 SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
 V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
@@ -307,7 +302,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <section id="constant-2.2a-discharge-90-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-2.2a-discharge-90-initial-soc">Constant 2.2A Discharge, 90% initial SOC</h3>
-<div id="4eb61a50" class="cell" data-execution_count="1">
+<div id="014ff30d" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -393,7 +388,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </section>
 <section id="constant-2.2a-charge-0-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-2.2a-charge-0-initial-soc">Constant 2.2A Charge, 0% initial SOC</h3>
-<div id="4759cd64" class="cell" data-execution_count="2">
+<div id="12557a45" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -480,7 +475,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </section>
 <section id="constant-0.5a-discharge-90-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-0.5a-discharge-90-initial-soc">Constant 0.5A Discharge, 90% initial SOC</h3>
-<div id="3bf2a804" class="cell" data-execution_count="3">
+<div id="8996ac64" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
