@@ -1,6 +1,6 @@
 ---
 title: "Luenberger Observer for Battery Charge Estimation"
-description: "Simulating a Battery and evaluating estimation accuracy under various parameters"
+description: "Simulating a Battery and evaluating estimator accuracy under various parameters"
 image: "../../assets/soc_estimator/soc_estimator.png"
 ---
 
@@ -37,7 +37,7 @@ $$
 - $Q$ : Battery capacity (Coulombs)  
 - $R_s$ : Battery internal series resistance (Ω)  
 
-**Discrete-time (Euler integration):**
+**Discrete-time (Euler's Method):**
 
 $$
 SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
