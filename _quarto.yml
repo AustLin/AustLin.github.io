@@ -11,6 +11,8 @@ website:
         text: Projects
       - href: pages/about.qmd
         text: About Me
+      - href: assets/ALin Resume.pdf
+        text: Resume
 
 
   page-footer:

@@ -1,0 +1,289 @@
+---
+title: "WaffleBot Maze Navigation"
+description: "Developing a maze following algorithm with Gazebo Simulation and ROS2"
+image: "../../assets/maze_follower/simulation.png"
+---
+## Overview
+
+This project implements autonomous maze navigation for a TurtleBot3 Waffle Pi robot using LiDAR-based perception and reactive control. The robot begins in an unknown orientation within a simply connected maze and must navigate to the exit and stop once it has fully exited. Sensing is provided by a 360° LiDAR scanner, and motion is achieved through differential-drive control.
+
+At a high level, the robot evaluates obstacle distances in the forward, left, and right directions and selects motion commands accordingly. Navigation is based on wall-following behavior, which guarantees eventual maze exit under the assumption of continuous, unbroken walls.
+
+![Testing Maze Algorithm in Gazebo](../../assets/maze_follower/simulation.png)
+
+## Simulation and Control Logic
+
+Development and validation were first performed in Gazebo to ensure correct behavior under ideal sensing conditions before deployment to hardware. The final implementation subscribes to LiDAR data from the /scan topic and publishes twist messages to /cmd_vel at 10 Hz.
+
+<details>
+<summary>Show Maze Solving code</summary>
+
+```python
+
+# Copyright 2016 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import rclpy
+from rclpy.node import Node
+import math
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
+
+
+class MazeSolver(Node):
+
+    # Robot direction corresponding to the lidar index/angle. Specific to gazebo sim
+    FRONT = 360
+    BACK = 0
+    RIGHT = 180
+    LEFT = 540
+
+    # General tolerance value
+    TOL = 0.4
+
+    # linear and angular velocities
+    LINEAR_VEL = 0.5
+    ROT_VEL = 0.5
+
+    # The angle deviating from the left and right angles, used in maintain parallel
+    # LEFT+RAY_ANGLE, LEFT-RAY_ANGLE, RIGHT+RAY_ANGLE, and RIGHT_ANGLE 
+    RAY_ANGLE = 20
+
+    def __init__(self):
+        super().__init__('maze_solver')
+
+        # Create publisher and subscriber 
+        self.cmd_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.scan_subscription = self.create_subscription(LaserScan,'/scan',
+                                                          self.scan_callback,
+                                                          10)
+        # Timer for calling move
+        self.timer = self.create_timer(0.1, self.move)
+        
+        # Initialize directional distances
+        self.front = 0.0
+        self.right = self.front_right = self.back_right = 0.0
+        self.left = self.front_left = self.back_left = 0.0
+
+        # Minimum and maximum valid sitance values
+        self.range_min = 1.0
+        self.range_max = 100.0
+
+        # Boolean flags for turning
+        self.is_moving = self.is_turning_left = self.is_turning_right = False
+
+        # Counter for counting cycles, default None (not initialized)
+        self.counter = None
+
+        # Declare and get parameter
+        self.declare_parameter('direction', 1)
+        self.declare_parameter('distance', 0.5)        
+        self.direction = self.get_parameter('direction').get_parameter_value().integer_value
+        self.distance = self.get_parameter('distance').get_parameter_value().double_value
+
+        # Calculate the cosine of the ray angle first to use it later in the
+        # right triangle calculations.
+        self.__trig = math.cos(MazeSolver.RAY_ANGLE / 180 * math.pi)
+
+    def scan_callback(self, msg):
+        """
+        ROBOT:
+        right = 180
+        back = 0
+        front = 360
+        left = 540
+
+        Update all directional distances from the message sent by /scan
+        """
+
+        self.front = min(msg.ranges[MazeSolver.FRONT-40 : MazeSolver.FRONT+40])
+
+        self.right = min(msg.ranges[MazeSolver.RIGHT-10 : MazeSolver.RIGHT+10])
+        self.front_right = min(msg.ranges[MazeSolver.RIGHT + MazeSolver.RAY_ANGLE - 5 : MazeSolver.RIGHT + MazeSolver.RAY_ANGLE + 5 ])
+        self.back_right =  min(msg.ranges[MazeSolver.RIGHT - MazeSolver.RAY_ANGLE - 5 : MazeSolver.RIGHT - MazeSolver.RAY_ANGLE + 5 ])
+
+        self.left = min(msg.ranges[MazeSolver.LEFT-10 : MazeSolver.LEFT+10])
+        self.front_left = min(msg.ranges[MazeSolver.LEFT - MazeSolver.RAY_ANGLE - 5 : MazeSolver.LEFT - MazeSolver.RAY_ANGLE + 5 ])
+        self.back_left =  min(msg.ranges[MazeSolver.LEFT + MazeSolver.RAY_ANGLE - 5 : MazeSolver.LEFT + MazeSolver.RAY_ANGLE + 5 ])
+
+        self.range_min = msg.range_min
+        self.range_max = msg.range_max
+
+    def turn_left(self) -> Twist:
+        # Basic turn left function sets CCW angular velocity and 0.0 linear velocity
+        command = Twist()
+        command.angular.z = MazeSolver.ROT_VEL
+        command.linear.x = 0.0
+
+        return command
+
+    def turn_right(self) -> Twist:
+        # Basic turn right function sets CW angular velocity and 0.0 linear velocity
+        command = Twist()
+        command.angular.z = -MazeSolver.ROT_VEL
+        command.linear.x = 0.0
+
+        return command
+
+    def wall_follow(self) -> Twist:
+        command = Twist()
+        hardware = 5
+
+        # Obtain angular velocity by calculating the difference in distnace from
+        # the fornt and back rays.
+        right_vel = self.back_right - self.front_right
+        left_vel = self.front_left - self.back_left
+
+        # Bound the calculated velocity to have magnitude less then MazeSolver.ROT_VEL
+        right_vel = (-MazeSolver.ROT_VEL if right_vel < 0 else MazeSolver.ROT_VEL) if abs(right_vel) > MazeSolver.ROT_VEL else right_vel
+        left_vel = (-MazeSolver.ROT_VEL if left_vel < 0 else MazeSolver.ROT_VEL) if abs(left_vel) > MazeSolver.ROT_VEL else left_vel
+
+        command.linear.x = MazeSolver.LINEAR_VEL    # Set linear speed to global constant
+        
+        # Check if the calculated values are NaN if calculated velocity on one side is NaN
+        # then use velocity on the other. If neither side is NaN (usual case) then set Twist
+        # angular velocity to be the one that is smaller in magnitude.
+        if not math.isnan(right_vel) and math.isnan(left_vel):
+            self.get_logger().info("right !nan, left nan")
+            command.angular.z = right_vel * hardware  
+        elif not math.isnan(left_vel) and math.isnan(right_vel):
+            self.get_logger().info("left !nan, right nan")
+            command.angular.z = left_vel * hardware 
+        elif not math.isnan(right_vel) and not math.isnan(left_vel):
+            self.get_logger().info("right !nan, left !nan")
+            command.angular.z = min(right_vel, left_vel, key=abs) * hardware 
+
+        self.get_logger().info(f"vel: {command.angular.z}")
+
+        return command
+    
+    def finished_turning(self) -> bool:
+        # Use trig and the front back distance rays to calculate right and left  
+        # distances.
+        calc_right_front = self.front_right * self.__trig
+        calc_right_back = self.back_right * self.__trig
+
+        calc_left_front = self.front_left * self.__trig
+        calc_left_back = self.back_left * self.__trig
+
+        # Compare the calculated values with the actual values and compare front
+        # and back distnace values. Since lidar will never actuall give equal
+        # distances, as long as the difference is less then TOL/2 (0.05) then we stop
+        is_finished = (abs(self.front_right - self.back_right) < MazeSolver.TOL/2 and
+                       abs(calc_right_back - self.right) < MazeSolver.TOL/2 and
+                       abs(calc_right_front - self.right) < MazeSolver.TOL/2) or \
+                      (abs(self.front_left - self.back_left) < MazeSolver.TOL/2 and
+                       abs(calc_left_back - self.left) < MazeSolver.TOL/2 and
+                       abs(calc_left_front - self.left) < MazeSolver.TOL/2)
+        
+        if is_finished:
+            self.get_logger().info(f"Finished turning")
+
+        return is_finished
+ 
+    def move(self):
+        # Check if counter is initialized
+        if self.counter != None:
+            self.counter += 1
+
+            # If counter is greater then 10 start checking for whether we have reached
+            # a parallel position and needs to stop turning.
+            if self.counter > 10:
+                if self.is_turning_right and self.finished_turning():
+                    self.get_logger().info("Turning right finished")
+                    self.is_turning_right = False
+                    self.counter = None
+                elif self.is_turning_left and self.finished_turning():
+                    self.get_logger().info("Turning left finished")
+                    self.is_turning_left = False
+                    self.counter = None
+            
+        # If front distance is less then stopping distance or currently turning
+        if self.is_turning_left or self.is_turning_right or \
+        (self.front > self.range_min and self.front < self.distance):
+            
+            # Turn right if currently turning right or right distance greater then left
+            if not self.is_turning_left and (self.is_turning_right or self.right > self.left):
+                command = self.turn_right()
+                self.get_logger().info("START turn right")
+
+                self.is_turning_right = True
+                if self.counter == None:
+                    self.counter = 0
+            elif not self.is_turning_right and (self.is_turning_left or self.left > self.right):
+                # Turn left if currently turning left or left distance greater then right
+                command = self.turn_left()
+                self.get_logger().info("START turn left")
+
+                self.is_turning_left = True
+                if self.counter == None:
+                    self.counter = 0
+        else:
+            command = self.wall_follow()
+
+        self.cmd_publisher.publish(command)
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    # Create object and spin
+    maze_solver = MazeSolver()
+    rclpy.spin(maze_solver)
+
+    # Destory node explicitly
+    maze_solver.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+
+```
+
+</details>
+
+
+Eight LiDAR rays are extracted to represent front, back, left, right, and supporting front/back measurements on each side. These values are used for obstacle detection, wall following, turn completion, and exit detection. Motion logic follows a simple priority structure:
+
+* Stop rotation if parallel alignment with a wall is detected
+
+* Initiate rotation if an obstacle is detected within a forward stopping distance
+
+* Otherwise, proceed forward using wall-following control
+
+Rotation is triggered when a frontal obstacle is detected and continues for a fixed number of cycles before checking for alignment with nearby walls. Parallel alignment is determined using geometric consistency checks between LiDAR ray distances and trigonometric projections. Multiple checks are used to improve robustness against noisy measurements.
+
+![Slope of wall is approximated by the distance from three rays. Correction is applied to maintain parallel movement to wall](../../assets/maze_follower/alignment.png)
+
+
+Wall following is achieved by comparing front and back LiDAR rays on each side. The angular velocity command is proportional to the difference between these measurements, with larger differences producing stronger corrective turns. When operating in confined spaces, angular corrections are scaled to improve stability. The final angular velocity is chosen as the smaller-magnitude correction between the left and right sides to minimize oscillations.
+
+Exit detection is handled through a state-based procedure. Upon detecting open space consistent with leaving the maze, the robot moves forward slightly and performs a 180° rotation. Exit confirmation occurs when LiDAR measurements behind and to both sides return infinite distances.
+
+## Hardware Deployment
+
+The algorithm was deployed on a TurtleBot3 Waffle Pi platform, with the robot and control laptop connected over a shared network. LiDAR data is streamed from the robot, and velocity commands are issued remotely.
+
+Several physical considerations affect hardware behavior. LiDAR index mappings differ between simulation and hardware and must be adjusted accordingly. Additionally, the robot rotates about the wheel axis rather than its geometric center, requiring sufficient clearance to avoid wall contact during turns. Concurrent teleoperation was disabled to prevent conflicting velocity commands.
+
+![Lab test of Physical Robot and Maze](../../assets/maze_follower/lab.png)
+
+## Performance and Limitations
+
+In simulation, the robot consistently exited all provided maze configurations without wall collisions. On hardware, reliable wall following and obstacle avoidance were observed in environments with wide corridors and clear boundaries.
+
+Failure cases occurred when obstacles were positioned diagonally or when narrow walls were encountered head-on. In these scenarios, limited frontal sensing caused missed detections, or competing corrections resulted in oscillatory rotation behavior. These issues highlight limitations in the obstacle detection cone and turn-selection logic.
+
+Earlier emphasis on a strict right-hand-rule implementation and expanded diagonal obstacle detection would improve robustness and guarantee maze completion in all simply connected environments.
+

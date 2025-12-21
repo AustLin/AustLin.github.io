@@ -1,5 +1,5 @@
 ---
-title: "Hi!"
+title: "Projects"
 listing:
   contents: pages/projects
   type: default
@@ -9,4 +9,4 @@ listing:
   sort: "title"
 ---
 
-Below are some of my favorite projects that I'd to share. Stay tuned for more to come!
+Documenting some of my favorite projects. More is on the way!

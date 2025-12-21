@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Simulating a Battery and evaluating estimator accuracy under various parameters">
+<meta name="description" content="Modeling and simulating lithium-ion battery SOC estimation using a Luenberger observer, with noisy measurements and convergence analysis in Python and MATLAB.">
 
-<title>Luenberger Observer for Battery Charge Estimation – Austin Lin’s Portfolio</title>
+<title>Battery SOC Estimation via Observer-Based Modeling – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,6 +162,10 @@ window.Quarto = {
     <a class="nav-link" href="../../pages/about.html"> 
 <span class="menu-text">About Me</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assets/ALin Resume.pdf"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -180,7 +184,7 @@ window.Quarto = {
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#true-battery-soc-and-voltage-model" id="toc-true-battery-soc-and-voltage-model" class="nav-link" data-scroll-target="#true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</a></li>
+  <li><a href="#true-battery-soc-and-voc-model" id="toc-true-battery-soc-and-voc-model" class="nav-link" data-scroll-target="#true-battery-soc-and-voc-model">True Battery SOC and VOC Model</a></li>
   <li><a href="#soc-estimator-luenberger-observer" id="toc-soc-estimator-luenberger-observer" class="nav-link" data-scroll-target="#soc-estimator-luenberger-observer">SOC Estimator (Luenberger Observer)</a></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
@@ -198,12 +202,12 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Luenberger Observer for Battery Charge Estimation</h1>
+<h1 class="title">Battery SOC Estimation via Observer-Based Modeling</h1>
 </div>
 
 <div>
   <div class="description">
-    Simulating a Battery and evaluating estimator accuracy under various parameters
+    Modeling and simulating lithium-ion battery SOC estimation using a Luenberger observer, with noisy measurements and convergence analysis in Python and MATLAB.
   </div>
 </div>
 
@@ -222,13 +226,12 @@ window.Quarto = {
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Estimating battery State of Charge (SOC) is used every day in our battery powered devices. However, it’s impractical to directly “count” how much charge a battery has. One approach to this problem is the combination of a Luenberger Observer and a battery model that correlates Open Current Voltage (OCV) and State of Charge (SOC). The Luenberger Observer starts with a guess of the battery state of charge, and as it makes repeated measurements of OCV, it adjusts its SOC prediction until it converges to the true behavior measured by the battery estimator. This approach is effective if the behavior of the true battery is well understood, and if SOC can be observable by OCV.</p>
-<p>Our battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (OCV) vs.&nbsp;State of Charge (SOC) curves. But in actuallity, a wide variety of factors makes the “true” curve non-linear. For instance, different battery chemistries and physical properties have distinctive curves. One challenge with battery estimation is that sometimes the OCV-SOC curve has “plateaus” such that similar OCVs correspond drastically different SOCs, making the SOC effectively unobservable by OCV alone. Additionally, the temperature can drastically reduce the OCV even though the battery has not discharged any energy. Jeff Shepard has a <a href="https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/">fantastic article</a> with visuals of how these factors impact the OCV-SOC curve.</p>
-<p>This was originally a group project by me, Alex Miller, and Joseph Kirby for a senior elective (ENME489N battery operation, modeling, and reliability), where we made the Battery and Estimator model in MATLAB with a writeup. I’ve since expanded on our original work by adapting our model into python, adding to this overview, and to the breakdown with how our model and estimator works.</p>
-<section id="true-battery-soc-and-voltage-model" class="level3">
-<h3 class="anchored" data-anchor-id="true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</h3>
-<p>For our battery model, we chose to model the battery with a RC pair of 0.05 ohm and a 7920 coulomb. This is typical for a 2200 mAh battery, which usually operates at about 3.6v for lithium chemistries<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We set the initial estimate of the model to be at 50% SOC. The function for the true and estimated voltage are the same, albeit with the true and estimated SOC variables, respectively. We also set a gaussian distribution for voltage and current reading noise, of 100mV and 10 mA, respectively. For the true model, the SOC charge/discharge rate is calculated based on the input current and the charge capacity of the battery. The true rate is then added or subtracted to the actual SOC.</p>
-<p>Below are the state space equations governing the true battery model and the soc estimator. The simulation uses Euler’s method, and their respective equations are also shown. Our battery model has a step size of 0.1 seconds over 2700 seconds.</p>
+<p>Estimating battery State of Charge (SOC) is used every day in our battery powered devices. However, it’s impractical to directly “count” how much charge a battery has. One approach to this problem is the combination of a Luenberger Observer and a battery model that correlates Open Current Voltage (VOC) and State of Charge (SOC). The Luenberger Observer starts with a guess of the battery state of charge, and as it makes repeated measurements of VOC, it adjusts its SOC prediction until it converges to the true behavior measured by the battery estimator. This approach is effective if the behavior of the true battery is well understood, and if SOC can be observable by VOC.</p>
+<p>The battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (VOC) vs.&nbsp;State of Charge (SOC) curves. But in actuallity, a wide variety of factors makes the “true” curve non-linear. For instance, different battery chemistries and physical properties have distinctive curves. One challenge with battery estimation is that sometimes the VOC-SOC curve has “plateaus” such that similar VOCs correspond drastically different SOCs, making the SOC effectively unobservable by VOC alone. Additionally, the temperature can drastically reduce the VOC even though the battery has not discharged any energy. Jeff Shepard has a <a href="https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/">fantastic article</a> with visuals of how these factors impact the VOC-SOC curve.</p>
+<section id="true-battery-soc-and-voc-model" class="level3">
+<h3 class="anchored" data-anchor-id="true-battery-soc-and-voc-model">True Battery SOC and VOC Model</h3>
+<p>The battery is modeled using an RC pair consisting of a 0.05 Ω series resistance and a capacity of 7920 coulombs. These values are representative of a typical 2200 mAh lithium-ion battery, which generally operates at approximately 3.6 V<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The initial state-of-charge (SOC) estimate is set to 50%. The equations for the true and estimated battery voltage share the same functional form, differing only in their respective SOC variables. Gaussian measurement noise is applied to both voltage and current readings, with standard deviations of 100 mV and 10 mA, respectively. For the true battery model, the SOC charge and discharge rate is computed from the applied current and the battery’s charge capacity, and this rate is integrated to update the true SOC over time.</p>
+<p>The state-space equations governing both the true battery model and the SOC estimator are shown below. The simulation is implemented using Euler’s method with a time step of 0.1 seconds over a total duration of 2700 seconds.</p>
 <p><strong>Continuous-time:</strong></p>
 <p><span class="math display">\[
 \dot{SOC}(t) = \frac{I(t)}{Q}, \quad
@@ -261,7 +264,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </section>
 <section id="soc-estimator-luenberger-observer" class="level3">
 <h3 class="anchored" data-anchor-id="soc-estimator-luenberger-observer">SOC Estimator (Luenberger Observer)</h3>
-<p>For the estimator, calculating the rate is very similar. However, we also introduce current noise to the input current to simulate an ammeter reading the current going into the battery. We also introduce feedback. This is done by taking the voltage reading of the battery (again, with measurement noise), and subtracting this with the voltage estimate. The Luenberger gain scales the ‘strength’ of the error between the model and estimate. It is important to note that the Luenberger observer will only work if the real plant is observable; the slope of the OCV-SOC curve must be nonzero. This method guarantees convergence and speed, as visible in the following figures:</p>
+<p>For the estimator, the SOC rate calculation follows a similar structure to the true model, with the addition of measurement noise applied to the input current to simulate an ammeter reading the current entering the battery. Feedback is incorporated by computing the difference between the measured battery voltage (including measurement noise) and the estimated voltage. This error term is scaled by the Luenberger gain, which determines the strength of the corrective feedback applied to the SOC estimate. It is important to note that the Luenberger observer is effective only if the underlying system is observable; specifically, the slope of the VOC–SOC curve must be nonzero. Under these conditions, the observer guarantees convergence and rapid error correction, as demonstrated in the following figures.</p>
 <p><strong>Continuous-time:</strong></p>
 <p><span class="math display">\[
 \dot{\hat{SOC}}(t) = \frac{I(t) + n_I(t)}{Q} + K \left( V_\text{true}(t) + n_V(t) - \hat{V}(t) \right)
@@ -302,7 +305,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <section id="constant-2.2a-discharge-90-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-2.2a-discharge-90-initial-soc">Constant 2.2A Discharge, 90% initial SOC</h3>
-<div id="014ff30d" class="cell" data-execution_count="1">
+<div id="1992c50c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -388,7 +391,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </section>
 <section id="constant-2.2a-charge-0-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-2.2a-charge-0-initial-soc">Constant 2.2A Charge, 0% initial SOC</h3>
-<div id="12557a45" class="cell" data-execution_count="2">
+<div id="ccd56949" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -475,7 +478,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </section>
 <section id="constant-0.5a-discharge-90-initial-soc" class="level3">
 <h3 class="anchored" data-anchor-id="constant-0.5a-discharge-90-initial-soc">Constant 0.5A Discharge, 90% initial SOC</h3>
-<div id="8996ac64" class="cell" data-execution_count="3">
+<div id="2f5d4b2f" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Show code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -558,7 +561,7 @@ V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
 </div>
 </div>
 </div>
-<p>At 500 seconds for 0.5 Amps discharge, the difference between the estimate and true SOC is about 4.7% percent. At 500 seconds for 2.2 Amps discharge and charge, the difference is about 4.4%. Thus from our model and observer we can conclude that after 500 seconds, the Kalman filter predicts the true SOC within 5% for standard operation, and continues to converge. But before 500 seconds, the error is drastically greater when the initial estimate is set at 50% charge. Depending on the application, it could make sense to adjust the initial estimate closer to 0% charge (to get a more accurate battery reading if it is close to empty).</p>
+<p>At 500 seconds under a 0.5 A discharge, the difference between the estimated and true SOC is approximately 4.7%. Under a 2.2 A discharge or charge, the SOC error at 500 seconds is approximately 4.4%. These results indicate that after 500 seconds of operation, the Luenberger observer estimates the true SOC within 5% under nominal conditions and continues to converge thereafter. Prior to 500 seconds, the estimation error is significantly larger when the initial SOC estimate is set to 50%. Depending on the application, initializing the observer closer to 0% SOC may yield more accurate results when the battery is near depletion.</p>
 </section>
 </section>
 <section id="original-matlab-model" class="level2">

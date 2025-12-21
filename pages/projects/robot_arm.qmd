@@ -32,7 +32,7 @@ Joint angles are transmitted to the host computer, where the Processing applicat
   </iframe>
 </div>
 ```
-## Graphics Code
+## Visualization Code
 
 ### Initialization and Setup
 

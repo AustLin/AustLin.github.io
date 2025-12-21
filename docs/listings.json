@@ -2,10 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
-      "/pages/projects/headphone_joint.html",
       "/pages/projects/battery_estimator.html",
-      "/pages/projects/robot_arm.html",
-      "/pages/projects/wafflebot.html"
+      "/pages/projects/headphone_joint.html",
+      "/pages/projects/wafflebot.html",
+      "/pages/projects/robot_arm.html"
     ]
   }
 ]
