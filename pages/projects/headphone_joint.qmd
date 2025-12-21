@@ -44,7 +44,7 @@ My initial concerns was function and sizing. Tolerancing had to be tight to prev
 <div style="width:100%; height:380px;">
     <iframe id="vs_iframe" 
     src="https://www.viewstl.com/?embedded&color=yellow&url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Ffix_1.stl" 
-    style="border:0;margin:0;width:600px;height:360px;"></iframe>
+    style="border:0;margin:0;width:400px;height:300px;"></iframe>
 </div>
 ```
 
@@ -58,7 +58,7 @@ The initial splint held the two pieces tight and comfortably, but rocked back an
 <div style="width:100%; height:380px;">
     <iframe id="vs_iframe" 
     src="https://www.viewstl.com/?embedded&color=purple&url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Ffix_3.stl" 
-    style="border:0;margin:0;width:600px;height:360px;"></iframe>
+    style="border:0;margin:0;width:400px;height:300px;"></iframe>
 </div>
 ```
 
@@ -70,6 +70,6 @@ I noticed flexing in the joint/splint when I would stretch the drivers apart fro
 <div style="width:100%; height:380px;">
     <iframe id="vs_iframe" 
     src="https://www.viewstl.com/?embedded&color=darkblue&url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Fjointfix_final.stl" 
-    style="border:0;margin:0;width:600px;height:360px;"></iframe>
+    style="border:0;margin:0;width:400px;height:300px;"></iframe>
 </div>
 ```
