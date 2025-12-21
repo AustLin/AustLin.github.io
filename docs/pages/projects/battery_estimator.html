@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Using MATLAB/Simulink to model a Battery">
+<meta name="description" content="Simulating a Battery and evaluating estimation accuracy under various parameters">
 
-<title>Battery Estimator – Austin Lin’s Portfolio</title>
+<title>Luenberger Observer for Battery Charge Estimation – Austin Lin's Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -69,6 +104,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -109,20 +173,39 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#project-background" id="toc-project-background" class="nav-link" data-scroll-target="#project-background">Project Background</a>
+  <ul class="collapse">
+  <li><a href="#true-battery-soc-and-voltage-model" id="toc-true-battery-soc-and-voltage-model" class="nav-link" data-scroll-target="#true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</a></li>
+  <li><a href="#soc-estimator-luenberger-observer" id="toc-soc-estimator-luenberger-observer" class="nav-link" data-scroll-target="#soc-estimator-luenberger-observer">SOC Estimator (Luenberger Observer)</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#constant-2.2a-discharge-90-initial-soc" id="toc-constant-2.2a-discharge-90-initial-soc" class="nav-link" data-scroll-target="#constant-2.2a-discharge-90-initial-soc">Constant 2.2A Discharge, 90% initial SOC</a></li>
+  <li><a href="#constant-2.2a-charge-0-initial-soc" id="toc-constant-2.2a-charge-0-initial-soc" class="nav-link" data-scroll-target="#constant-2.2a-charge-0-initial-soc">Constant 2.2A Charge, 0% initial SOC</a></li>
+  <li><a href="#constant-0.5a-discharge-90-initial-soc" id="toc-constant-0.5a-discharge-90-initial-soc" class="nav-link" data-scroll-target="#constant-0.5a-discharge-90-initial-soc">Constant 0.5A Discharge, 90% initial SOC</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#original-matlab-model" id="toc-original-matlab-model" class="nav-link" data-scroll-target="#original-matlab-model">Original Matlab Model</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Battery Estimator</h1>
+<h1 class="title">Luenberger Observer for Battery Charge Estimation</h1>
 </div>
 
 <div>
   <div class="description">
-    Using MATLAB/Simulink to model a Battery
+    Simulating a Battery and evaluating estimation accuracy under various parameters
   </div>
 </div>
 
@@ -139,10 +222,407 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This project explores <strong>State of Charge (SOC) estimation</strong> for a lithium-ion battery using a simple electrical model and a Luenberger-style observer. The goal was to understand how noisy current and voltage measurements impact SOC estimation, and how feedback can be used to guarantee convergence.</p>
+<p>The model and estimator were implemented in <strong>MATLAB</strong>, with injected measurement noise to simulate real-world sensor behavior.</p>
+</section>
+<section id="project-background" class="level2">
+<h2 class="anchored" data-anchor-id="project-background">Project Background</h2>
+<p>This was originally a group project by me, Alex Miller, and Joseph Kirby for a senior elective (ENME489N battery operation, modeling, and reliability), where we made the Battery and Estimator model in MATLAB with a writeup. Estimating how much charge is left in a battery is an incredibly practical, yet surprisingly challenging problem to solve, which is why I decided to showcase what we did on my website. I’ve expanded on our original work by adapting our model into python, and expanding the background and math discussion.</p>
+<p>Our battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (OCV) vs.&nbsp;State of Charge (SOC) curves. However, in the real world, a wide variety of factors makes the “true” curve non-linear. For instance, different battery chemistries and physical properties have distinctive curves. One challenge with battery estimation is that sometimes the OCV-SOC curve has “plateaus” such that similar OCVs correspond drastically different SOCs, making the SOC effectively unobservable by OCV alone. Additionally, the temperature can drastically reduce the OCV even though the battery has not discharged any energy. Jeff Shepard has a <a href="https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/">fantastic article</a> with visuals of how these factors impact the OCV-SOC curve.</p>
+<section id="true-battery-soc-and-voltage-model" class="level3">
+<h3 class="anchored" data-anchor-id="true-battery-soc-and-voltage-model">True Battery SOC and Voltage Model</h3>
+<p>For our battery model, we chose to model the battery with a RC pair of 0.05 ohm and a 7920 coulomb. This is typical for a 2200 mAh battery, which usually operates at about 3.6v for lithium chemistries<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. We set the initial estimate of the model to be at 50% SOC. The function for the true and estimated voltage are the same, albeit with the true and estimated SOC variables, respectively. We also set a gaussian distribution for voltage and current reading noise, of 100mV and 10 mA, respectively. For the true model, the SOC charge/discharge rate is calculated based on the input current and the charge capacity of the battery. The true rate is then added or subtracted to the actual SOC.</p>
+<p>Below are the state space equations governing the true battery model and the soc estimator. The simulation uses Euler’s method, and their respective equations are also shown. Our battery model has a step size of 0.1 seconds over 2700 seconds.</p>
+<p><strong>Continuous-time:</strong></p>
+<p><span class="math display">\[
+\dot{SOC}(t) = \frac{I(t)}{Q}, \quad
+V_\text{true}(t) = 2 + 2 \, SOC(t) + R_s \, I(t)
+\]</span></p>
+<p><strong>Where:</strong></p>
+<ul>
+<li><span class="math inline">\(SOC(t)\)</span> : State of Charge at time <span class="math inline">\(t\)</span> (fraction 0–1)<br>
+</li>
+<li><span class="math inline">\(V_\text{true}(t)\)</span> : True battery voltage (V)<br>
+</li>
+<li><span class="math inline">\(I(t)\)</span> : Input current (A)<br>
+</li>
+<li><span class="math inline">\(Q\)</span> : Battery capacity (Coulombs)<br>
+</li>
+<li><span class="math inline">\(R_s\)</span> : Battery internal series resistance (Ω)</li>
+</ul>
+<p><strong>Discrete-time (Euler integration):</strong></p>
+<p><span class="math display">\[
+SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
+V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
+\]</span></p>
+<p><strong>Where:</strong></p>
+<ul>
+<li><span class="math inline">\(k\)</span> : Discrete time step index<br>
+</li>
+<li><span class="math inline">\(\Delta t\)</span> : Time step (s)</li>
+</ul>
+<hr>
+</section>
+<section id="soc-estimator-luenberger-observer" class="level3">
+<h3 class="anchored" data-anchor-id="soc-estimator-luenberger-observer">SOC Estimator (Luenberger Observer)</h3>
+<p>For the estimator, calculating the rate is very similar. However, we also introduce current noise to the input current to simulate an ammeter reading the current going into the battery. We also introduce feedback. This is done by taking the voltage reading of the battery (again, with measurement noise), and subtracting this with the voltage estimate. The Luenberger gain scales the ‘strength’ of the error between the model and estimate. It is important to note that the Luenberger observer will only work if the real plant is observable; the slope of the OCV-SOC curve must be nonzero. This method guarantees convergence and speed, as visible in the following figures:</p>
+<p><strong>Continuous-time:</strong></p>
+<p><span class="math display">\[
+\dot{\hat{SOC}}(t) = \frac{I(t) + n_I(t)}{Q} + K \left( V_\text{true}(t) + n_V(t) - \hat{V}(t) \right)
+\]</span></p>
+<p><span class="math display">\[
+\hat{V}(t) = 2 + 2 \, \hat{SOC}(t) + R_s \left(I(t) + n_I(t)\right)
+\]</span></p>
+<p><strong>Where:</strong></p>
+<ul>
+<li><span class="math inline">\(\hat{SOC}(t)\)</span> : Estimated SOC<br>
+</li>
+<li><span class="math inline">\(\hat{V}(t)\)</span> : Estimated battery voltage<br>
+</li>
+<li><span class="math inline">\(n_I(t)\)</span> : Current measurement noise<br>
+</li>
+<li><span class="math inline">\(n_V(t)\)</span> : Voltage measurement noise<br>
+</li>
+<li><span class="math inline">\(K\)</span> : Observer (Luenberger) gain</li>
+</ul>
+<p><strong>Discrete-time:</strong></p>
+<p><span class="math display">\[
+\hat{SOC}[k] = \hat{SOC}[k-1] + \Delta t \Big[ \frac{I[k-1] + n_I[k-1]}{Q} + K \left( V_\text{true}[k-1] + n_V[k-1] - \hat{V}[k-1] \right) \Big]
+\]</span></p>
+<p><span class="math display">\[
+\hat{V}[k] = 2 + 2 \, \hat{SOC}[k] + R_s \left(I[k] + n_I[k]\right)
+\]</span></p>
+<p><strong>Where:</strong></p>
+<ul>
+<li><span class="math inline">\(k\)</span> : Discrete time step index<br>
+</li>
+<li><span class="math inline">\(\Delta t\)</span> : Time step (s)<br>
+</li>
+<li>Other variables are same as in continuous-time equations</li>
+</ul>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="constant-2.2a-discharge-90-initial-soc" class="level3">
+<h3 class="anchored" data-anchor-id="constant-2.2a-discharge-90-initial-soc">Constant 2.2A Discharge, 90% initial SOC</h3>
+<div id="cdfa2b06" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> <span class="dv">7920</span>          <span class="co"># C</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Rs <span class="op">=</span> <span class="fl">0.05</span>         <span class="co"># Ohm</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>kalmanGain <span class="op">=</span> <span class="fl">0.0022</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>inputCurrent <span class="op">=</span> <span class="op">-</span><span class="fl">2.200</span>  <span class="co"># A</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial states</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> [<span class="fl">0.90</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> [<span class="fl">0.50</span>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>currentNoise <span class="op">=</span> <span class="fl">0.01</span>  <span class="co"># standard deviation of current noise</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>voltageNoise <span class="op">=</span> <span class="fl">0.1</span>   <span class="co"># standard deviation of voltage noise</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>timeStep <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>timeEnd <span class="op">=</span> <span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="fl">0.75</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>, timeEnd <span class="op">+</span> timeStep, timeStep)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation loop</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(t)):</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True SOC update</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    socDot <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>Q) <span class="op">*</span> inputCurrent</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    socTrue.append(socTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socDot<span class="op">*</span>timeStep)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    voltageTrue.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[i] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Estimated SOC update</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    socEstimateDot <span class="op">=</span> ((<span class="dv">1</span><span class="op">/</span>Q)<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn())</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                      <span class="op">+</span> kalmanGain<span class="op">*</span>(voltageTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> voltageNoise<span class="op">*</span>np.random.randn()</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                                    <span class="op">-</span> voltageEstimate[i<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    socEstimate.append(socEstimate[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socEstimateDot<span class="op">*</span>timeStep)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    voltageEstimate.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[i] <span class="op">+</span> Rs<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn()))</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy arrays for plotting</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> np.array(socTrue)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> np.array(socEstimate)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> np.array(voltageTrue)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> np.array(voltageEstimate)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot SOC</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socTrue, label<span class="op">=</span><span class="st">'True SOC'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socEstimate, label<span class="op">=</span><span class="st">'SOC Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'SOC'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SOC Estimator'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Voltage</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageTrue, label<span class="op">=</span><span class="st">'True Voltage'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageEstimate, label<span class="op">=</span><span class="st">'Voltage Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Voltage (V)'</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Voltage Estimator'</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-2-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-2-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="constant-2.2a-charge-0-initial-soc" class="level3">
+<h3 class="anchored" data-anchor-id="constant-2.2a-charge-0-initial-soc">Constant 2.2A Charge, 0% initial SOC</h3>
+<div id="7255c421" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> <span class="dv">7920</span>          <span class="co"># C</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Rs <span class="op">=</span> <span class="fl">0.05</span>         <span class="co"># Ohm</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>kalmanGain <span class="op">=</span> <span class="fl">0.0022</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>inputCurrent <span class="op">=</span> <span class="fl">2.200</span>  <span class="co"># A</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial states</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> [<span class="fl">0.00</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> [<span class="fl">0.50</span>]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>currentNoise <span class="op">=</span> <span class="fl">0.01</span>  <span class="co"># standard deviation of current noise</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>voltageNoise <span class="op">=</span> <span class="fl">0.1</span>   <span class="co"># standard deviation of voltage noise</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>timeStep <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>timeEnd <span class="op">=</span> <span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="fl">0.75</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>, timeEnd <span class="op">+</span> timeStep, timeStep)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation loop</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(t)):</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True SOC update</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    socDot <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>Q) <span class="op">*</span> inputCurrent</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    socTrue.append(socTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socDot<span class="op">*</span>timeStep)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    voltageTrue.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[i] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Estimated SOC update</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    socEstimateDot <span class="op">=</span> ((<span class="dv">1</span><span class="op">/</span>Q)<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn())</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                      <span class="op">+</span> kalmanGain<span class="op">*</span>(voltageTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> voltageNoise<span class="op">*</span>np.random.randn()</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                                    <span class="op">-</span> voltageEstimate[i<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    socEstimate.append(socEstimate[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socEstimateDot<span class="op">*</span>timeStep)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    voltageEstimate.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[i] <span class="op">+</span> Rs<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn()))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy arrays for plotting</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> np.array(socTrue)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> np.array(socEstimate)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> np.array(voltageTrue)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> np.array(voltageEstimate)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot SOC</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socTrue, label<span class="op">=</span><span class="st">'True SOC'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socEstimate, label<span class="op">=</span><span class="st">'SOC Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'SOC'</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SOC Estimator'</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Voltage</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageTrue, label<span class="op">=</span><span class="st">'True Voltage'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageEstimate, label<span class="op">=</span><span class="st">'Voltage Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Voltage (V)'</span>)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Voltage Estimator'</span>)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-3-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Despite noisy measurements, the SOC estimate converges smoothly to the true SOC. The voltage estimate tracks the real cell voltage closely, demonstrating effective observer feedback.</p>
+</section>
+<section id="constant-0.5a-discharge-90-initial-soc" class="level3">
+<h3 class="anchored" data-anchor-id="constant-0.5a-discharge-90-initial-soc">Constant 0.5A Discharge, 90% initial SOC</h3>
+<div id="1f5c11b7" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> <span class="dv">7920</span>          <span class="co"># C</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>Rs <span class="op">=</span> <span class="fl">0.05</span>         <span class="co"># Ohm</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>kalmanGain <span class="op">=</span> <span class="fl">0.0022</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>inputCurrent <span class="op">=</span> <span class="op">-</span><span class="fl">2.200</span>  <span class="co"># A</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial states</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> [<span class="fl">0.90</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> [<span class="fl">0.50</span>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> [<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[<span class="dv">0</span>] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>currentNoise <span class="op">=</span> <span class="fl">0.01</span>  <span class="co"># standard deviation of current noise</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>voltageNoise <span class="op">=</span> <span class="fl">0.1</span>   <span class="co"># standard deviation of voltage noise</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>timeStep <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>timeEnd <span class="op">=</span> <span class="dv">60</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="fl">0.75</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.arange(<span class="dv">0</span>, timeEnd <span class="op">+</span> timeStep, timeStep)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation loop</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(t)):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># True SOC update</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    socDot <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>Q) <span class="op">*</span> inputCurrent</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    socTrue.append(socTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socDot<span class="op">*</span>timeStep)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    voltageTrue.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socTrue[i] <span class="op">+</span> Rs<span class="op">*</span>inputCurrent)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Estimated SOC update</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    socEstimateDot <span class="op">=</span> ((<span class="dv">1</span><span class="op">/</span>Q)<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn())</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                      <span class="op">+</span> kalmanGain<span class="op">*</span>(voltageTrue[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> voltageNoise<span class="op">*</span>np.random.randn()</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                                    <span class="op">-</span> voltageEstimate[i<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    socEstimate.append(socEstimate[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> socEstimateDot<span class="op">*</span>timeStep)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    voltageEstimate.append(<span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>socEstimate[i] <span class="op">+</span> Rs<span class="op">*</span>(inputCurrent <span class="op">+</span> currentNoise<span class="op">*</span>np.random.randn()))</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to numpy arrays for plotting</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>socTrue <span class="op">=</span> np.array(socTrue)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>socEstimate <span class="op">=</span> np.array(socEstimate)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>voltageTrue <span class="op">=</span> np.array(voltageTrue)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>voltageEstimate <span class="op">=</span> np.array(voltageEstimate)</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot SOC</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socTrue, label<span class="op">=</span><span class="st">'True SOC'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>plt.plot(t, socEstimate, label<span class="op">=</span><span class="st">'SOC Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'SOC'</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SOC Estimator'</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Voltage</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageTrue, label<span class="op">=</span><span class="st">'True Voltage'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>plt.plot(t, voltageEstimate, label<span class="op">=</span><span class="st">'Voltage Estimate'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time (s)'</span>)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Voltage (V)'</span>)</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Voltage Estimator'</span>)</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="battery_estimator_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>At 500 seconds for 0.5 Amps discharge, the difference between the estimate and true SOC is about 4.7% percent. At 500 seconds for 2.2 Amps discharge and charge, the difference is about 4.4%. Thus from our model and observer we can conclude that after 500 seconds, the Kalman filter predicts the true SOC within 5% for standard operation, and continues to converge. But before 500 seconds, the error is drastically greater when the initial estimate is set at 50% charge. Depending on the application, it could make sense to adjust the initial estimate closer to 0% charge (to get a more accurate battery reading if it is close to empty).</p>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+</section>
+<section id="original-matlab-model" class="level2">
+<h2 class="anchored" data-anchor-id="original-matlab-model">Original Matlab Model</h2>
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode matlab code-with-copy"><code class="sourceCode matlab"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">clc</span><span class="op">;</span> <span class="va">clf</span><span class="op">;</span> <span class="va">clear</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="va">Q</span> <span class="op">=</span> <span class="fl">7920</span><span class="op">;</span> <span class="co">% C</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">Rs</span> <span class="op">=</span> <span class="fl">0.05</span><span class="op">;</span> <span class="co">% Ohm</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">kalmanGain</span> <span class="op">=</span> <span class="fl">0.0022</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="va">inputCurrent</span> <span class="op">=</span> <span class="op">-</span><span class="fl">2.200</span><span class="op">;</span> <span class="co">% A</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="va">socTrue</span> <span class="op">=</span> <span class="fl">0.90</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">socEstimate</span> <span class="op">=</span> <span class="fl">0.50</span><span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="va">voltageTrue</span> <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="va">socTrue</span> <span class="op">+</span> <span class="va">Rs</span><span class="op">*</span><span class="va">inputCurrent</span><span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="va">voltageEstimate</span> <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="va">socEstimate</span> <span class="op">+</span> <span class="va">Rs</span><span class="op">*</span><span class="va">inputCurrent</span><span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="va">currentNoise</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="va">voltageNoise</span> <span class="op">=</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="va">timeStep</span> <span class="op">=</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="va">timeEnd</span> <span class="op">=</span> <span class="fl">60</span><span class="op">*</span><span class="fl">60</span><span class="op">*</span><span class="fl">0.75</span><span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="va">t</span> <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="va">timeStep</span><span class="op">:</span><span class="va">timeEnd</span><span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">for</span> <span class="va">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="va">length</span>(<span class="va">t</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>   <span class="va">socDot</span> <span class="op">=</span> (<span class="fl">1</span><span class="op">/</span><span class="va">Q</span>)<span class="op">*</span><span class="va">inputCurrent</span><span class="op">;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>   <span class="va">socTrue</span>(<span class="va">i</span>) <span class="op">=</span> <span class="va">socTrue</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>) <span class="op">+</span> <span class="va">socDot</span><span class="op">*</span><span class="va">timeStep</span><span class="op">;</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>   <span class="va">voltageTrue</span>(<span class="va">i</span>) <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="va">socTrue</span>(<span class="va">i</span>) <span class="op">+</span> <span class="va">Rs</span><span class="op">*</span><span class="va">inputCurrent</span><span class="op">;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>   <span class="va">socEstimateDot</span> <span class="op">=</span> (<span class="fl">1</span><span class="op">/</span><span class="va">Q</span>)<span class="op">*</span>(<span class="va">inputCurrent</span> <span class="op">+</span> <span class="va">currentNoise</span><span class="op">*</span><span class="va">randn</span>()) <span class="op">...</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> <span class="va">kalmanGain</span><span class="op">*</span>(<span class="va">voltageTrue</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>) <span class="op">+</span> <span class="va">voltageNoise</span><span class="op">*</span><span class="va">randn</span>() <span class="op">...</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>      <span class="op">-</span> <span class="va">voltageEstimate</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>))<span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>   <span class="va">socEstimate</span>(<span class="va">i</span>) <span class="op">=</span> <span class="va">socEstimate</span>(<span class="va">i</span><span class="op">-</span><span class="fl">1</span>) <span class="op">+</span> <span class="va">socEstimateDot</span><span class="op">*</span><span class="va">timeStep</span><span class="op">;</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>   <span class="va">voltageEstimate</span>(<span class="va">i</span>) <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="va">socEstimate</span>(<span class="va">i</span>) <span class="op">...</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> <span class="va">Rs</span><span class="op">*</span>(<span class="va">inputCurrent</span> <span class="op">+</span> <span class="va">currentNoise</span><span class="op">*</span><span class="va">randn</span>())<span class="op">;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><a href="https://power.tenergy.com/tenergy-li-ion-18650-cylindrical-3-6v-2200mah-flat-top-rechargeable-battery-ul-listed/">Tenergy 18650 Li-ion Battery</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://www.adafruit.com/product/1781">Adafruit 18650 Li-ion Battery</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
