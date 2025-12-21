@@ -2,8 +2,7 @@
 title: "Headphone Joint Upgrade"
 description: "Permanently fixing a common issue with early HIFIMAN Headphones."
 image: "../../assets/headphone_joint/headphone_thumbnail.png"
-resources:
-    - "../../assets/**"
+
 ---
 
 ## Overview

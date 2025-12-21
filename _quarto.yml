@@ -1,7 +1,8 @@
 project:
   type: website
   output-dir: docs
-
+resources:
+    - "../../assets/**"
 website:
   title: "Austin Lin's Portfolio"
   navbar:
@@ -10,6 +11,7 @@ website:
         text: Projects
       - href: pages/about.qmd
         text: About Me
+
 
   page-footer:
     right: "Built with [Quarto](https://quarto.org)"
