@@ -1,8 +1,8 @@
 ---
-title: "Headphone Joint Upgrade"
-description: "Permanently fixing a common issue with early HIFIMAN Headphones."
+title: "HIFIMAN Headphone Joint Fix"
+description: "A 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones."
 image: "../../assets/headphone_joint/headphone_thumbnail.png"
-
+lightbox: true
 ---
 
 ## Overview

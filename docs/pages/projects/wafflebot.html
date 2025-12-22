@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Developing a maze following algorithm with Gazebo Simulation and ROS2">
+<meta name="description" content="A ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform.">
 
-<title>WaffleBot Maze Navigation – Austin Lin’s Portfolio</title>
+<title>Autonomous Maze Navigation with ROS2 and LiDAR – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -165,12 +165,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">WaffleBot Maze Navigation</h1>
+<h1 class="title">Autonomous Maze Navigation with ROS2 and LiDAR</h1>
 </div>
 
 <div>
   <div class="description">
-    Developing a maze following algorithm with Gazebo Simulation and ROS2
+    A ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform.
   </div>
 </div>
 
@@ -190,6 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>This project implements autonomous maze navigation for a TurtleBot3 Waffle Pi robot using LiDAR-based perception and reactive control. The robot begins in an unknown orientation within a simply connected maze and must navigate to the exit and stop once it has fully exited. Sensing is provided by a 360° LiDAR scanner, and motion is achieved through differential-drive control.</p>
+<p>The algorithm was initially testing virtually with Gazebo, and later tested on actual hardware.</p>
 <p>At a high level, the robot evaluates obstacle distances in the forward, left, and right directions and selects motion commands accordingly. Navigation is based on wall-following behavior, which guarantees eventual maze exit under the assumption of continuous, unbroken walls.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

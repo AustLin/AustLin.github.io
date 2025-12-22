@@ -2,6 +2,7 @@
 title: "Battery SOC Estimation via Observer-Based Modeling"
 description: "Modeling and simulating lithium-ion battery SOC estimation using a Luenberger observer, with noisy measurements and convergence analysis in Python and MATLAB."
 image: "../../assets/soc_estimator/soc_estimator.png"
+lightbox: true
 ---
 
 ## Overview

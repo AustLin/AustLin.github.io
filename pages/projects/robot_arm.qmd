@@ -2,6 +2,7 @@
 title: "Wake & Manipulate: Robot Arm"
 description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
 image: "../../assets/robot_arm/robot_arm.png"
+lightbox: true
 ---
 
 ## Overview

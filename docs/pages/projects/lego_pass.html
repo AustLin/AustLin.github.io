@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones.">
+<meta name="description" content="Passing Legos">
 
-<title>HIFIMAN Headphone Joint Fix – Austin Lin’s Portfolio</title>
+<title>Lego Pass – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -41,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -119,14 +157,18 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#files" id="toc-files" class="nav-link" data-scroll-target="#files">Files</a></li>
-  <li><a href="#previous-iterations" id="toc-previous-iterations" class="nav-link" data-scroll-target="#previous-iterations">Previous Iterations</a>
+  <li><a href="#architecture" id="toc-architecture" class="nav-link" data-scroll-target="#architecture">Architecture</a></li>
+  <li><a href="#apriltag-identification" id="toc-apriltag-identification" class="nav-link" data-scroll-target="#apriltag-identification">Apriltag Identification</a></li>
+  <li><a href="#line-detection" id="toc-line-detection" class="nav-link" data-scroll-target="#line-detection">Line Detection</a></li>
+  <li><a href="#shortest-path" id="toc-shortest-path" class="nav-link" data-scroll-target="#shortest-path">Shortest Path</a></li>
+  <li><a href="#zeromq" id="toc-zeromq" class="nav-link" data-scroll-target="#zeromq">ZeroMQ</a>
   <ul class="collapse">
-  <li><a href="#tape-fix" id="toc-tape-fix" class="nav-link" data-scroll-target="#tape-fix">Tape Fix</a></li>
-  <li><a href="#proof-of-concept" id="toc-proof-of-concept" class="nav-link" data-scroll-target="#proof-of-concept">Proof of Concept</a></li>
-  <li><a href="#packaging" id="toc-packaging" class="nav-link" data-scroll-target="#packaging">Packaging</a></li>
-  <li><a href="#strength-and-finishing-features" id="toc-strength-and-finishing-features" class="nav-link" data-scroll-target="#strength-and-finishing-features">Strength and Finishing Features</a></li>
+  <li><a href="#socket-setup" id="toc-socket-setup" class="nav-link" data-scroll-target="#socket-setup">Socket Setup:</a></li>
+  <li><a href="#robot-1-passing-robot" id="toc-robot-1-passing-robot" class="nav-link" data-scroll-target="#robot-1-passing-robot">Robot 1: Passing robot</a></li>
+  <li><a href="#robot-2-receiving-robot" id="toc-robot-2-receiving-robot" class="nav-link" data-scroll-target="#robot-2-receiving-robot">Robot 2: Receiving Robot</a></li>
   </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#lego-sequence" id="toc-lego-sequence" class="nav-link" data-scroll-target="#lego-sequence">Lego Sequence</a></li>
   </ul>
 </nav>
     </div>
@@ -135,12 +177,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">HIFIMAN Headphone Joint Fix</h1>
+<h1 class="title">Lego Pass</h1>
 </div>
 
 <div>
   <div class="description">
-    A 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones.
+    Passing Legos
   </div>
 </div>
 
@@ -159,76 +201,143 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. Both joints attaching the driver to the headband failed on my pair of HE-400s just weeks after purchase, and <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">this Head-Fi forum thread</a> shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.</p>
+<p>The goal of our Robotics Perception and Planning class was to program two robots to autonomously hand Legos to each other while avoiding obstacles. Robot 1 was tasked with picking up a Lego, navigating to the blue line, and coordinating a handoff with Robot 2, which would then transport the Lego to the goal. To accomplish this, both robots relied on object detection, line detection, AprilTag-based localization, and path planning. They needed to perceive their environment and identify obstacles, other robots, and Legos using a Computer vision model trained on a dataset our team collected with ML. Additionally, the robots communicated with each other using TCP and ZeroMQ to ensure synchronized and reliable transfer.</p>
+</section>
+<section id="architecture" class="level2">
+<h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
+<ul>
+<li><p>Localization and Path Planning (Lab 1):</p>
+<ul>
+<li>The robot uses a map of the environment and AprilTags as landmarks.</li>
+<li>Shortest-path algorithms (UCS/Dijkstra) guide the robot toward checkpoints, avoiding obstacles by generating a graph with weighted edges corresponding to obstacle locations.</li>
+<li>Drive commands are executed using drive_speed() for precise directional control while continuously verifying location via camera-based tag detection.</li>
+</ul></li>
+<li><p>Lego Detection and Pickup (Lab 2):</p>
+<ul>
+<li>A trained YOLOv8 model identifies Legos and other robots.</li>
+<li>Bounding boxes provide position and orientation data for arm manipulation.</li>
+<li>OpenCV isolates the blue line, enabling Robot 1 to align perpendicular to the line and position the Lego for handoff.</li>
+</ul></li>
+<li><p>Obstacle Detection and Visual Odometry (Final Project):</p>
+<ul>
+<li>Infrared and camera-based sensors detect obstacles, including random U-shaped barriers around Legos.</li>
+<li>Visual odometry is integrated to track robot motion relative to the environment while avoiding collisions.</li>
+<li>Robots adjust their trajectory dynamically, retracing or rerouting as needed to navigate safely.</li>
+</ul></li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/broken_joint.png" class="img-fluid figure-img"></p>
-<figcaption>Broken headphone joint from the <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">same Head-Fi forum thread</a>)</figcaption>
+<p><a href="../../assets/lego_pass/block_diag.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Block Diagram"><img src="../../assets/lego_pass/block_diag.png" class="img-fluid figure-img" alt="Block Diagram"></a></p>
+<figcaption>Block Diagram</figcaption>
 </figure>
 </div>
-<p>I decided to fix my broken headphones by designing a new enclosure that reinforces the preexisting hardware, and even after years of abuse, the joints have held together strong!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/headphone_joint/headphone_thumbnail.png" class="img-fluid figure-img"></p>
-<figcaption>Final Headphone Joint Splint</figcaption>
-</figure>
-</div>
-</section>
-<section id="files" class="level2">
-<h2 class="anchored" data-anchor-id="files">Files</h2>
-<p>I’ve attached the STL which can be printed as-is. Also attached is the Solidworks Model Part, so feel free to modify as you like!</p>
-<p><a href="../../assets/headphone_joint/jointfix_final.stl">Download jointfix_final.STL</a></p>
-<p><a href="../../assets/headphone_joint/jointfix_final.sldprt">Download jointfix_final.SLDPRT</a></p>
-</section>
-<section id="previous-iterations" class="level2">
-<h2 class="anchored" data-anchor-id="previous-iterations">Previous Iterations</h2>
-<section id="tape-fix" class="level3">
-<h3 class="anchored" data-anchor-id="tape-fix">Tape Fix</h3>
-<p>I first tried using tape to hold the broken joint together, but it quickly became clear that it wasn’t going to work. Beyond the ✨<em>aesthetics</em>✨, the adhesive would weaken over time and the tape would begin to slide, eventually leaving the joint loosening. More importantly, the tape failed to address the underlying load path: instead of distributing the clamping force across the ear pads as intended, the headband concentrated that force into a small area at the end of the broken joint.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/headphone_joint/tape_fix.png" class="img-fluid figure-img"></p>
-<figcaption>Temporary Tape Fix</figcaption>
-</figure>
-</div>
-<p>I then attempted to repair the joint using epoxy. This approach introduced its own challenges, particularly keeping the epoxy from intruding into and damaging the sliding joint mechanism. The geometry of the failure also worked against this solution. The joint had sheared along a very small surface area, creating a localized high-stress region. Any small imperfections in the cured epoxy likely acted as stress concentrators, allowing cracks to slowly propagate until the joint failed again.</p>
-<p>At that point, it became clear that simply restoring the original joint geometry was not sufficient. Rather than trying to recreate the failed interface, I shifted focus toward augmenting the joint by adding new structure carry the load more effectively in the form of a splint.</p>
-</section>
-<section id="proof-of-concept" class="level3">
-<h3 class="anchored" data-anchor-id="proof-of-concept">Proof of Concept</h3>
-<p>My initial concerns was function and sizing. Tolerancing had to be tight to prevent pieces from wiggling, and the splint had to be rigid enough to hold the parts together. Ergonomically, most of the pressure was along the top of the headband and earpads, but I also wanted to evaluate if adding thickness to then joint would impact comfort.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/headphone_joint/v1_tape.png" class="img-fluid figure-img"></p>
-<figcaption>Version 1 and Tape Side by Side</figcaption>
-</figure>
-</div>
-<div style="width:100%; height:380px;">
-    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;color=yellow&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Ffix_1.stl" style="border:0;margin:0;width:400px;height:300px;"></iframe>
-</div>
-</section>
-<section id="packaging" class="level3">
-<h3 class="anchored" data-anchor-id="packaging">Packaging</h3>
-<p>The initial splint held the two pieces tight and comfortably, but rocked back and forth. I modified its shape to conform better with the existing circular joint, and to make the overall splint smaller in size and more discrete.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../../assets/headphone_joint/fix3img.png" class="img-fluid figure-img"></p>
-<figcaption>Version 3</figcaption>
-</figure>
-</div>
-<div style="width:100%; height:380px;">
-    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;color=purple&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Ffix_3.stl" style="border:0;margin:0;width:400px;height:300px;"></iframe>
-</div>
-</section>
-<section id="strength-and-finishing-features" class="level3">
-<h3 class="anchored" data-anchor-id="strength-and-finishing-features">Strength and Finishing Features</h3>
-<p>I noticed flexing in the joint/splint when I would stretch the drivers apart from eachother. Increasing the wall thickness and the radius of fillet reduced stress and increased rigidity drastically. Additional fillets and finishing touches were added to make the overall design more refined.</p>
-<div style="width:100%; height:380px;">
-    <iframe id="vs_iframe" src="https://www.viewstl.com/?embedded&amp;color=darkblue&amp;url=https%3A%2F%2Faustlin.github.io%2Fassets%2Fheadphone_joint%2Fjointfix_final.stl" style="border:0;margin:0;width:400px;height:300px;"></iframe>
-</div>
+<p>We considered expanding our training dataset to identify labeled boxes. This approach was likely to work, since navigation toward Legos was already successful. However, labeling additional data was time-consuming and impractical given the project timeline.</p>
+<p>Starting from a defined start position, the robot locates Legos relative to that point. After picking up a Lego using Lab 2 code, the infrared sensor aids in avoiding obstacles while navigating toward the blue line. Once near the line, Lab 2 code detects its position and orientation, allowing the robot to deposit the Lego on the other side. The robot then retraces its path to repeat the process.</p>
+<p>The second robot follows a similar procedure: avoiding obstacles with its infrared sensor, detecting the blue line, identifying a Lego, picking it up using Lab 2 code, and planning a path to deposit it at the goal. This process repeats as additional Legos become available.</p>
 
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </section>
+<section id="apriltag-identification" class="level2">
+<h2 class="anchored" data-anchor-id="apriltag-identification">Apriltag Identification</h2>
+<p>Derive Camera position and orientation from apriltags of known size.</p>
+</section>
+<section id="line-detection" class="level2">
+<h2 class="anchored" data-anchor-id="line-detection">Line Detection</h2>
+</section>
+<section id="shortest-path" class="level2">
+<h2 class="anchored" data-anchor-id="shortest-path">Shortest Path</h2>
+</section>
+<section id="zeromq" class="level2">
+<h2 class="anchored" data-anchor-id="zeromq">ZeroMQ</h2>
+<p>To coordinate handoff, the following structure is used with ZeroMQ:</p>
+<ul>
+<li>Robot 1 (REQ) → sends “Reached line” → Robot 2 (REP)</li>
+<li>Robot 2 (REP) → replies “Release” → Robot 1 (REQ)</li>
+<li>Robot 1 → releases Lego → Robot 2</li>
+</ul>
+<section id="socket-setup" class="level3">
+<h3 class="anchored" data-anchor-id="socket-setup">Socket Setup:</h3>
+<p>Robot 1 and 2 initiates communication by creating a request socket and connecting to the server laptop hosting the reply socket.</p>
+<details open="">
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> zmq</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> zmq.Context()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create socket</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># server laptop ip addr</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    SERVER_ADDR <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Connecting to communication server…"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    socket <span class="op">=</span> context.socket(zmq.REQ)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    socket.<span class="ex">connect</span>(SERVER_ADDR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<section id="robot-1-passing-robot" class="level3">
+<h3 class="anchored" data-anchor-id="robot-1-passing-robot">Robot 1: Passing robot</h3>
+<p>Robot 1 is responsible for delivering the Lego to the blue line and releasing it once Robot 2 confirms it has arrived. After reaching the handoff location, Robot 1 sends a synchronization message and blocks until a reply is received. Only then does it release the Lego.</p>
+<details open="">
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release lego once other robot has arrived</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    socket.send(<span class="st">b"Reached line"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  wait on reply</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received reply [ </span><span class="sc">%s</span><span class="st"> ]"</span> <span class="op">%</span>  message)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release after short wait</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">3</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ep_gripper.<span class="bu">open</span>(power<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ep_gripper.pause()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    ep_robot.close()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</section>
+<section id="robot-2-receiving-robot" class="level3">
+<h3 class="anchored" data-anchor-id="robot-2-receiving-robot">Robot 2: Receiving Robot</h3>
+<p>Robot 2 waits for Robot 1’s signal before attempting to retrieve the Lego. Upon receiving the message, it marks the handoff state as active and begins searching for the Lego to complete the transfer.</p>
+<details open="">
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received request: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> message)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    startMsgReceived <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p>Once the synchronization message has been received, Robot 2 proceeds with detection and pickup logic.</p>
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># search either for lego or robot</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">'lego'</span> <span class="kw">and</span> startMsgReceived:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"x: </span><span class="sc">{}</span><span class="st">, y: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x, y))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Width of Box: </span><span class="sc">{}</span><span class="st">, Height of Box: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(w, h))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Distance: "</span> <span class="op">+</span> <span class="bu">str</span>(distance_from_box_size(w, h)))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Detected object: "</span>, name)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">## rest of code executes handoff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>This lab presented significant challenges due to the dynamic field and multiple variables, including obstacles and opponent robots. The team implemented logic to prevent collisions and adapted most of the Lab 2 code to accommodate the new constraints.</p>
+<p>The robots successfully passed Legos from one side of the field to the other asynchronously. Infrared sensors enabled navigation around randomly placed obstacles, and the integration of previous Lab 2 functionality with new path-planning and obstacle-avoidance logic allowed consistent performance across the field.</p>
+</section>
+<section id="lego-sequence" class="level2">
+<h2 class="anchored" data-anchor-id="lego-sequence">Lego Sequence</h2>
+<!-- Only the first image is visible -->
+<p><img src="../../assets/lego_pass/start.png" class="img-fluid" data-group="lego_pass" alt="Start"> <img src="../../assets/lego_pass/grab.png" class="img-fluid" style="display:none" data-group="lego_pass" alt="Grab"> <img src="../../assets/lego_pass/pass.png" class="img-fluid" style="display:none" data-group="lego_pass" alt="Pass"> <img src="../../assets/lego_pass/drop.png" class="img-fluid" style="display:none" data-group="lego_pass" alt="Drop"></p>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -645,6 +754,38 @@ ul.task-list li input[type="checkbox"] {
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
