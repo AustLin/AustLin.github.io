@@ -1,5 +1,5 @@
 ---
-title: "Collaborative Lego-Passing Robots"
+title: "Collaborative Lego Passing Robots"
 description: "Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance."
 image: "../../assets/lego_pass/start.png"
 lightbox: true

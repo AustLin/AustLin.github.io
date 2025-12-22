@@ -41,6 +41,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -162,14 +165,14 @@ ul.task-list li input[type="checkbox"] {
 <p>Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. Both joints attaching the driver to the headband failed on my pair of HE-400s just weeks after purchase, and <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">this Head-Fi forum thread</a> shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/broken_joint.png" class="img-fluid figure-img"></p>
+<p><a href="../../assets/headphone_joint/broken_joint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Broken headphone joint from the same Head-Fi forum thread)"><img src="../../assets/headphone_joint/broken_joint.png" class="img-fluid figure-img" alt="Broken headphone joint from the same Head-Fi forum thread)"></a></p>
 <figcaption>Broken headphone joint from the <a href="https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226">same Head-Fi forum thread</a>)</figcaption>
 </figure>
 </div>
 <p>I decided to fix my broken headphones by designing a new enclosure that reinforces the preexisting hardware, and even after years of abuse, the joints have held together strong!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/headphone_thumbnail.png" class="img-fluid figure-img"></p>
+<p><a href="../../assets/headphone_joint/headphone_thumbnail.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Final Headphone Joint Splint"><img src="../../assets/headphone_joint/headphone_thumbnail.png" class="img-fluid figure-img" alt="Final Headphone Joint Splint"></a></p>
 <figcaption>Final Headphone Joint Splint</figcaption>
 </figure>
 </div>
@@ -187,7 +190,7 @@ ul.task-list li input[type="checkbox"] {
 <p>I first tried using tape to hold the broken joint together, but it quickly became clear that it wasn’t going to work. Beyond the ✨<em>aesthetics</em>✨, the adhesive would weaken over time and the tape would begin to slide, eventually leaving the joint loosening. More importantly, the tape failed to address the underlying load path: instead of distributing the clamping force across the ear pads as intended, the headband concentrated that force into a small area at the end of the broken joint.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/tape_fix.png" class="img-fluid figure-img"></p>
+<p><a href="../../assets/headphone_joint/tape_fix.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Temporary Tape Fix"><img src="../../assets/headphone_joint/tape_fix.png" class="img-fluid figure-img" alt="Temporary Tape Fix"></a></p>
 <figcaption>Temporary Tape Fix</figcaption>
 </figure>
 </div>
@@ -199,7 +202,7 @@ ul.task-list li input[type="checkbox"] {
 <p>My initial concerns was function and sizing. Tolerancing had to be tight to prevent pieces from wiggling, and the splint had to be rigid enough to hold the parts together. Ergonomically, most of the pressure was along the top of the headband and earpads, but I also wanted to evaluate if adding thickness to then joint would impact comfort.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/v1_tape.png" class="img-fluid figure-img"></p>
+<p><a href="../../assets/headphone_joint/v1_tape.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Version 1 and Tape Side by Side"><img src="../../assets/headphone_joint/v1_tape.png" class="img-fluid figure-img" alt="Version 1 and Tape Side by Side"></a></p>
 <figcaption>Version 1 and Tape Side by Side</figcaption>
 </figure>
 </div>
@@ -212,7 +215,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The initial splint held the two pieces tight and comfortably, but rocked back and forth. I modified its shape to conform better with the existing circular joint, and to make the overall splint smaller in size and more discrete.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../../assets/headphone_joint/fix3img.png" class="img-fluid figure-img"></p>
+<p><a href="../../assets/headphone_joint/fix3img.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Version 3"><img src="../../assets/headphone_joint/fix3img.png" class="img-fluid figure-img" alt="Version 3"></a></p>
 <figcaption>Version 3</figcaption>
 </figure>
 </div>
@@ -645,6 +648,38 @@ ul.task-list li input[type="checkbox"] {
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
