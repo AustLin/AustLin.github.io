@@ -202,6 +202,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>The goal of our Robotics Perception and Planning class was to program two robots to autonomously hand Legos to each other while avoiding obstacles. Robot 1 was tasked with picking up a Lego, navigating to the blue line, and coordinating a handoff with Robot 2, which would then transport the Lego to the goal. To accomplish this, both robots relied on object detection, line detection, AprilTag-based localization, and path planning. They needed to perceive their environment and identify obstacles, other robots, and Legos using a Computer vision model trained on a dataset our team collected with ML. Additionally, the robots communicated with each other using TCP and ZeroMQ to ensure synchronized and reliable transfer.</p>
+<ul>
+<li>insert problem layout img</li>
+</ul>
 </section>
 <section id="architecture" class="level2">
 <h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
@@ -227,13 +230,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/block_diag.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Block Diagram"><img src="../../assets/lego_pass/block_diag.png" class="img-fluid figure-img" alt="Block Diagram"></a></p>
+<p><a href="../../assets/lego_pass/lab3_block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Block Diagram"><img src="../../assets/lego_pass/lab3_block.png" class="img-fluid figure-img" alt="Block Diagram"></a></p>
 <figcaption>Block Diagram</figcaption>
 </figure>
 </div>
-<p>We considered expanding our training dataset to identify labeled boxes. This approach was likely to work, since navigation toward Legos was already successful. However, labeling additional data was time-consuming and impractical given the project timeline.</p>
-<p>Starting from a defined start position, the robot locates Legos relative to that point. After picking up a Lego using Lab 2 code, the infrared sensor aids in avoiding obstacles while navigating toward the blue line. Once near the line, Lab 2 code detects its position and orientation, allowing the robot to deposit the Lego on the other side. The robot then retraces its path to repeat the process.</p>
+<p>Starting from a defined start position, the robot locates Legos relative to that point. After picking up a Lego , the infrared sensor aids in avoiding obstacles while navigating toward the blue line. Once near the line, Lab 2 code detects its position and orientation, allowing the robot to deposit the Lego on the other side. The robot then retraces its path to repeat the process.</p>
 <p>The second robot follows a similar procedure: avoiding obstacles with its infrared sensor, detecting the blue line, identifying a Lego, picking it up using Lab 2 code, and planning a path to deposit it at the goal. This process repeats as additional Legos become available.</p>
+<p>We considered expanding our training dataset to identify labeled boxes. This approach was likely to work, since navigation toward Legos was already successful. However, labeling additional data was time-consuming and impractical given the project timeline.</p>
 
 <summary>
 Show code
