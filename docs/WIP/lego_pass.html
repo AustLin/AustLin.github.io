@@ -159,8 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#architecture" id="toc-architecture" class="nav-link" data-scroll-target="#architecture">Architecture</a></li>
   <li><a href="#apriltag-identification" id="toc-apriltag-identification" class="nav-link" data-scroll-target="#apriltag-identification">Apriltag Identification</a></li>
-  <li><a href="#line-detection" id="toc-line-detection" class="nav-link" data-scroll-target="#line-detection">Line Detection</a></li>
   <li><a href="#shortest-path" id="toc-shortest-path" class="nav-link" data-scroll-target="#shortest-path">Shortest Path</a></li>
+  <li><a href="#line-detection" id="toc-line-detection" class="nav-link" data-scroll-target="#line-detection">Line Detection</a></li>
   <li><a href="#zeromq" id="toc-zeromq" class="nav-link" data-scroll-target="#zeromq">ZeroMQ</a>
   <ul class="collapse">
   <li><a href="#socket-setup" id="toc-socket-setup" class="nav-link" data-scroll-target="#socket-setup">Socket Setup:</a></li>
@@ -247,12 +247,30 @@ Show code
 <section id="apriltag-identification" class="level2">
 <h2 class="anchored" data-anchor-id="apriltag-identification">Apriltag Identification</h2>
 <p>Derive Camera position and orientation from apriltags of known size.</p>
-</section>
-<section id="line-detection" class="level2">
-<h2 class="anchored" data-anchor-id="line-detection">Line Detection</h2>
+
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </section>
 <section id="shortest-path" class="level2">
 <h2 class="anchored" data-anchor-id="shortest-path">Shortest Path</h2>
+
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</section>
+<section id="line-detection" class="level2">
+<h2 class="anchored" data-anchor-id="line-detection">Line Detection</h2>
+
+<summary>
+Show code
+</summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </section>
 <section id="zeromq" class="level2">
 <h2 class="anchored" data-anchor-id="zeromq">ZeroMQ</h2>
@@ -269,17 +287,17 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> zmq</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> zmq.Context()</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create socket</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># server laptop ip addr</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    SERVER_ADDR <span class="op">=</span> <span class="st">""</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Connecting to communication server…"</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    socket <span class="op">=</span> context.socket(zmq.REQ)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    socket.<span class="ex">connect</span>(SERVER_ADDR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> zmq</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> zmq.Context()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create socket</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># server laptop ip addr</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    SERVER_ADDR <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Connecting to communication server…"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    socket <span class="op">=</span> context.socket(zmq.REQ)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    socket.<span class="ex">connect</span>(SERVER_ADDR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="robot-1-passing-robot" class="level3">
@@ -289,19 +307,19 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release lego once other robot has arrived</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    socket.send(<span class="st">b"Reached line"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  wait on reply</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received reply [ </span><span class="sc">%s</span><span class="st"> ]"</span> <span class="op">%</span>  message)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release after short wait</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">3</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ep_gripper.<span class="bu">open</span>(power<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    ep_gripper.pause()</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    ep_robot.close()</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release lego once other robot has arrived</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    socket.send(<span class="st">b"Reached line"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  wait on reply</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received reply [ </span><span class="sc">%s</span><span class="st"> ]"</span> <span class="op">%</span>  message)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release after short wait</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">3</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ep_gripper.<span class="bu">open</span>(power<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    ep_gripper.pause()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    ep_robot.close()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="robot-2-receiving-robot" class="level3">
@@ -311,22 +329,22 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received request: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> message)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    startMsgReceived <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received request: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> message)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    startMsgReceived <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <p>Once the synchronization message has been received, Robot 2 proceeds with detection and pickup logic.</p>
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># search either for lego or robot</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">'lego'</span> <span class="kw">and</span> startMsgReceived:</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"x: </span><span class="sc">{}</span><span class="st">, y: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x, y))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Width of Box: </span><span class="sc">{}</span><span class="st">, Height of Box: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(w, h))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Distance: "</span> <span class="op">+</span> <span class="bu">str</span>(distance_from_box_size(w, h)))</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Detected object: "</span>, name)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">## rest of code executes handoff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># search either for lego or robot</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">'lego'</span> <span class="kw">and</span> startMsgReceived:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"x: </span><span class="sc">{}</span><span class="st">, y: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x, y))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Width of Box: </span><span class="sc">{}</span><span class="st">, Height of Box: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(w, h))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Distance: "</span> <span class="op">+</span> <span class="bu">str</span>(distance_from_box_size(w, h)))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Detected object: "</span>, name)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">## rest of code executes handoff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </section>
 </section>

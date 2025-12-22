@@ -1,0 +1,565 @@
+---
+title: "Collaborative Lego-Passing Robots"
+description: "Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance."
+image: "../../assets/lego_pass/start.png"
+lightbox: true
+---
+## Overview
+
+In our Robotics Perception and Planning class, the goal was to program two robots to autonomously pass Legos between each other while navigating around obstacles. Robot 1 was responsible for picking up a Lego, moving to a designated blue line, and coordinating a handoff with Robot 2. Robot 2 would then transport the Lego to the goal.
+
+Both robots relied on object detection, line detection, AprilTag-based localization, and path planning to perceive their environment, detect obstacles, Legos, and other robots, and communicate reliably using TCP and ZeroMQ to ensure synchronized handoffs.
+
+![Final Project gif, Courtesy of UMD](../../assets/lego_pass/lab3map.gif)
+
+## Architecture
+
+* Localization and Path Planning (Lab 1):
+    + The robot uses a pre-mapped environment with AprilTags as landmarks.
+	+ Shortest-path algorithms such as UCS and Dijkstra guide the robot toward checkpoints, avoiding obstacles by generating a graph where edges are weighted according to obstacle presence.
+	+ Drive commands are executed via drive_speed() for precise movement while continuously verifying location using camera-based tag detection.
+
+* Lego Detection and Pickup (Lab 2):
+    + A trained YOLOv8 model detects Legos and other robots.
+    + Bounding boxes provide the position and orientation data required for arm manipulation.
+    + OpenCV isolates the blue line, enabling Robot 1 to align correctly and position the Lego for handoff.
+
+* Obstacle Detection and Visual Odometry (Final Project):
+	+ Infrared and camera-based sensors detect obstacles, including random U-shaped barriers near Legos.
+	+ Visual odometry tracks robot motion relative to the environment, allowing dynamic trajectory adjustments.
+	+ Robots retrace or reroute paths as needed to navigate safely.
+
+![Block Diagram](../../assets/lego_pass/lab3_block.png)
+
+Starting from a defined start position, Robot 1 locates Legos, picks them up, and uses infrared sensors to avoid obstacles while navigating to the blue line. Once aligned, Lab 2 code detects the line’s position and orientation to deposit the Lego accurately. The robot then retraces its path to repeat the process.
+
+Robot 2 follows a similar routine: avoiding obstacles, detecting the blue line, identifying Legos, picking them up, and planning a path to deliver them to the goal. This process repeats as more Legos become available.
+
+Expanding the training dataset to identify labeled boxes was considered but ultimately impractical due to time constraints, although it could have improved detection accuracy.
+
+<details>
+<summary>Show code</summary>
+
+```python
+
+```
+</details>
+
+## Key Functions
+
+### Apriltag Identification
+
+AprilTags enable precise localization by allowing the robot to determine its position and orientation in the environment.
+
+* AprilTag Detector Setup – Initializes the detector for the tag36h11 family to identify tags in camera frames.
+
+* Robot Initialization – Connects to the robot, starts the camera stream, and prepares the chassis for movement.
+
+* getRelativePos() – Continuously captures camera frames, converts them to grayscale, detects AprilTags, computes relative position and rotation using a PnP method, and returns transformed coordinates. Visual feedback is drawn on images for debugging.
+
+* find_pose_from_tag(K, detection) – Computes the 3D position and orientation of a detected tag using its known size and camera intrinsics.
+
+<details>
+<summary>Show code</summary>
+
+```python
+    from pupil_apriltags import Detector
+    import cv2
+    import numpy as np
+    import time
+    from robomaster import robot
+    from robomaster import camera
+
+    currentPosition = [0,0] #x,y
+    currentAngle = 0
+
+    at_detector = Detector(
+        families="tag36h11",
+        nthreads=1,
+        quad_decimate=1.0,
+        quad_sigma=0.0,
+        refine_edges=1,
+        decode_sharpening=0.25,
+        debug=0
+    )
+
+    #gives relative position (x,y) and angle to tag. requires find_pos_from_tag
+    def getRelativePos():
+
+        while True:
+            try:
+                img = ep_camera.read_cv2_image(strategy="newest", timeout=0.5)  
+                cv2.imwrite("/home/user/Desktop/test.png", img) 
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                gray.astype(np.uint8)
+
+                K=np.array([[184.752, 0, 320], [0, 184.752, 180], [0, 0, 1]])
+
+                results = at_detector.detect(gray, estimate_tag_pose=False)
+                for res in results:
+                    print(res)
+                    pose = find_pose_from_tag(K, res)
+                    rot, jaco = cv2.Rodrigues(pose[1], pose[1])
+                    print(rot)
+
+                    pts = res.corners.reshape((-1, 1, 2)).astype(np.int32)
+                    img = cv2.polylines(img, [pts], isClosed=True, color=(0, 0, 255), thickness=5)
+                    cv2.circle(img, tuple(res.center.astype(np.int32)), 5, (0, 0, 255), -1)
+
+                    print(pose)
+
+                    # (pose[0][0]) # y
+                    # (pose[0][2]) # x
+                
+                    curr_y = round(pose[0][0],2)
+                    curr_x = round(pose[0][2], 2)
+                    rot = round(pose[1][2], 2) * 180 / 3.14
+                    
+                    posi_initial = [[curr_x], [curr_y]]
+                    rotation = [[np.cos(rot),np.sin(rot)],[np.sin(-1*rot),np.cos(rot)]]
+                    posi_final = rotation*posi_initial
+                    
+                    return posi_final
+                
+                cv2.imshow("img", img)
+                cv2.waitKey(1)
+
+            except KeyboardInterrupt:
+                ep_camera.stop_video_stream()
+                ep_robot.close()
+                print ('Exiting')
+                exit(1)
+
+    def find_pose_from_tag(K, detection):
+        tag_size=0.16 # tag size in meters
+        m_half_size = tag_size / 2
+
+        marker_center = np.array((0, 0, 0))
+        marker_points = []
+        marker_points.append(marker_center + (-m_half_size, m_half_size, 0))
+        marker_points.append(marker_center + ( m_half_size, m_half_size, 0))
+        marker_points.append(marker_center + ( m_half_size, -m_half_size, 0))
+        marker_points.append(marker_center + (-m_half_size, -m_half_size, 0))
+        _marker_points = np.array(marker_points)
+
+        object_points = _marker_points
+        image_points = detection.corners
+
+        pnp_ret = cv2.solvePnP(object_points, image_points, K, distCoeffs=None,flags=cv2.SOLVEPNP_IPPE_SQUARE)
+        if pnp_ret[0] == False:
+            raise Exception('Error solving PnP')
+
+        r = pnp_ret[1]
+        p = pnp_ret[2]
+
+        return p.reshape((3,)), r.reshape((3,))
+
+
+    if __name__ == '__main__':
+        ep_robot = robot.Robot()
+        ep_robot.initialize(conn_type="ap")
+        ep_camera = ep_robot.camera
+        ep_camera.start_video_stream(display=False, resolution=camera.STREAM_360P)
+
+        ep_chassis = ep_robot.chassis
+```
+</details>
+
+### Shortest Path (Obstacle Navigation)
+
+![Navigation Block Diagram](../../assets/lego_pass/lab1_block.png)
+
+Path planning allows the robot to navigate the optimal path given a map. For testing, a 10×13 grid is used, with walls represented by high-weight cells and free space by low-weight cells.
+
+*   ucs(graph, start, goal) – Finds the shortest path using Uniform Cost Search, avoiding high-cost obstacles.
+
+* 	generateNodeNeighbors(row, col, arrMap) – Generates valid neighboring nodes for each cell.
+
+* compute_path() – Builds a graph from the map, runs UCS to compute the optimal path from the start to the goal, and returns the sequence of nodes representing that path.
+
+![Calculated Shortest Path using UCS Algorithm](../../assets/lego_pass/lab1_navigate.png)
+
+* 	visualize_path(coordinates) – Plots the computed path on a grid to visualize the planned trajectory.
+
+![Drawn Path from Map ](../../assets/lego_pass/lab1_navigate2.png){height="350px"}
+
+<details>
+<summary>Show code</summary>
+
+```python
+    import queue
+    import matplotlib.pyplot as plt
+
+    def ucs(graph, start, goal):
+        visited = set()
+        frontier = queue.PriorityQueue()  # Using a priority queue
+        frontier.put((0, start, [start]))  # Adding start node with cost 0
+
+        while not frontier.empty():
+            cost, node, path = frontier.get()
+            if node not in visited:
+                visited.add(node)
+
+                if node == goal:
+                    return path  # Return the path to the goal
+
+                # Explore neighbors
+                for neighbor, neighbor_cost in graph[node].items():
+                    if neighbor not in visited:
+                        new_cost = cost + neighbor_cost
+                        frontier.put((new_cost, neighbor, path + [neighbor]))  # Add to the priority queue
+
+        return None  # Goal not found
+
+
+    #start new code
+    W = 256 # wall weight
+    #13x13 matrix 
+    numRows = 10
+    numCols = 13 
+
+    Map =   [    [  W,  1,  1,  W,  W,  W,  W,  W,  W,  W,  1,  1,  W],
+                [  W,  1,  1,  W,  1,  1,  1,  1,  1,  W,  1,  1,  W],
+                [  W,  1,  1,  W,  1,  1,  1,  1,  1,  W,  1,  1,  W],
+                [  W,  1,  1,  W,  1,  1,  1,  1,  1,  W,  1,  1,  W],
+                [  W,  1,  1,  W,  1,  1,  W,  1,  1,  W,  1,  1,  W],
+                [  W,  1,  1,  1,  1,  1,  W,  1,  1,  1,  1,  1,  W],
+                [  W,  1,  1,  1,  1,  1,  W,  1,  1,  1,  1,  1,  W],
+                [  W,  1,  1,  1,  1,  1,  W,  1,  1,  1,  1,  1,  W],
+                [  W,  1,  1,  1,  1,  1,  W,  1,  1,  1,  1,  1,  W],
+                [  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W],
+                ]
+
+    def generateNodeNeighbors(row, col, arrMap):
+        neighbors = {}
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Cardinal directions: right, left, down, up
+        for dir_row, dir_col in directions:
+            iRow = row + dir_row
+            jCol = col + dir_col
+            if 0 <= iRow < numRows and 0 <= jCol < numCols:  # Check if within map bounds
+                neighborName = str(iRow) + " " + str(jCol)
+                neighbors[neighborName] = arrMap[iRow][jCol]
+        return neighbors
+
+    # takes in boolean 
+    def compute_path():
+        graphMap = {}
+        for i in range(numRows):
+            for j in range(numCols):
+                nodeName = str(i) + " " + str(j)
+                graphMap.update({nodeName:generateNodeNeighbors(i,j,Map)})
+
+        start_node = "3 1"
+        goal_node = "3 11"
+        path_to_goal = ucs(graphMap, start_node, goal_node)
+        if path_to_goal:
+            return path_to_goal
+        else:
+            return None
+
+    def visualize_path(coordinates):
+        x_coords = []
+        y_coords = []
+        for coord in coordinates:
+            x, y = coord.split()
+            x_coords.append(int(x))
+            y_coords.append(int(y))
+        
+        # Set up the grid
+        plt.figure()
+        plt.grid(True)
+            
+        # Plot the path
+        plt.plot(x_coords, y_coords, marker='o')
+        
+        # Set plot limits
+        plt.xlim(min(x_coords) - 1, max(x_coords) + 1)
+        plt.ylim(min(y_coords) - 1, max(y_coords) + 1)
+        
+        # Switch axis labels
+        plt.xlabel('Y')
+        plt.ylabel('X')
+        plt.title('Path')
+        # Show plot
+        plt.show()
+
+    path = compute_path()
+    visualize_path(path)
+
+```
+</details>
+
+### Line Detection
+
+* 	find_blue(image) – Detects the blue line in the robot’s camera image, which serves as a reference for positioning or handoff. The function crops a region near the bottom of the image, converts it to HSV, thresholds for blue, finds contours, and fits a line. It returns the line’s slope, vertical position, and length.
+
+![Line Detection](../../assets/lego_pass/drawing_lines.png){height="350px"}
+
+<details>
+<summary>Show code</summary>
+
+
+```python
+def find_blue(image):
+    original_image = image.copy()  # preserve original img
+    img = np.array(image)
+    
+    # blue color range
+    lower_blue = np.array([70,68,90])
+    upper_blue = np.array([200,255,255])
+    cc = 0 # snip bounds
+    aa = 100
+    snip = np.zeros((img.shape[0], img.shape[1]), dtype ="uint8")
+    snip = img[(img.shape[0] - aa):(img.shape[0] - cc), (0):(img.shape[1])]
+
+    hsv = cv2.cvtColor(snip, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+    # image contours
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+    if contours:
+        longest_contour = None
+        max_contour_length = 0
+    
+        # find longest contour
+        longest_contour = contours[0]
+        for contour in contours:
+            contour_length = cv2.arcLength(contour, True)
+            
+            if contour_length > max_contour_length:
+                max_contour_length = contour_length
+                longest_contour = contour
+
+        vx, vy, x, y = cv2.fitLine(longest_contour, cv2.DIST_L2, 0, 0.01, 0.01)
+        contour_length = cv2.arcLength(longest_contour, True)
+        # determine line slope
+        slope = vy / vx
+        
+        # draw line
+        left_point = (int(x - 1000 * vx), int(y - 1000 * vy))
+        right_point = (int(x + 1000 * vx), int(y + 1000 * vy))
+        line_image = cv2.line(snip, left_point, right_point, (0, 255, 0), 2)
+        
+        #cv2.imshow("Mask",mask)
+        cv2.imshow("Line",line_image)
+        cv2.waitKey(10)
+        
+        # return angle, line position
+        return slope[0], y[0], contour_length
+    
+    else:
+        print("No blue line found in the image.")
+        return 0, 0, 0
+```
+</details>
+
+### Environment Perception and Object Identification
+
+The YOLOv8 model was trained with 100 images collected via Roboflow, annotated with bounding boxes, and split into 70% training, 20% validation, and 10% test sets.
+
+
+![Drawing Bounding Boxes](../../assets/lego_pass/bb4.png)
+
+![Evaluating Model Accuracy](../../assets/lego_pass/bb3.png)
+
+The robot initializes all components, including chassis, gripper, and robotic arm, and loads the YOLO model for object detection.
+
+<details>
+<summary>Show code</summary>
+
+```python
+if __name__ == '__main__':
+    ep_robot = robot.Robot()
+    ep_robot.initialize(conn_type="ap")
+    ep_camera = ep_robot.camera
+    ep_camera.start_video_stream(display=False, resolution=camera.STREAM_360P)
+    ep_chassis = ep_robot.chassis
+    ep_gripper = ep_robot.gripper
+    ep_arm = ep_robot.robotic_arm
+
+    model = YOLO('<Filepath of Trained Model>')
+```
+</details>
+
+* 	findLego(model) – Rotates the robot until a Lego is detected, then stops once the target is located.
+
+* 	driveToLego(model) – Fine-tunes robot position and orientation, calculating offsets and distance to the Lego using the bounding box. Moves iteratively until centered and at the correct distance for pickup.
+
+<details>
+<summary>Show code</summary>
+
+```python
+def findLego(model):
+    # spin until lego found
+    legoFound = False
+    z_val = 40 # degrees to spin
+    while not legoFound:
+        frame = ep_camera.read_cv2_image(strategy="newest", timeout=5)  
+        cv2.imshow("Frame",frame)
+        cv2.waitKey(10)
+        results = model.predict(source=frame, conf=0.8)
+
+        # stop spinning once lego is found
+        if len(results[0]) > 0:
+            legoFound = True
+        else:
+            ep_chassis.drive_speed(x=0, y=0, z=z_val, timeout=5)
+            
+    # Stop spinning
+    ep_chassis.drive_speed(x=0, y=0, z=0, timeout=5)
+
+def driveToLego(model):
+    
+    dist = []
+    target_distance = 1.6 # arbitrary
+    distance_tol = 0.07
+    box_offset_tol = 3 # num pixels left/right of center
+    ON_TARGET = False
+    while(not ON_TARGET): 
+        frame = ep_camera.read_cv2_image(strategy="newest", timeout=5)  
+        img = np.array(frame)
+        cv2.imshow("Frame",frame)
+        cv2.waitKey(10)
+        results = model.predict(source=frame, conf=0.7)
+
+        conf = results[0].boxes.conf
+        conf = conf.cpu()
+        if len(conf) > 0:
+            best = np.argmax(conf)
+        else:
+            continue
+        coords = results[0].boxes.xywh
+        
+        # find coords for bounding box w/ highest confidence
+        c = coords[best]
+        x_center = int(img.shape[1]/2)
+        x = int(c[0])
+        y = int(c[1])
+        w = int(c[2])
+        h = int(c[3])
+        box_offset = x_center - x
+        distance = box_distance(dist, w, h)
+        if (abs(box_offset) > box_offset_tol) and not ON_TARGET:
+            # turn till box is in the center
+            Kz = -0.15
+            z_val = box_offset * Kz
+            ep_chassis.drive_speed(x=0, y=0, z=z_val, timeout=5)
+        elif (abs(distance - target_distance) >= distance_tol) and not ON_TARGET :
+            # move till box is at target distance
+            Kx = 0.175
+            x_val = (distance - target_distance) * Kx
+            # print(distance)
+            ep_chassis.drive_speed(x=x_val, y=0, z=0, timeout=5)
+        elif (abs(distance - target_distance) < distance_tol):
+            # done movement
+            ON_TARGET = True
+            x_val = 0.21 # move slightly further - adjust as needed
+            ep_chassis.drive_speed(x=0, y=0, z=0, timeout=5)
+            ep_chassis.move(x=x_val, y=0, z=0, xy_speed=0.7).wait_for_completed()
+
+    cv2.destroyAllWindows()
+```
+</details>
+
+
+### Autonomous Robot Communication
+
+To coordinate handoff, the following structure is used with ZeroMQ:
+
+* Robot 1 (REQ) -> sends "Reached line" -> Robot 2 (REP)
+* Robot 2 (REP) -> replies "Release" -> Robot 1 (REQ)
+* Robot 1 -> releases Lego -> Robot 2
+
+#### Socket Setup
+
+Robot 1 and 2 initiates communication by creating a request socket and connecting to the server laptop hosting the reply socket.
+
+<details>
+<summary>Show code</summary>
+
+```python
+
+    import zmq
+
+    context = zmq.Context()
+
+    # create socket
+    # server laptop ip addr
+    SERVER_ADDR = ""
+    print("Connecting to communication server…")
+    socket = context.socket(zmq.REQ)
+    socket.connect(SERVER_ADDR)
+
+```
+</details>
+
+#### Robot 1: Passing robot
+
+Robot 1 is responsible for delivering the Lego to the blue line and releasing it once Robot 2 confirms it has arrived. After reaching the handoff location, Robot 1 sends a synchronization message and blocks until a reply is received. Only then does it release the Lego.
+
+<details>
+<summary>Show code</summary>
+
+```python
+    # release lego once other robot has arrived
+    socket.send(b"Reached line")
+
+    #  wait on reply
+    message = socket.recv()
+    print("Received reply [ %s ]" %  message)
+    # release after short wait
+    time.sleep(3)
+    ep_gripper.open(power=50)
+    time.sleep(1)
+    ep_gripper.pause()
+    ep_robot.close()
+    break
+
+```
+</details>
+
+#### Robot 2: Receiving Robot
+
+Robot 2 waits for Robot 1’s signal before attempting to retrieve the Lego. Upon receiving the message, it marks the handoff state as active and begins searching for the Lego to complete the transfer.
+
+<details>
+<summary>Show code</summary>
+
+```python
+    message = socket.recv()
+    print("Received request: %s" % message)
+    startMsgReceived = True
+
+```
+</details>
+
+Once the synchronization message has been received, Robot 2 proceeds with detection and pickup logic.
+
+<details>
+<summary>Show code</summary>
+
+```python
+    # search either for lego or robot
+    if name == 'lego' and startMsgReceived:
+        print("x: {}, y: {}".format(x, y))
+        print("Width of Box: {}, Height of Box: {}".format(w, h))
+        print("Distance: " + str(distance_from_box_size(w, h)))
+        print("Detected object: ", name)
+
+        ## rest of code executes handoff
+
+```
+</details>
+
+## Results 
+
+The project presented challenges due to obstacles and dynamic conditions. Infrared sensors enabled navigation, and integration of previous Lab 2 functionality with new path-planning and obstacle-avoidance logic allowed consistent performance. Legos were successfully passed asynchronously across the field.
+
+## Lego Grab and Handoff Sequence
+
+<!-- Only the first image is visible -->
+![Start](../../assets/lego_pass/start.png){group="lego_pass"}
+![Grab](../../assets/lego_pass/grab.png){group="lego_pass"}
+![Pass](../../assets/lego_pass/pass.png){group="lego_pass"}
+![Drop](../../assets/lego_pass/drop.png){group="lego_pass"}
