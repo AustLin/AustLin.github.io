@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Passing Legos">
+<meta name="description" content="Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.">
 
-<title>Lego Pass – Austin Lin’s Portfolio</title>
+<title>Collaborative Lego-Passing Robots – Austin Lin’s Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -176,12 +176,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lego Pass</h1>
+<h1 class="title">Collaborative Lego-Passing Robots</h1>
 </div>
 
 <div>
   <div class="description">
-    Passing Legos
+    Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.
   </div>
 </div>
 
@@ -202,9 +202,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>In our Robotics Perception and Planning class, the goal was to program two robots to autonomously pass Legos between each other while navigating around obstacles. Robot 1 was responsible for picking up a Lego, moving to a designated blue line, and coordinating a handoff with Robot 2. Robot 2 would then transport the Lego to the goal.</p>
 <p>Both robots relied on object detection, line detection, AprilTag-based localization, and path planning to perceive their environment, detect obstacles, Legos, and other robots, and communicate reliably using TCP and ZeroMQ to ensure synchronized handoffs.</p>
-<ul>
-<li>insert problem layout img</li>
-</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="../../assets/lego_pass/lab3map.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Final Project gif, Courtesy of UMD"><img src="../../assets/lego_pass/lab3map.gif" class="img-fluid figure-img" alt="Final Project gif, Courtesy of UMD"></a></p>
+<figcaption>Final Project gif, Courtesy of UMD</figcaption>
+</figure>
+</div>
 </section>
 <section id="architecture" class="level2">
 <h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
@@ -230,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/lab3_block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Block Diagram"><img src="../../assets/lego_pass/lab3_block.png" class="img-fluid figure-img" alt="Block Diagram"></a></p>
+<p><a href="../../assets/lego_pass/lab3_block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Block Diagram"><img src="../../assets/lego_pass/lab3_block.png" class="img-fluid figure-img" alt="Block Diagram"></a></p>
 <figcaption>Block Diagram</figcaption>
 </figure>
 </div>
@@ -364,7 +367,7 @@ Show code
 <h3 class="anchored" data-anchor-id="shortest-path-obstacle-navigation">Shortest Path (Obstacle Navigation)</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/lab1_block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Navigation Block Diagram"><img src="../../assets/lego_pass/lab1_block.png" class="img-fluid figure-img" alt="Navigation Block Diagram"></a></p>
+<p><a href="../../assets/lego_pass/lab1_block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Navigation Block Diagram"><img src="../../assets/lego_pass/lab1_block.png" class="img-fluid figure-img" alt="Navigation Block Diagram"></a></p>
 <figcaption>Navigation Block Diagram</figcaption>
 </figure>
 </div>
@@ -376,7 +379,7 @@ Show code
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/lab1_navigate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Calculated Shortest Path using UCS Algorithm"><img src="../../assets/lego_pass/lab1_navigate.png" class="img-fluid figure-img" alt="Calculated Shortest Path using UCS Algorithm"></a></p>
+<p><a href="../../assets/lego_pass/lab1_navigate.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Calculated Shortest Path using UCS Algorithm"><img src="../../assets/lego_pass/lab1_navigate.png" class="img-fluid figure-img" alt="Calculated Shortest Path using UCS Algorithm"></a></p>
 <figcaption>Calculated Shortest Path using UCS Algorithm</figcaption>
 </figure>
 </div>
@@ -385,7 +388,7 @@ Show code
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/lab1_navigate2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Drawn Path from Map"><img src="../../assets/lego_pass/lab1_navigate2.png" height="350" alt="Drawn Path from Map" class="figure-img"></a></p>
+<p><a href="../../assets/lego_pass/lab1_navigate2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Drawn Path from Map"><img src="../../assets/lego_pass/lab1_navigate2.png" height="350" alt="Drawn Path from Map" class="figure-img"></a></p>
 <figcaption>Drawn Path from Map</figcaption>
 </figure>
 </div>
@@ -500,7 +503,7 @@ Show code
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/drawing_lines.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Line Detection"><img src="../../assets/lego_pass/drawing_lines.png" height="350" alt="Line Detection" class="figure-img"></a></p>
+<p><a href="../../assets/lego_pass/drawing_lines.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Line Detection"><img src="../../assets/lego_pass/drawing_lines.png" height="350" alt="Line Detection" class="figure-img"></a></p>
 <figcaption>Line Detection</figcaption>
 </figure>
 </div>
@@ -566,13 +569,13 @@ Show code
 <p>The YOLOv8 model was trained with 100 images collected via Roboflow, annotated with bounding boxes, and split into 70% training, 20% validation, and 10% test sets.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/bb4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Drawing Bounding Boxes"><img src="../../assets/lego_pass/bb4.png" class="img-fluid figure-img" alt="Drawing Bounding Boxes"></a></p>
+<p><a href="../../assets/lego_pass/bb4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Drawing Bounding Boxes"><img src="../../assets/lego_pass/bb4.png" class="img-fluid figure-img" alt="Drawing Bounding Boxes"></a></p>
 <figcaption>Drawing Bounding Boxes</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../assets/lego_pass/bb3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Evaluating Model Accuracy"><img src="../../assets/lego_pass/bb3.png" class="img-fluid figure-img" alt="Evaluating Model Accuracy"></a></p>
+<p><a href="../../assets/lego_pass/bb3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Evaluating Model Accuracy"><img src="../../assets/lego_pass/bb3.png" class="img-fluid figure-img" alt="Evaluating Model Accuracy"></a></p>
 <figcaption>Evaluating Model Accuracy</figcaption>
 </figure>
 </div>
