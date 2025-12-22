@@ -177,11 +177,11 @@ Path planning allows the robot to navigate the optimal path given a map. For tes
 
 * compute_path() – Builds a graph from the map, runs UCS to compute the optimal path from the start to the goal, and returns the sequence of nodes representing that path.
 
-![Calculated Shortest Path using UCS Algorithm](../../assets/lego_pass/lab1_navigate.png)
-
 * 	visualize_path(coordinates) – Plots the computed path on a grid to visualize the planned trajectory.
 
-![Drawn Path from Map ](../../assets/lego_pass/lab1_navigate2.png){height="350px"}
+![Shortest Path using UCS Algorithm](../../assets/lego_pass/lab1_navigate.png)
+
+![visualize_path(coordinates) output](../../assets/lego_pass/lab1_navigate2.png){height="350px"}
 
 <details>
 <summary>Show code</summary>
@@ -293,7 +293,7 @@ Path planning allows the robot to navigate the optimal path given a map. For tes
 
 * 	find_blue(image) – Detects the blue line in the robot’s camera image, which serves as a reference for positioning or handoff. The function crops a region near the bottom of the image, converts it to HSV, thresholds for blue, finds contours, and fits a line. It returns the line’s slope, vertical position, and length.
 
-![Line Detection](../../assets/lego_pass/drawing_lines.png){height="350px"}
+![Line Detection](../../assets/lego_pass/drawing_lines.png){height="330px"}
 
 <details>
 <summary>Show code</summary>
@@ -359,9 +359,9 @@ def find_blue(image):
 The YOLOv8 model was trained with 100 images collected via Roboflow, annotated with bounding boxes, and split into 70% training, 20% validation, and 10% test sets.
 
 
-![Drawing Bounding Boxes](../../assets/lego_pass/bb4.png)
+![Drawing Bounding Boxes](../../assets/lego_pass/bb4.png){height="330px"}
 
-![Evaluating Model Accuracy](../../assets/lego_pass/bb3.png)
+![Evaluating Model Accuracy](../../assets/lego_pass/bb3.png){height="330px"}
 
 The robot initializes all components, including chassis, gripper, and robotic arm, and loads the YOLO model for object detection.
 
@@ -559,7 +559,11 @@ The project presented challenges due to obstacles and dynamic conditions. Infrar
 ## Lego Grab and Handoff Sequence
 
 <!-- Only the first image is visible -->
-![Start](../../assets/lego_pass/start.png){group="lego_pass"}
-![Grab](../../assets/lego_pass/grab.png){group="lego_pass"}
-![Pass](../../assets/lego_pass/pass.png){group="lego_pass"}
-![Drop](../../assets/lego_pass/drop.png){group="lego_pass"}
+![Start](../../assets/lego_pass/start.png){group="lego_pass" height="330px"}
+
+![Grab](../../assets/lego_pass/grab.png){group="lego_pass" height="330px"}
+
+![Pass](../../assets/lego_pass/pass.png){group="lego_pass" height="330px"}
+
+![Drop](../../assets/lego_pass/drop.png){group="lego_pass" height="330px"}
+
