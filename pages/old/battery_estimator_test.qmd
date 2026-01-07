@@ -1,0 +1,366 @@
+---
+title: "Battery SOC Estimation via Observer-Based Modeling"
+description: "Modeling and simulating lithium-ion battery SOC estimation using a Luenberger observer, with noisy measurements and convergence analysis in Python and MATLAB."
+image: "../../assets/soc_estimator/soc_estimator.png"
+lightbox: true
+---
+
+## Overview
+
+Estimating battery State of Charge (SOC) is used every day in our battery powered devices. However, it's impractical to directly "count" how much charge a battery has. One approach to this problem is the combination of a Luenberger Observer and a battery model that correlates Open Current Voltage (VOC) and State of Charge (SOC). The Luenberger Observer starts with a guess of the battery state of charge, and as it makes repeated measurements of VOC, it adjusts its SOC prediction until it converges to the true behavior measured by the battery estimator. This approach is effective if the behavior of the true battery is well understood, and if SOC can be observable by VOC. 
+
+The battery model featured is incredibly simplified since it assumes a linear Open Current Voltage (VOC) vs. State of Charge (SOC) curves. But in reality, a wide variety of factors makes the "true" curve non-linear. 
+
+One challenge with battery estimation is that sometimes the VOC-SOC curve has "plateaus" such that similar VOCs correspond drastically different SOCs, making the SOC effectively unobservable by VOC alone. 
+
+The effectiveness of the observer also depends on the accuracy of the model. As shown in the simulation, the estimator will not converge to the true SOC if the estimator's model is different than the actual behavior (using the linear approximation vs true SOC curve). 
+
+Different battery chemistries and physical properties have distinctive curves as show in Jeff Shepard's article [fantastic article](https://www.batterypowertips.com/how-to-read-battery-discharge-curves-faq/).
+
+Environmental factors such as temperature and the formation of dendrites as the battery ages means the "true" model can evolve dynamically overtime, so maintaining an accurate SOC estimate requires the estimator model to also evolve accurately with the true behavior.
+
+
+
+
+### True Battery SOC and VOC Model
+
+The battery is modeled using an RC pair consisting of a 0.05 Ω series resistance and a capacity of 7920 coulombs. These values are representative of a typical 2200 mAh lithium-ion battery, which generally operates at approximately 3.6 V[^1][^2]. The initial state-of-charge (SOC) estimate is set to 50%. The equations for the true and estimated battery voltage share the same functional form, differing only in their respective SOC variables. Gaussian measurement noise is applied to both voltage and current readings, with standard deviations of 100 mV and 10 mA, respectively. For the true battery model, the SOC charge and discharge rate is computed from the applied current and the battery’s charge capacity, and this rate is integrated to update the true SOC over time.
+
+The state-space equations governing both the true battery model and the SOC estimator are shown below. The simulation is implemented using Euler’s method with a time step of 0.1 seconds over a total duration of 2700 seconds.
+
+**Continuous-time:**
+
+$$
+\dot{SOC}(t) = \frac{I(t)}{Q}, \quad
+V_\text{true}(t) = 2 + 2 \, SOC(t) + R_s \, I(t)
+$$
+
+**Where:**
+
+- $SOC(t)$ : State of Charge at time $t$ (fraction 0–1)  
+- $V_\text{true}(t)$ : True battery voltage (V)  
+- $I(t)$ : Input current (A)  
+- $Q$ : Battery capacity (Coulombs)  
+- $R_s$ : Battery internal series resistance (Ω)  
+
+**Discrete-time (Euler's Method):**
+
+$$
+SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
+V_\text{true}[k] = 2 + 2 \, SOC[k] + R_s \, I[k]
+$$
+
+**Where:**
+
+- $k$ : Discrete time step index  
+- $\Delta t$ : Time step (s)  
+
+---
+
+### SOC Estimator (Luenberger Observer)
+
+For the estimator, the SOC rate calculation follows a similar structure to the true model, with the addition of measurement noise applied to the input current to simulate an ammeter reading the current entering the battery. Feedback is incorporated by computing the difference between the measured battery voltage (including measurement noise) and the estimated voltage. This error term is scaled by the Luenberger gain, which determines the strength of the corrective feedback applied to the SOC estimate. It is important to note that the Luenberger observer is effective only if the underlying system is observable; specifically, the slope of the VOC–SOC curve must be nonzero. Under these conditions, the observer guarantees convergence and rapid error correction, as demonstrated in the following figures.
+
+**Continuous-time:**
+
+$$
+\dot{\hat{SOC}}(t) = \frac{I(t) + n_I(t)}{Q} + K \left( V_\text{true}(t) + n_V(t) - \hat{V}(t) \right)
+$$
+
+$$
+\hat{V}(t) = 2 + 2 \, \hat{SOC}(t) + R_s \left(I(t) + n_I(t)\right)
+$$
+
+**Where:**
+
+- $\hat{SOC}(t)$ : Estimated SOC  
+- $\hat{V}(t)$ : Estimated battery voltage  
+- $n_I(t)$ : Current measurement noise  
+- $n_V(t)$ : Voltage measurement noise  
+- $K$ : Observer (Luenberger) gain  
+
+**Discrete-time:**
+
+$$
+\hat{SOC}[k] = \hat{SOC}[k-1] + \Delta t \Big[ \frac{I[k-1] + n_I[k-1]}{Q} + K \left( V_\text{true}[k-1] + n_V[k-1] - \hat{V}[k-1] \right) \Big]
+$$
+
+$$
+\hat{V}[k] = 2 + 2 \, \hat{SOC}[k] + R_s \left(I[k] + n_I[k]\right)
+$$
+
+**Where:**
+
+- $k$ : Discrete time step index  
+- $\Delta t$ : Time step (s)  
+- Other variables are same as in continuous-time equations
+
+## Simulation
+
+<iframe src="https://austlin.shinyapps.io/battery_estimator/" 
+        width="100%" 
+        height="800" 
+        style="border:1px solid #ccc;">
+</iframe>
+
+### Constant 2.2A Discharge, 90% initial SOC
+```{python}
+#| code-fold: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+Q = 7920          # C
+Rs = 0.05         # Ohm
+kalmanGain = 0.0022
+inputCurrent = -2.200  # A
+
+# Initial states
+socTrue = [0.90]
+socEstimate = [0.50]
+
+voltageTrue = [2 + 2*socTrue[0] + Rs*inputCurrent]
+voltageEstimate = [2 + 2*socEstimate[0] + Rs*inputCurrent]
+
+currentNoise = 0.01  # standard deviation of current noise
+voltageNoise = 0.1   # standard deviation of voltage noise
+
+timeStep = 0.1
+timeEnd = 60*60*0.75
+t = np.arange(0, timeEnd + timeStep, timeStep)
+
+# Simulation loop
+for i in range(1, len(t)):
+    # True SOC update
+    socDot = (1/Q) * inputCurrent
+    socTrue.append(socTrue[i-1] + socDot*timeStep)
+    voltageTrue.append(2 + 2*socTrue[i] + Rs*inputCurrent)
+
+    # Estimated SOC update
+    socEstimateDot = ((1/Q)*(inputCurrent + currentNoise*np.random.randn())
+                      + kalmanGain*(voltageTrue[i-1] + voltageNoise*np.random.randn()
+                                    - voltageEstimate[i-1]))
+    socEstimate.append(socEstimate[i-1] + socEstimateDot*timeStep)
+    voltageEstimate.append(2 + 2*socEstimate[i] + Rs*(inputCurrent + currentNoise*np.random.randn()))
+
+# Convert to numpy arrays for plotting
+socTrue = np.array(socTrue)
+socEstimate = np.array(socEstimate)
+voltageTrue = np.array(voltageTrue)
+voltageEstimate = np.array(voltageEstimate)
+
+# Plot SOC
+plt.figure(figsize=(10,4))
+plt.plot(t, socTrue, label='True SOC', linewidth=2)
+plt.plot(t, socEstimate, label='SOC Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('SOC')
+plt.title('SOC Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Plot Voltage
+plt.figure(figsize=(10,4))
+plt.plot(t, voltageTrue, label='True Voltage', linewidth=2)
+plt.plot(t, voltageEstimate, label='Voltage Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (V)')
+plt.title('Voltage Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+```
+
+### Constant 2.2A Charge, 0% initial SOC
+```{python}
+#| code-fold: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+Q = 7920          # C
+Rs = 0.05         # Ohm
+kalmanGain = 0.0022
+inputCurrent = 2.200  # A
+
+# Initial states
+socTrue = [0.00]
+socEstimate = [0.50]
+
+voltageTrue = [2 + 2*socTrue[0] + Rs*inputCurrent]
+voltageEstimate = [2 + 2*socEstimate[0] + Rs*inputCurrent]
+
+currentNoise = 0.01  # standard deviation of current noise
+voltageNoise = 0.1   # standard deviation of voltage noise
+
+timeStep = 0.1
+timeEnd = 60*60*0.75
+t = np.arange(0, timeEnd + timeStep, timeStep)
+
+# Simulation loop
+for i in range(1, len(t)):
+    # True SOC update
+    socDot = (1/Q) * inputCurrent
+    socTrue.append(socTrue[i-1] + socDot*timeStep)
+    voltageTrue.append(2 + 2*socTrue[i] + Rs*inputCurrent)
+
+    # Estimated SOC update
+    socEstimateDot = ((1/Q)*(inputCurrent + currentNoise*np.random.randn())
+                      + kalmanGain*(voltageTrue[i-1] + voltageNoise*np.random.randn()
+                                    - voltageEstimate[i-1]))
+    socEstimate.append(socEstimate[i-1] + socEstimateDot*timeStep)
+    voltageEstimate.append(2 + 2*socEstimate[i] + Rs*(inputCurrent + currentNoise*np.random.randn()))
+
+# Convert to numpy arrays for plotting
+socTrue = np.array(socTrue)
+socEstimate = np.array(socEstimate)
+voltageTrue = np.array(voltageTrue)
+voltageEstimate = np.array(voltageEstimate)
+
+# Plot SOC
+plt.figure(figsize=(10,4))
+plt.plot(t, socTrue, label='True SOC', linewidth=2)
+plt.plot(t, socEstimate, label='SOC Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('SOC')
+plt.title('SOC Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Plot Voltage
+plt.figure(figsize=(10,4))
+plt.plot(t, voltageTrue, label='True Voltage', linewidth=2)
+plt.plot(t, voltageEstimate, label='Voltage Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (V)')
+plt.title('Voltage Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+```
+
+Despite noisy measurements, the SOC estimate converges smoothly to the true SOC. The voltage estimate tracks the real cell voltage closely, demonstrating effective observer feedback.
+
+### Constant 0.5A Discharge, 90% initial SOC
+```{python}
+#| code-fold: true
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+Q = 7920          # C
+Rs = 0.05         # Ohm
+kalmanGain = 0.0022
+inputCurrent = -2.200  # A
+
+# Initial states
+socTrue = [0.90]
+socEstimate = [0.50]
+
+voltageTrue = [2 + 2*socTrue[0] + Rs*inputCurrent]
+voltageEstimate = [2 + 2*socEstimate[0] + Rs*inputCurrent]
+
+currentNoise = 0.01  # standard deviation of current noise
+voltageNoise = 0.1   # standard deviation of voltage noise
+
+timeStep = 0.1
+timeEnd = 60*60*0.75
+t = np.arange(0, timeEnd + timeStep, timeStep)
+
+# Simulation loop
+for i in range(1, len(t)):
+    # True SOC update
+    socDot = (1/Q) * inputCurrent
+    socTrue.append(socTrue[i-1] + socDot*timeStep)
+    voltageTrue.append(2 + 2*socTrue[i] + Rs*inputCurrent)
+
+    # Estimated SOC update
+    socEstimateDot = ((1/Q)*(inputCurrent + currentNoise*np.random.randn())
+                      + kalmanGain*(voltageTrue[i-1] + voltageNoise*np.random.randn()
+                                    - voltageEstimate[i-1]))
+    socEstimate.append(socEstimate[i-1] + socEstimateDot*timeStep)
+    voltageEstimate.append(2 + 2*socEstimate[i] + Rs*(inputCurrent + currentNoise*np.random.randn()))
+
+# Convert to numpy arrays for plotting
+socTrue = np.array(socTrue)
+socEstimate = np.array(socEstimate)
+voltageTrue = np.array(voltageTrue)
+voltageEstimate = np.array(voltageEstimate)
+
+# Plot SOC
+plt.figure(figsize=(10,4))
+plt.plot(t, socTrue, label='True SOC', linewidth=2)
+plt.plot(t, socEstimate, label='SOC Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('SOC')
+plt.title('SOC Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+# Plot Voltage
+plt.figure(figsize=(10,4))
+plt.plot(t, voltageTrue, label='True Voltage', linewidth=2)
+plt.plot(t, voltageEstimate, label='Voltage Estimate', linewidth=2)
+plt.xlabel('Time (s)')
+plt.ylabel('Voltage (V)')
+plt.title('Voltage Estimator')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+```
+
+At 500 seconds under a 0.5 A discharge, the difference between the estimated and true SOC is approximately 4.7%. Under a 2.2 A discharge or charge, the SOC error at 500 seconds is approximately 4.4%. These results indicate that after 500 seconds of operation, the Luenberger observer estimates the true SOC within 5% under nominal conditions and continues to converge thereafter. Prior to 500 seconds, the estimation error is significantly larger when the initial SOC estimate is set to 50%. Depending on the application, initializing the observer closer to 0% SOC may yield more accurate results when the battery is near depletion.
+
+
+## Original Matlab Model
+<details>
+<summary>Show code</summary>
+
+
+
+```matlab
+
+clc; clf; clear;
+
+Q = 7920; % C
+Rs = 0.05; % Ohm
+kalmanGain = 0.0022;
+inputCurrent = -2.200; % A
+
+socTrue = 0.90;
+socEstimate = 0.50;
+
+voltageTrue = 2 + 2*socTrue + Rs*inputCurrent;
+voltageEstimate = 2 + 2*socEstimate + Rs*inputCurrent;
+
+currentNoise = 0.01;
+voltageNoise = 0.1;
+
+timeStep = 0.1;
+timeEnd = 60*60*0.75;
+t = 0:timeStep:timeEnd;
+
+for i = 2:length(t)
+   socDot = (1/Q)*inputCurrent;
+   socTrue(i) = socTrue(i-1) + socDot*timeStep;
+   voltageTrue(i) = 2 + 2*socTrue(i) + Rs*inputCurrent;
+
+   socEstimateDot = (1/Q)*(inputCurrent + currentNoise*randn()) ...
+      + kalmanGain*(voltageTrue(i-1) + voltageNoise*randn() ...
+      - voltageEstimate(i-1));
+
+   socEstimate(i) = socEstimate(i-1) + socEstimateDot*timeStep;
+   voltageEstimate(i) = 2 + 2*socEstimate(i) ...
+      + Rs*(inputCurrent + currentNoise*randn());
+end
+```
+</details>
+
+[^1]: [Tenergy 18650 Li-ion Battery](https://power.tenergy.com/tenergy-li-ion-18650-cylindrical-3-6v-2200mah-flat-top-rechargeable-battery-ul-listed/)
+[^2]: [Adafruit 18650 Li-ion Battery](https://www.adafruit.com/product/1781)

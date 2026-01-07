@@ -1,0 +1,12 @@
+{
+    "https://api.shinyapps.io": {
+        "server_url": "https://api.shinyapps.io",
+        "filename": "/Users/clumsymelone/Documents/GitHub/AustLin.github.io/shiny_apps/battery_estimator",
+        "app_url": "https://austlin.shinyapps.io/battery_estimator/",
+        "app_id": "16383503",
+        "app_guid": null,
+        "title": "battery_estimator",
+        "app_mode": "python-shiny",
+        "app_store_version": 1
+    }
+}

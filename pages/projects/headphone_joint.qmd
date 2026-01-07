@@ -6,7 +6,7 @@ lightbox: true
 ---
 
 ## Overview
-Hifiman headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. Both joints attaching the driver to the headband failed on my pair of HE-400s just weeks after purchase, and [this Head-Fi forum thread](https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226) shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.
+HIFIMAN headphones have a reputation for delivering high audio quality at a discount price, but unfortunately, sometimes with discount build quality as well. Both joints attaching the driver to the headband failed on my pair of HE-400s just weeks after purchase, and [this Head-Fi forum thread](https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226) shows that these quality control issues are not uncommon across the early 2010s HIFIMAN headphone lineup.
 
 ![Broken headphone joint from the [same Head-Fi forum thread](https://www.head-fi.org/threads/hifiman-he-500-he-as-in-high-end-proving-to-be-an-enjoyable-experience-in-listening.551345/page-1226))](../../assets/headphone_joint/broken_joint.png)
 
