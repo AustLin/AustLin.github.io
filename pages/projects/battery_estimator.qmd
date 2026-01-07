@@ -1,5 +1,5 @@
 ---
-title: "Battery SOC Estimator Interactive Simulation"
+title: "Battery SOC Estimator Interactive Web Simulation"
 description: "Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter."
 image: "../../assets/soc_estimator/soc_estimator.png"
 lightbox: true
