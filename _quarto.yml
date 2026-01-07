@@ -9,8 +9,6 @@ website:
     left:
       - href: index.qmd
         text: Projects
-      - href: index.qmd
-        text: Web Apps
       - href: pages/about.qmd
         text: About Me
       - href: assets/ALin Resume.pdf
