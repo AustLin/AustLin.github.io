@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -151,7 +151,7 @@ window.Quarto = {
   <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a>
   <ul class="collapse">
   <li><a href="#true-battery-soc-and-voc-model" id="toc-true-battery-soc-and-voc-model" class="nav-link" data-scroll-target="#true-battery-soc-and-voc-model">True Battery SOC and VOC Model</a></li>
-  <li><a href="#soc-estimator-luenberger-observer-kalman-filter" id="toc-soc-estimator-luenberger-observer-kalman-filter" class="nav-link" data-scroll-target="#soc-estimator-luenberger-observer-kalman-filter">SOC Estimator (Luenberger Observer / Kalman Filter)</a></li>
+  <li><a href="#soc-estimator" id="toc-soc-estimator" class="nav-link" data-scroll-target="#soc-estimator">SOC Estimator</a></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   </ul>
@@ -200,43 +200,31 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="true-battery-soc-and-voc-model">True Battery SOC and VOC Model</h3>
 <p>The battery is modeled as an RC pair with a series resistance of 0.05 Ω and a capacity of 7920 coulombs. These parameters correspond roughly to a typical 2200 mAh lithium-ion cell, which operates at approximately 3.6 V<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The initial state-of-charge (SOC) estimate is set to 50%.</p>
 <p>The true battery voltage and the estimated voltage share the same functional form, but are computed using their respective SOC values. Gaussian measurement noise is applied to both voltage and current readings, with standard deviations of 100 mV and 10 mA, respectively. The SOC is updated over time by integrating the applied current divided by the battery capacity.</p>
-<p><strong>Open-Circuit Voltage Models:</strong></p>
-<ul>
-<li><p><strong>True Cubic Model:</strong><br>
+<p><strong>True Voltage/SOC Curve:</strong><br>
 <span class="math display">\[
 V_\text{OCV, nonlinear}(SOC) = 2.6 + 2.35 \, SOC - 3.75 \, SOC^2 + 2.5 \, SOC^3
-\]</span></p></li>
-<li><p><strong>Linear approximation of Cubic Model:</strong><br>
+\]</span></p>
+<p><strong>Linear Approximation of Cubic Model:</strong><br>
 <span class="math display">\[
 V_\text{OCV, linear}(SOC) = 2.6 + 1.1 \, SOC
-\]</span></p></li>
-</ul>
-<p>The state-space equations for the true battery and the SOC estimator are:</p>
-<p><strong>Continuous-time:</strong></p>
+\]</span></p>
+<p><strong>Battery State-Space Model:</strong></p>
 <p><span class="math display">\[
 \dot{SOC}(t) = \frac{I(t)}{Q}, \quad
 V_\text{true}(t) = V_\text{OCV}(SOC(t)) + R_s \, I(t)
 \]</span></p>
-<p><strong>Euler’s Method:</strong></p>
-<p><span class="math display">\[
-SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
-V_\text{true}[k] = V_\text{OCV}(SOC[k]) + R_s \, I[k]
-\]</span></p>
 <ul>
 <li><span class="math inline">\(k\)</span> : Discrete time step index<br>
 </li>
-<li><span class="math inline">\(\Delta t\)</span> : Time step (s)<br>
-</li>
-<li><span class="math inline">\(V_\text{OCV}\)</span> is chosen as either the linear or nonlinear model depending on the simulation.</li>
+<li><span class="math inline">\(\Delta t\)</span> : Time step (s)</li>
 </ul>
 <hr>
 </section>
-<section id="soc-estimator-luenberger-observer-kalman-filter" class="level3">
-<h3 class="anchored" data-anchor-id="soc-estimator-luenberger-observer-kalman-filter">SOC Estimator (Luenberger Observer / Kalman Filter)</h3>
+<section id="soc-estimator" class="level3">
+<h3 class="anchored" data-anchor-id="soc-estimator">SOC Estimator</h3>
 <p>The SOC estimator follows a similar structure to the true model, with measurement noise added to the current to simulate sensor readings. A feedback term is applied, proportional to the difference between measured voltage and estimated voltage. This difference is scaled by the observer gain <span class="math inline">\(K\)</span> (for the Luenberger observer) or by the Kalman gain (for the KF), which determines the corrective strength.</p>
-<p><strong>Continuous-time (Luenberger):</strong></p>
 <p><span class="math display">\[
-\dot{\hat{SOC}}(t) = \frac{I(t) + n_I(t)}{Q} + K \left( V_\text{true}(t) + n_V(t) - \hat{V}(t) \right)
+\dot{\hat{SOC}}(t) = \frac{I(t) + n_I}{Q} + K \left( V_\text{true}(t) + n_V - \hat{V}(t) \right)
 \]</span></p>
 <p><span class="math display">\[
 \hat{V}(t) = V_\text{OCV}(\hat{SOC}(t)) + R_s \left(I(t) + n_I(t)\right)
@@ -246,35 +234,16 @@ V_\text{true}[k] = V_\text{OCV}(SOC[k]) + R_s \, I[k]
 </li>
 <li><span class="math inline">\(\hat{V}(t)\)</span> : Estimated voltage<br>
 </li>
-<li><span class="math inline">\(n_I(t)\)</span>, <span class="math inline">\(n_V(t)\)</span> : Measurement noise<br>
-</li>
+<li><span class="math inline">\(n_I\)</span> : Current Noise</li>
+<li><span class="math inline">\(n_V\)</span> : Voltage Noise</li>
 <li><span class="math inline">\(K\)</span> : Observer gain</li>
-</ul>
-<p><strong>Euler’s Method</strong></p>
-<p><span class="math display">\[
-\hat{SOC}[k] = \hat{SOC}[k-1] + \Delta t \left[ \frac{I[k-1] + n_I[k-1]}{Q} + K \left( V_\text{true}[k-1] + n_V[k-1] - \hat{V}[k-1] \right) \right]
-\]</span></p>
-<p><span class="math display">\[
-\hat{V}[k] = V_\text{OCV}(\hat{SOC}[k]) + R_s \left(I[k] + n_I[k]\right)
-\]</span></p>
-<ul>
-<li><span class="math inline">\(V_\text{OCV}\)</span> can be linear or nonlinear depending on the chosen model.<br>
-</li>
-<li>Other variables as defined above.</li>
 </ul>
 </section>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>When the true VOC/SOC model is used for the estimator, the SOC estimate converges smoothly to the true SOC despite noise. However, when the linear approximation is used, the estimator stays close but doesn’t reach the true SOC outside of when the cubic and linear curves intersect. Adding noise does not alter this observation</p>
-<p>Additionally with the true model, increasing K for the fixed gain observer decreases the amount of time required for the estimator to reach the true soc value, however setting it too high introduces additional noise. It’s clear that the kalman filter apporaches the true value very fast, but tuning the process and observer noise is required to reduce fluctuation.</p>
-<p><strong>Example results:</strong></p>
-<ul>
-<li>At 8.3 minutes under a <strong>0.5 A discharge</strong>, the SOC error is ~4.7%.<br>
-</li>
-<li>At <strong>2.2 A charge/discharge</strong>, the SOC error at 500 seconds is ~4.4%.</li>
-</ul>
-<p>After 500 seconds, the observer estimates the true SOC within 5% under nominal conditions. Smaller initial errors (starting closer to the real SOC) improve convergence in depleted batteries.</p>
+<p>When the true VOC–SOC model is used for the estimator, the SOC estimate converges smoothly to the true SOC despite measurement noise. Quantitatively, under a 0.5 A discharge, the SOC error is approximately 4.7% at 8.3 minutes, while at a higher 2.2 A charge/discharge rate the error is about 4.4% at 500 seconds. After 500 seconds, the observer consistently estimates the true SOC within 5% under nominal conditions. In contrast, when the linear VOC–SOC approximation is used, the estimator remains close to the true SOC but fails to fully converge except at points where the linear and cubic models intersect. Adding noise does not alter this behavior since the difference between the models is not random.</p>
+<p>Additionally, when using the true model, increasing the fixed observer gain reduces convergernce time to true SOC; however, excessively large gains introduce increased noise in the estimate. The Kalman filter converges to the true SOC significantly faster than the fixed-gain observer, but careful tuning of the process and measurement noise covariances is required to minimize estimate noise. Smaller initial SOC errors—particularly when starting closer to the true SOC in depleted battery conditions—further improve convergence behavior.</p>
 
 
 </section>

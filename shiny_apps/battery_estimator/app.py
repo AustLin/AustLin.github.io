@@ -115,19 +115,20 @@ with ui.card(full_screen=True):
                 Qk = 10 ** input.logQk() # process noise covariance
                 Rk = 10 ** input.logRk() # measurement noise covariance
 
-
                 # Prediction
                 # v = 2.6 + H*soc + Rs*I
-                H = 1.1
                 P = P + Qk
-                k_gain = P * H / (H * P * H + Rk)
-                
+
                 if model == "True System":
                     H = 2.35 - 7.5 * soc_pred + 7.5 * soc_pred**2
                     v_est = ocv_nonlinear(soc_pred) + Rs * I
                 else:
+                    H = 1.1
                     v_est = ocv_linear(soc_pred) + Rs * I
+
+                k_gain = P * H / (H * P * H + Rk)
                 
+                # Update            
                 soc_hat[k] = soc_pred + k_gain * (v_meas[k] - v_est)
                 soc_hat[k] = np.clip(soc_hat[k], 0.0, 1.0)
 

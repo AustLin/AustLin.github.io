@@ -31,51 +31,36 @@ The battery is modeled as an RC pair with a series resistance of 0.05 Ω and a c
 
 The true battery voltage and the estimated voltage share the same functional form, but are computed using their respective SOC values. Gaussian measurement noise is applied to both voltage and current readings, with standard deviations of 100 mV and 10 mA, respectively. The SOC is updated over time by integrating the applied current divided by the battery capacity.
 
-**Open-Circuit Voltage Models:**
 
-- **True Cubic Model:**  
+
+**True Voltage/SOC Curve:**  
 $$
 V_\text{OCV, nonlinear}(SOC) = 2.6 + 2.35 \, SOC - 3.75 \, SOC^2 + 2.5 \, SOC^3
 $$
 
-
-- **Linear approximation of Cubic Model:**  
+**Linear Approximation of Cubic Model:**  
 $$
 V_\text{OCV, linear}(SOC) = 2.6 + 1.1 \, SOC
 $$
 
-
-The state-space equations for the true battery and the SOC estimator are:
-
-
-**Continuous-time:**
+**Battery State-Space Model:**
 
 $$
 \dot{SOC}(t) = \frac{I(t)}{Q}, \quad
 V_\text{true}(t) = V_\text{OCV}(SOC(t)) + R_s \, I(t)
 $$
 
-**Euler's Method:**
-
-$$
-SOC[k] = SOC[k-1] + \Delta t \frac{I[k-1]}{Q}, \quad
-V_\text{true}[k] = V_\text{OCV}(SOC[k]) + R_s \, I[k]
-$$
-
 - $k$ : Discrete time step index  
-- $\Delta t$ : Time step (s)  
-- $V_\text{OCV}$ is chosen as either the linear or nonlinear model depending on the simulation.  
+- $\Delta t$ : Time step (s)
 
 ---
 
-### SOC Estimator (Luenberger Observer / Kalman Filter)
+### SOC Estimator
 
 The SOC estimator follows a similar structure to the true model, with measurement noise added to the current to simulate sensor readings. A feedback term is applied, proportional to the difference between measured voltage and estimated voltage. This difference is scaled by the observer gain $K$ (for the Luenberger observer) or by the Kalman gain (for the KF), which determines the corrective strength.
 
-**Continuous-time (Luenberger):**
-
 $$
-\dot{\hat{SOC}}(t) = \frac{I(t) + n_I(t)}{Q} + K \left( V_\text{true}(t) + n_V(t) - \hat{V}(t) \right)
+\dot{\hat{SOC}}(t) = \frac{I(t) + n_I}{Q} + K \left( V_\text{true}(t) + n_V - \hat{V}(t) \right)
 $$
 
 $$
@@ -84,22 +69,9 @@ $$
 
 - $\hat{SOC}(t)$ : Estimated SOC  
 - $\hat{V}(t)$ : Estimated voltage  
-- $n_I(t)$, $n_V(t)$ : Measurement noise  
-- $K$ : Observer gain  
-
-**Euler's Method**
-
-$$
-\hat{SOC}[k] = \hat{SOC}[k-1] + \Delta t \left[ \frac{I[k-1] + n_I[k-1]}{Q} + K \left( V_\text{true}[k-1] + n_V[k-1] - \hat{V}[k-1] \right) \right]
-$$
-
-$$
-\hat{V}[k] = V_\text{OCV}(\hat{SOC}[k]) + R_s \left(I[k] + n_I[k]\right)
-$$
-
-- $V_\text{OCV}$ can be linear or nonlinear depending on the chosen model.  
-- Other variables as defined above.
-
+- $n_I$ : Current Noise
+- $n_V$ : Voltage Noise
+- $K$ : Observer gain
 
 ## Results
 
