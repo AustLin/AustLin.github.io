@@ -50,8 +50,9 @@ $$
 V_\text{true}(t) = V_\text{OCV}(SOC(t)) + R_s \, I(t)
 $$
 
-- $k$ : Discrete time step index  
-- $\Delta t$ : Time step (s)
+- $I(t)$ : Discrete time step index  
+- $R_s$ : Internal Battery Resistance (set as 0.05 Ohm )
+- $Q$ : Battery Capacity (set as 2200 mAh or 7920 C)
 
 ---
 
