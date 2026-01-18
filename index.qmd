@@ -9,4 +9,4 @@ listing:
   sort: "title"
 ---
 
-Documenting some of my favorite projects. More is on the way!
+..More on the way!
