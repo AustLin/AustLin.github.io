@@ -103,6 +103,30 @@
     "title": "Projects",
     "section": "",
     "text": "..More on the way!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAutonomous Maze Navigation with ROS2 and LiDAR\n\n\nA ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBattery SOC Estimator Interactive Web Simulation\n\n\nExplore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCollaborative Lego Passing Robots\n\n\nProgramming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHIFIMAN Headphone Joint Fix\n\n\nA 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWake & Manipulate: Robot Arm\n\n\nRapid prototyping of a robotic arm, controller, and graphical user interface.\n\n\n\n\n\n\n\n\nNo matching items"
+<<<<<<< HEAD
+=======
+  },
+  {
+    "objectID": "pages/about.html",
+    "href": "pages/about.html",
+    "title": "Austin Lin",
+    "section": "",
+    "text": "University of Maryland, College Park | 2020 - 2024\nB.S. Mechanical Engineering\nMinor in Robotics and Autonomous Systems\nPublic Leadership Scholars Program"
+  },
+  {
+    "objectID": "pages/about.html#education",
+    "href": "pages/about.html#education",
+    "title": "Austin Lin",
+    "section": "",
+    "text": "University of Maryland, College Park | 2020 - 2024\nB.S. Mechanical Engineering\nMinor in Robotics and Autonomous Systems\nPublic Leadership Scholars Program"
+  },
+  {
+    "objectID": "pages/about.html#experience",
+    "href": "pages/about.html#experience",
+    "title": "Austin Lin",
+    "section": "Experience",
+    "text": "Experience\nGeneral Dynamics Electric Boat | Systems Engineer\nSeptember 2024 - Present\nL3Harris C5 | Systems Engineering Intern\nJune 2023 - August 2023\nUMD Space Systems Laboratory | Undergraduate Researcher\nMay 2022 - September 2022\n\n\nThis website is built with Quarto, and hosted on Github Pages."
+>>>>>>> 4b21e2ded771e25e5ea9e80e7b390ef0a3300533
   },
   {
     "objectID": "pages/projects/headphone_joint.html",
