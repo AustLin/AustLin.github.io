@@ -2,7 +2,7 @@
 title: "Collaborative Lego Passing Robots"
 description: "Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance."
 image: "../../assets/lego_pass/start.png"
-date: "2024-05-01"
+date: "2024-05-09"
 categories: [Robotics, Computer Vision, ROS]
 lightbox: true
 ---
