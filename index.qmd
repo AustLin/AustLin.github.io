@@ -23,12 +23,6 @@ listing:
     LiDAR navigation and collaborative manipulators to interactive simulations.
     I currently work as an electrical systems engineer, with a background in mechanical engineering and robotics from the University of Maryland.
   </p>
-  <div class="hero-actions">
-    <a class="btn btn-primary" href="pages/about.html">About Me</a>
-    <a class="btn btn-outline-primary" href="assets/ALin Resume.pdf" target="_blank" rel="noopener">Resume</a>
-    <a class="btn btn-outline-primary" href="https://github.com/AustLin" target="_blank" rel="noopener">GitHub</a>
-    <a class="btn btn-outline-primary" href="https://www.linkedin.com/in/austin-lin/" target="_blank" rel="noopener">LinkedIn</a>
-  </div>
 </div>
 ```
 
