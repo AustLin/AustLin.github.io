@@ -5,24 +5,44 @@ resources:
     - "../../assets/**"
 website:
   title: "Austin Lin's Portfolio"
+  description: "Austin Lin — Systems & Mechanical Engineer. Projects in robotics, controls, embedded systems, and rapid prototyping."
+  site-url: https://AustLin.github.io
+  favicon: assets/favicon.svg
+  open-graph: true
+  twitter-card: true
   navbar:
     left:
       - href: index.qmd
         text: Projects
       - href: pages/about.qmd
         text: About Me
-      - href: assets/ALin Resume.pdf
+      - href: "assets/ALin Resume.pdf"
         text: Resume
-
+        target: _blank
+    right:
+      - icon: github
+        href: https://github.com/AustLin
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/austin-lin/
+        aria-label: LinkedIn
 
   page-footer:
+    left: "&copy; 2026 Austin Lin"
+    center:
+      - icon: github
+        href: https://github.com/AustLin
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/austin-lin/
+        aria-label: LinkedIn
     right: "Built with [Quarto](https://quarto.org)"
-    
+
 format:
   html:
     theme:
       - cosmo
-      - brand
+      - theme.scss
     css: styles.css
     toc: true
     code-fold: show

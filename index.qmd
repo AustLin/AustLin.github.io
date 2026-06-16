@@ -1,12 +1,38 @@
 ---
-title: "Projects"
+pagetitle: "Austin Lin — Portfolio"
+description: "Systems & Mechanical Engineer — robotics, controls, embedded systems, and rapid prototyping."
+toc: false
 listing:
+  id: project-listing
   contents: pages/projects
-  type: default
-  fields: [title, description, image]
+  type: grid
+  fields: [image, title, description, categories]
   categories: false
-  image-align: right
-  sort: "title"
+  sort: "date desc"
+  sort-ui: false
+  filter-ui: false
+  image-align: left
 ---
 
-..More on the way!
+```{=html}
+<div class="hero">
+  <h1>Austin Lin</h1>
+  <div class="tagline">Systems &amp; Mechanical Engineer</div>
+  <p class="bio">
+    I build robots, controls, and embedded systems, from autonomous
+    LiDAR navigation and collaborative manipulators to interactive simulations.
+    I currently work as an electrical systems engineer, with a background in mechanical engineering and robotics from the University of Maryland.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="pages/about.html">About Me</a>
+    <a class="btn btn-outline-primary" href="assets/ALin Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <a class="btn btn-outline-primary" href="https://github.com/AustLin" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn btn-outline-primary" href="https://www.linkedin.com/in/austin-lin/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</div>
+```
+
+## Projects
+
+::: {#project-listing}
+:::

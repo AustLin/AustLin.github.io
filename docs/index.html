@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Systems &amp; Mechanical Engineer — robotics, controls, embedded systems, and rapid prototyping.">
 
-<title>Projects – Austin Lin’s Portfolio</title>
+<title>Austin Lin — Portfolio – Austin Lin's Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,6 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -38,10 +40,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-95068bf9caf6f0a8732bbf81f7dd2f37.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8ac4c25f1646ef7008541698ebc0693b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,20 +74,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-project-listing .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-title','listing-description','listing-image',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-image","listing-description"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-project-listing'] = new List('listing-project-listing', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -130,9 +132,21 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Austin Lin — Portfolio">
+<meta property="og:description" content="Systems &amp; Mechanical Engineer — robotics, controls, embedded systems, and rapid prototyping.">
+<meta property="og:image" content="https://AustLin.github.io/assets/headphone_joint/headphone_thumbnail.png">
+<meta property="og:site_name" content="Austin Lin's Portfolio">
+<meta property="og:image:height" content="756">
+<meta property="og:image:width" content="1008">
+<meta name="twitter:title" content="Austin Lin — Portfolio">
+<meta name="twitter:description" content="Systems &amp; Mechanical Engineer — robotics, controls, embedded systems, and rapid prototyping.">
+<meta name="twitter:image" content="https://AustLin.github.io/assets/headphone_joint/headphone_thumbnail.png">
+<meta name="twitter:image-height" content="756">
+<meta name="twitter:image-width" content="1008">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -158,8 +172,20 @@ window.Quarto = {
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./assets/ALin Resume.pdf"> 
+    <a class="nav-link" href="./assets/ALin Resume.pdf" target="_blank"> 
 <span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -172,136 +198,167 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Projects</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">Austin Lin</h1></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
+<div class="hero">
   
-    
+  <div class="tagline">Systems &amp; Mechanical Engineer</div>
+  <p class="bio">
+    I build robots, controls, and embedded systems, from autonomous
+    LiDAR navigation and collaborative manipulators to interactive simulations.
+    I currently work as an electrical systems engineer, with
+    a background in mechanical engineering and robotics from the University of Maryland.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="pages/about.html">About Me</a>
+    <a class="btn btn-outline-primary" href="assets/ALin Resume.pdf" target="_blank" rel="noopener">Resume</a>
+    <a class="btn btn-outline-primary" href="https://github.com/AustLin" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn btn-outline-primary" href="https://www.linkedin.com/in/austin-lin/" target="_blank" rel="noopener">LinkedIn</a>
   </div>
-  
-
-
-</header>
-
-
-<p>..More on the way!</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1779165501499" data-listing-reading-time-sort="16" data-listing-word-count-sort="3023">
-<div class="thumbnail"><a href="./pages/projects/wafflebot.html" class="no-external">
-
-<img loading="lazy" src="./assets/maze_follower/simulation.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./pages/projects/wafflebot.html" class="no-external">Autonomous Maze Navigation with ROS2 and LiDAR</a>
-</h3>
-<div class="delink listing-description"><a href="./pages/projects/wafflebot.html" class="no-external">
-<p>A ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform.</p>
-</a></div>
 </div>
-<div class="metadata">
-<a href="./pages/projects/wafflebot.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-file-modified-sort="1779165501496" data-listing-reading-time-sort="4" data-listing-word-count-sort="766">
-<div class="thumbnail"><a href="./pages/projects/battery_estimator.html" class="no-external">
+<section id="projects" class="level2">
+<h2 class="anchored" data-anchor-id="projects">Projects</h2>
+<div id="listing-project-listing" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="Q29udHJvbHMlMkNTaW11bGF0aW9uJTJDV2ViJTIwQXBw" data-listing-date-sort="1746072000000" data-listing-file-modified-sort="1781581525969" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="739">
+<a href="./pages/projects/battery_estimator.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./assets/soc_estimator/soc_estimator.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Battery SOC Estimator Interactive Web Simulation
+</h5>
+<div class="listing-categories">
 
-<img loading="lazy" src="./assets/soc_estimator/soc_estimator.png" class="thumbnail-image">
+<div class="listing-category" onclick="window.quartoListingCategory('Q29udHJvbHM='); return false;">Controls</div>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./pages/projects/battery_estimator.html" class="no-external">Battery SOC Estimator Interactive Web Simulation</a>
-</h3>
-<div class="delink listing-description"><a href="./pages/projects/battery_estimator.html" class="no-external">
+<div class="listing-category" onclick="window.quartoListingCategory('U2ltdWxhdGlvbg=='); return false;">Simulation</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('V2ViJTIwQXBw'); return false;">Web App</div>
+
+</div>
+<div class="card-text listing-description delink">
 <p>Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./pages/projects/battery_estimator.html" class="no-external">
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-listing-file-modified-sort="1779165501498" data-listing-reading-time-sort="25" data-listing-word-count-sort="4907">
-<div class="thumbnail"><a href="./pages/projects/lego_pass.html" class="no-external">
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Um9ib3RpY3MlMkNST1MlMkNMaURBUg==" data-listing-date-sort="1733029200000" data-listing-file-modified-sort="1781581525973" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3023">
+<a href="./pages/projects/wafflebot.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./assets/maze_follower/simulation.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Autonomous Maze Navigation with ROS2 and LiDAR
+</h5>
+<div class="listing-categories">
 
-<img loading="lazy" src="./assets/lego_pass/start.png" class="thumbnail-image">
+<div class="listing-category" onclick="window.quartoListingCategory('Um9ib3RpY3M='); return false;">Robotics</div>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./pages/projects/lego_pass.html" class="no-external">Collaborative Lego Passing Robots</a>
-</h3>
-<div class="delink listing-description"><a href="./pages/projects/lego_pass.html" class="no-external">
+<div class="listing-category" onclick="window.quartoListingCategory('Uk9T'); return false;">ROS</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TGlEQVI='); return false;">LiDAR</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>A ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform.</p>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="Um9ib3RpY3MlMkNDb21wdXRlciUyMFZpc2lvbiUyQ1JPUw==" data-listing-date-sort="1714536000000" data-listing-file-modified-sort="1781581525971" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4906">
+<a href="./pages/projects/lego_pass.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./assets/lego_pass/start.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Collaborative Lego Passing Robots
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Um9ib3RpY3M='); return false;">Robotics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q29tcHV0ZXIlMjBWaXNpb24='); return false;">Computer Vision</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Uk9T'); return false;">ROS</div>
+
+</div>
+<div class="card-text listing-description delink">
 <p>Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./pages/projects/lego_pass.html" class="no-external">
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-listing-file-modified-sort="1779165501498" data-listing-reading-time-sort="3" data-listing-word-count-sort="539">
-<div class="thumbnail"><a href="./pages/projects/headphone_joint.html" class="no-external">
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Um9ib3RpY3MlMkNFbWJlZGRlZCUyQ1Byb3RvdHlwaW5n" data-listing-date-sort="1701406800000" data-listing-file-modified-sort="1781581525972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4435">
+<a href="./pages/projects/robot_arm.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./assets/robot_arm/robot_arm.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Wake &amp; Manipulate: Robot Arm
+</h5>
+<div class="listing-categories">
 
-<img loading="lazy" src="./assets/headphone_joint/headphone_thumbnail.png" class="thumbnail-image">
+<div class="listing-category" onclick="window.quartoListingCategory('Um9ib3RpY3M='); return false;">Robotics</div>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./pages/projects/headphone_joint.html" class="no-external">HIFIMAN Headphone Joint Fix</a>
-</h3>
-<div class="delink listing-description"><a href="./pages/projects/headphone_joint.html" class="no-external">
-<p>A 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./pages/projects/headphone_joint.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-listing-file-modified-sort="1779165501498" data-listing-reading-time-sort="23" data-listing-word-count-sort="4446">
-<div class="thumbnail"><a href="./pages/projects/robot_arm.html" class="no-external">
+<div class="listing-category" onclick="window.quartoListingCategory('RW1iZWRkZWQ='); return false;">Embedded</div>
 
-<img loading="lazy" src="./assets/robot_arm/robot_arm.png" class="thumbnail-image">
+<div class="listing-category" onclick="window.quartoListingCategory('UHJvdG90eXBpbmc='); return false;">Prototyping</div>
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./pages/projects/robot_arm.html" class="no-external">Wake &amp; Manipulate: Robot Arm</a>
-</h3>
-<div class="delink listing-description"><a href="./pages/projects/robot_arm.html" class="no-external">
+</div>
+<div class="card-text listing-description delink">
 <p>Rapid prototyping of a robotic arm, controller, and graphical user interface.</p>
-</a></div>
 </div>
-<div class="metadata">
-<a href="./pages/projects/robot_arm.html" class="no-external">
-</a>
 </div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="Q0FEJTJDM0QlMjBQcmludGluZyUyQ01lY2hhbmljYWw=" data-listing-date-sort="1685592000000" data-listing-file-modified-sort="1781581525970" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="527">
+<a href="./pages/projects/headphone_joint.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./assets/headphone_joint/headphone_thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+HIFIMAN Headphone Joint Fix
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q0FE'); return false;">CAD</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('M0QlMjBQcmludGluZw=='); return false;">3D Printing</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWVjaGFuaWNhbA=='); return false;">Mechanical</div>
+
+</div>
+<div class="card-text listing-description delink">
+<p>A 3D-printed structural splint addressing joint failures in early HIFIMAN HE-series headphones.</p>
+</div>
+</div>
+</div></a>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -374,7 +431,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/AustLin\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -705,10 +762,23 @@ window.Quarto = {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-      &nbsp;
-    </div>   
+<p>© 2026 Austin Lin</p>
+</div>   
     <div class="nav-footer-center">
-      &nbsp;
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin">
+      <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+</ul>
     </div>
     <div class="nav-footer-right">
 <p>Built with <a href="https://quarto.org">Quarto</a></p>

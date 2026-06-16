@@ -1,1 +1,8 @@
 /* css styles */
+
+/* Hide the "Published" date block on project pages
+   (the date: field is kept in front matter so the home page listing
+   can still sort projects by date) */
+.quarto-title-meta {
+  display: none;
+}

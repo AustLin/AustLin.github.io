@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-05-01">
 <meta name="description" content="Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.">
 
 <title>Collaborative Lego Passing Robots – Austin Lin’s Portfolio</title>
@@ -66,16 +67,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-95068bf9caf6f0a8732bbf81f7dd2f37.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8ac4c25f1646ef7008541698ebc0693b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -109,6 +111,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Collaborative Lego Passing Robots – Austin Lin’s Portfolio">
+<meta property="og:description" content="Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.">
+<meta property="og:image" content="https://AustLin.github.io/assets/lego_pass/start.png">
+<meta property="og:site_name" content="Austin Lin's Portfolio">
+<meta property="og:image:height" content="1173">
+<meta property="og:image:width" content="2250">
+<meta name="twitter:title" content="Collaborative Lego Passing Robots – Austin Lin’s Portfolio">
+<meta name="twitter:description" content="Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance.">
+<meta name="twitter:image" content="https://AustLin.github.io/assets/lego_pass/start.png">
+<meta name="twitter:image-height" content="1173">
+<meta name="twitter:image-width" content="2250">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -137,8 +151,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../assets/ALin Resume.pdf"> 
+    <a class="nav-link" href="../../assets/ALin Resume.pdf" target="_blank"> 
 <span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -177,7 +203,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Collaborative Lego Passing Robots</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Robotics</div>
+    <div class="quarto-category">Computer Vision</div>
+    <div class="quarto-category">ROS</div>
+  </div>
+  </div>
 
 <div>
   <div class="description">
@@ -189,6 +220,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -240,12 +277,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Starting from a defined start position, Robot 1 locates Legos, picks them up, and uses infrared sensors to avoid obstacles while navigating to the blue line. Once aligned, Lab 2 code detects the line’s position and orientation to deposit the Lego accurately. The robot then retraces its path to repeat the process.</p>
 <p>Robot 2 follows a similar routine: avoiding obstacles, detecting the blue line, identifying Legos, picking them up, and planning a path to deliver them to the goal. This process repeats as more Legos become available.</p>
 <p>Expanding the training dataset to identify labeled boxes was considered but ultimately impractical due to time constraints, although it could have improved detection accuracy.</p>
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </section>
 <section id="key-functions" class="level2">
 <h2 class="anchored" data-anchor-id="key-functions">Key Functions</h2>
@@ -262,105 +293,105 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> pupil_apriltags <span class="im">import</span> Detector</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> cv2</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> time</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> robomaster <span class="im">import</span> robot</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> robomaster <span class="im">import</span> camera</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    currentPosition <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>] <span class="co">#x,y</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    currentAngle <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    at_detector <span class="op">=</span> Detector(</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        families<span class="op">=</span><span class="st">"tag36h11"</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        nthreads<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        quad_decimate<span class="op">=</span><span class="fl">1.0</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        quad_sigma<span class="op">=</span><span class="fl">0.0</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        refine_edges<span class="op">=</span><span class="dv">1</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        decode_sharpening<span class="op">=</span><span class="fl">0.25</span>,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        debug<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gives relative position (x,y) and angle to tag. requires find_pos_from_tag</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getRelativePos():</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                img <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="fl">0.5</span>)  </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                cv2.imwrite(<span class="st">"/home/user/Desktop/test.png"</span>, img) </span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>                gray <span class="op">=</span> cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                gray.astype(np.uint8)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                K<span class="op">=</span>np.array([[<span class="fl">184.752</span>, <span class="dv">0</span>, <span class="dv">320</span>], [<span class="dv">0</span>, <span class="fl">184.752</span>, <span class="dv">180</span>], [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>]])</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                results <span class="op">=</span> at_detector.detect(gray, estimate_tag_pose<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> res <span class="kw">in</span> results:</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(res)</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                    pose <span class="op">=</span> find_pose_from_tag(K, res)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>                    rot, jaco <span class="op">=</span> cv2.Rodrigues(pose[<span class="dv">1</span>], pose[<span class="dv">1</span>])</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(rot)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                    pts <span class="op">=</span> res.corners.reshape((<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.int32)</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>                    img <span class="op">=</span> cv2.polylines(img, [pts], isClosed<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>), thickness<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                    cv2.circle(img, <span class="bu">tuple</span>(res.center.astype(np.int32)), <span class="dv">5</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>), <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(pose)</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># (pose[0][0]) # y</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># (pose[0][2]) # x</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                    curr_y <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">0</span>][<span class="dv">0</span>],<span class="dv">2</span>)</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                    curr_x <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">0</span>][<span class="dv">2</span>], <span class="dv">2</span>)</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>                    rot <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">1</span>][<span class="dv">2</span>], <span class="dv">2</span>) <span class="op">*</span> <span class="dv">180</span> <span class="op">/</span> <span class="fl">3.14</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>                    </span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>                    posi_initial <span class="op">=</span> [[curr_x], [curr_y]]</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                    rotation <span class="op">=</span> [[np.cos(rot),np.sin(rot)],[np.sin(<span class="op">-</span><span class="dv">1</span><span class="op">*</span>rot),np.cos(rot)]]</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                    posi_final <span class="op">=</span> rotation<span class="op">*</span>posi_initial</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>                    </span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> posi_final</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>                cv2.imshow(<span class="st">"img"</span>, img)</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                cv2.waitKey(<span class="dv">1</span>)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>                ep_camera.stop_video_stream()</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>                ep_robot.close()</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span> (<span class="st">'Exiting'</span>)</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>                exit(<span class="dv">1</span>)</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> find_pose_from_tag(K, detection):</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        tag_size<span class="op">=</span><span class="fl">0.16</span> <span class="co"># tag size in meters</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        m_half_size <span class="op">=</span> tag_size <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        marker_center <span class="op">=</span> np.array((<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        marker_points <span class="op">=</span> []</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> (<span class="op">-</span>m_half_size, m_half_size, <span class="dv">0</span>))</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> ( m_half_size, m_half_size, <span class="dv">0</span>))</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> ( m_half_size, <span class="op">-</span>m_half_size, <span class="dv">0</span>))</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> (<span class="op">-</span>m_half_size, <span class="op">-</span>m_half_size, <span class="dv">0</span>))</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        _marker_points <span class="op">=</span> np.array(marker_points)</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        object_points <span class="op">=</span> _marker_points</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        image_points <span class="op">=</span> detection.corners</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        pnp_ret <span class="op">=</span> cv2.solvePnP(object_points, image_points, K, distCoeffs<span class="op">=</span><span class="va">None</span>,flags<span class="op">=</span>cv2.SOLVEPNP_IPPE_SQUARE)</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> pnp_ret[<span class="dv">0</span>] <span class="op">==</span> <span class="va">False</span>:</span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Error solving PnP'</span>)</span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> pnp_ret[<span class="dv">1</span>]</span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> pnp_ret[<span class="dv">2</span>]</span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> p.reshape((<span class="dv">3</span>,)), r.reshape((<span class="dv">3</span>,))</span>
-<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
-<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>        ep_robot <span class="op">=</span> robot.Robot()</span>
-<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>        ep_robot.initialize(conn_type<span class="op">=</span><span class="st">"ap"</span>)</span>
-<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>        ep_camera <span class="op">=</span> ep_robot.camera</span>
-<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>        ep_camera.start_video_stream(display<span class="op">=</span><span class="va">False</span>, resolution<span class="op">=</span>camera.STREAM_360P)</span>
-<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>        ep_chassis <span class="op">=</span> ep_robot.chassis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> pupil_apriltags <span class="im">import</span> Detector</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> cv2</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> time</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> robomaster <span class="im">import</span> robot</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> robomaster <span class="im">import</span> camera</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    currentPosition <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>] <span class="co">#x,y</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    currentAngle <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    at_detector <span class="op">=</span> Detector(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        families<span class="op">=</span><span class="st">"tag36h11"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        nthreads<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        quad_decimate<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        quad_sigma<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        refine_edges<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        decode_sharpening<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        debug<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gives relative position (x,y) and angle to tag. requires find_pos_from_tag</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getRelativePos():</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                img <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="fl">0.5</span>)  </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>                cv2.imwrite(<span class="st">"/home/user/Desktop/test.png"</span>, img) </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                gray <span class="op">=</span> cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                gray.astype(np.uint8)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                K<span class="op">=</span>np.array([[<span class="fl">184.752</span>, <span class="dv">0</span>, <span class="dv">320</span>], [<span class="dv">0</span>, <span class="fl">184.752</span>, <span class="dv">180</span>], [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>]])</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                results <span class="op">=</span> at_detector.detect(gray, estimate_tag_pose<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> res <span class="kw">in</span> results:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(res)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                    pose <span class="op">=</span> find_pose_from_tag(K, res)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                    rot, jaco <span class="op">=</span> cv2.Rodrigues(pose[<span class="dv">1</span>], pose[<span class="dv">1</span>])</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(rot)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                    pts <span class="op">=</span> res.corners.reshape((<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>)).astype(np.int32)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                    img <span class="op">=</span> cv2.polylines(img, [pts], isClosed<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>), thickness<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                    cv2.circle(img, <span class="bu">tuple</span>(res.center.astype(np.int32)), <span class="dv">5</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>), <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(pose)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># (pose[0][0]) # y</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>                    <span class="co"># (pose[0][2]) # x</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>                    curr_y <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">0</span>][<span class="dv">0</span>],<span class="dv">2</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>                    curr_x <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">0</span>][<span class="dv">2</span>], <span class="dv">2</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>                    rot <span class="op">=</span> <span class="bu">round</span>(pose[<span class="dv">1</span>][<span class="dv">2</span>], <span class="dv">2</span>) <span class="op">*</span> <span class="dv">180</span> <span class="op">/</span> <span class="fl">3.14</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>                    posi_initial <span class="op">=</span> [[curr_x], [curr_y]]</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                    rotation <span class="op">=</span> [[np.cos(rot),np.sin(rot)],[np.sin(<span class="op">-</span><span class="dv">1</span><span class="op">*</span>rot),np.cos(rot)]]</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>                    posi_final <span class="op">=</span> rotation<span class="op">*</span>posi_initial</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> posi_final</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>                cv2.imshow(<span class="st">"img"</span>, img)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>                cv2.waitKey(<span class="dv">1</span>)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                ep_camera.stop_video_stream()</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>                ep_robot.close()</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span> (<span class="st">'Exiting'</span>)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>                exit(<span class="dv">1</span>)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> find_pose_from_tag(K, detection):</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        tag_size<span class="op">=</span><span class="fl">0.16</span> <span class="co"># tag size in meters</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>        m_half_size <span class="op">=</span> tag_size <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>        marker_center <span class="op">=</span> np.array((<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>        marker_points <span class="op">=</span> []</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> (<span class="op">-</span>m_half_size, m_half_size, <span class="dv">0</span>))</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> ( m_half_size, m_half_size, <span class="dv">0</span>))</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> ( m_half_size, <span class="op">-</span>m_half_size, <span class="dv">0</span>))</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        marker_points.append(marker_center <span class="op">+</span> (<span class="op">-</span>m_half_size, <span class="op">-</span>m_half_size, <span class="dv">0</span>))</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        _marker_points <span class="op">=</span> np.array(marker_points)</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        object_points <span class="op">=</span> _marker_points</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        image_points <span class="op">=</span> detection.corners</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>        pnp_ret <span class="op">=</span> cv2.solvePnP(object_points, image_points, K, distCoeffs<span class="op">=</span><span class="va">None</span>,flags<span class="op">=</span>cv2.SOLVEPNP_IPPE_SQUARE)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> pnp_ret[<span class="dv">0</span>] <span class="op">==</span> <span class="va">False</span>:</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Error solving PnP'</span>)</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> pnp_ret[<span class="dv">1</span>]</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        p <span class="op">=</span> pnp_ret[<span class="dv">2</span>]</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> p.reshape((<span class="dv">3</span>,)), r.reshape((<span class="dv">3</span>,))</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>        ep_robot <span class="op">=</span> robot.Robot()</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        ep_robot.initialize(conn_type<span class="op">=</span><span class="st">"ap"</span>)</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>        ep_camera <span class="op">=</span> ep_robot.camera</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>        ep_camera.start_video_stream(display<span class="op">=</span><span class="va">False</span>, resolution<span class="op">=</span>camera.STREAM_360P)</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>        ep_chassis <span class="op">=</span> ep_robot.chassis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="shortest-path-obstacle-navigation" class="level3">
@@ -394,104 +425,104 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> queue</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> ucs(graph, start, goal):</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        frontier <span class="op">=</span> queue.PriorityQueue()  <span class="co"># Using a priority queue</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        frontier.put((<span class="dv">0</span>, start, [start]))  <span class="co"># Adding start node with cost 0</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="kw">not</span> frontier.empty():</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            cost, node, path <span class="op">=</span> frontier.get()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> node <span class="kw">not</span> <span class="kw">in</span> visited:</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                visited.add(node)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> node <span class="op">==</span> goal:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> path  <span class="co"># Return the path to the goal</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Explore neighbors</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> neighbor, neighbor_cost <span class="kw">in</span> graph[node].items():</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                        new_cost <span class="op">=</span> cost <span class="op">+</span> neighbor_cost</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                        frontier.put((new_cost, neighbor, path <span class="op">+</span> [neighbor]))  <span class="co"># Add to the priority queue</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>  <span class="co"># Goal not found</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#start new code</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> <span class="dv">256</span> <span class="co"># wall weight</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#13x13 matrix </span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    numRows <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    numCols <span class="op">=</span> <span class="dv">13</span> </span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    Map <span class="op">=</span>   [    [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  W,  W,  W,  W,  W,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>                [  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W],</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>                ]</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generateNodeNeighbors(row, col, arrMap):</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        neighbors <span class="op">=</span> {}</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        directions <span class="op">=</span> [(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>)]  <span class="co"># Cardinal directions: right, left, down, up</span></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dir_row, dir_col <span class="kw">in</span> directions:</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            iRow <span class="op">=</span> row <span class="op">+</span> dir_row</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>            jCol <span class="op">=</span> col <span class="op">+</span> dir_col</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="dv">0</span> <span class="op">&lt;=</span> iRow <span class="op">&lt;</span> numRows <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> jCol <span class="op">&lt;</span> numCols:  <span class="co"># Check if within map bounds</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>                neighborName <span class="op">=</span> <span class="bu">str</span>(iRow) <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="bu">str</span>(jCol)</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                neighbors[neighborName] <span class="op">=</span> arrMap[iRow][jCol]</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> neighbors</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># takes in boolean </span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> compute_path():</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        graphMap <span class="op">=</span> {}</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(numRows):</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(numCols):</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>                nodeName <span class="op">=</span> <span class="bu">str</span>(i) <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="bu">str</span>(j)</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>                graphMap.update({nodeName:generateNodeNeighbors(i,j,Map)})</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>        start_node <span class="op">=</span> <span class="st">"3 1"</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        goal_node <span class="op">=</span> <span class="st">"3 11"</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        path_to_goal <span class="op">=</span> ucs(graphMap, start_node, goal_node)</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> path_to_goal:</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path_to_goal</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> visualize_path(coordinates):</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>        x_coords <span class="op">=</span> []</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>        y_coords <span class="op">=</span> []</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> coord <span class="kw">in</span> coordinates:</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>            x, y <span class="op">=</span> coord.split()</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>            x_coords.append(<span class="bu">int</span>(x))</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>            y_coords.append(<span class="bu">int</span>(y))</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the grid</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>        plt.figure()</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>        plt.grid(<span class="va">True</span>)</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Plot the path</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>        plt.plot(x_coords, y_coords, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set plot limits</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>        plt.xlim(<span class="bu">min</span>(x_coords) <span class="op">-</span> <span class="dv">1</span>, <span class="bu">max</span>(x_coords) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>        plt.ylim(<span class="bu">min</span>(y_coords) <span class="op">-</span> <span class="dv">1</span>, <span class="bu">max</span>(y_coords) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Switch axis labels</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">'Y'</span>)</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">'X'</span>)</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="st">'Path'</span>)</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Show plot</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> compute_path()</span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    visualize_path(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> queue</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> ucs(graph, start, goal):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        frontier <span class="op">=</span> queue.PriorityQueue()  <span class="co"># Using a priority queue</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        frontier.put((<span class="dv">0</span>, start, [start]))  <span class="co"># Adding start node with cost 0</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="kw">not</span> frontier.empty():</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            cost, node, path <span class="op">=</span> frontier.get()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> node <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                visited.add(node)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> node <span class="op">==</span> goal:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> path  <span class="co"># Return the path to the goal</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Explore neighbors</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> neighbor, neighbor_cost <span class="kw">in</span> graph[node].items():</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                        new_cost <span class="op">=</span> cost <span class="op">+</span> neighbor_cost</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                        frontier.put((new_cost, neighbor, path <span class="op">+</span> [neighbor]))  <span class="co"># Add to the priority queue</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>  <span class="co"># Goal not found</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#start new code</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> <span class="dv">256</span> <span class="co"># wall weight</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#13x13 matrix </span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    numRows <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    numCols <span class="op">=</span> <span class="dv">13</span> </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    Map <span class="op">=</span>   [    [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  W,  W,  W,  W,  W,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                [  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  W],</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>                [  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W,  W],</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                ]</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generateNodeNeighbors(row, col, arrMap):</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        neighbors <span class="op">=</span> {}</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        directions <span class="op">=</span> [(<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>)]  <span class="co"># Cardinal directions: right, left, down, up</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dir_row, dir_col <span class="kw">in</span> directions:</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            iRow <span class="op">=</span> row <span class="op">+</span> dir_row</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            jCol <span class="op">=</span> col <span class="op">+</span> dir_col</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="dv">0</span> <span class="op">&lt;=</span> iRow <span class="op">&lt;</span> numRows <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> jCol <span class="op">&lt;</span> numCols:  <span class="co"># Check if within map bounds</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>                neighborName <span class="op">=</span> <span class="bu">str</span>(iRow) <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="bu">str</span>(jCol)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>                neighbors[neighborName] <span class="op">=</span> arrMap[iRow][jCol]</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> neighbors</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># takes in boolean </span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> compute_path():</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        graphMap <span class="op">=</span> {}</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(numRows):</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(numCols):</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>                nodeName <span class="op">=</span> <span class="bu">str</span>(i) <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> <span class="bu">str</span>(j)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>                graphMap.update({nodeName:generateNodeNeighbors(i,j,Map)})</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        start_node <span class="op">=</span> <span class="st">"3 1"</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        goal_node <span class="op">=</span> <span class="st">"3 11"</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        path_to_goal <span class="op">=</span> ucs(graphMap, start_node, goal_node)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> path_to_goal:</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path_to_goal</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> visualize_path(coordinates):</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        x_coords <span class="op">=</span> []</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        y_coords <span class="op">=</span> []</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> coord <span class="kw">in</span> coordinates:</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>            x, y <span class="op">=</span> coord.split()</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>            x_coords.append(<span class="bu">int</span>(x))</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>            y_coords.append(<span class="bu">int</span>(y))</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set up the grid</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        plt.figure()</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        plt.grid(<span class="va">True</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Plot the path</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        plt.plot(x_coords, y_coords, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set plot limits</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        plt.xlim(<span class="bu">min</span>(x_coords) <span class="op">-</span> <span class="dv">1</span>, <span class="bu">max</span>(x_coords) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>        plt.ylim(<span class="bu">min</span>(y_coords) <span class="op">-</span> <span class="dv">1</span>, <span class="bu">max</span>(y_coords) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Switch axis labels</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">'Y'</span>)</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">'X'</span>)</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>        plt.title(<span class="st">'Path'</span>)</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Show plot</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> compute_path()</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>    visualize_path(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="line-detection" class="level3">
@@ -509,57 +540,57 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_blue(image):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    original_image <span class="op">=</span> image.copy()  <span class="co"># preserve original img</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.array(image)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># blue color range</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    lower_blue <span class="op">=</span> np.array([<span class="dv">70</span>,<span class="dv">68</span>,<span class="dv">90</span>])</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    upper_blue <span class="op">=</span> np.array([<span class="dv">200</span>,<span class="dv">255</span>,<span class="dv">255</span>])</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    cc <span class="op">=</span> <span class="dv">0</span> <span class="co"># snip bounds</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    aa <span class="op">=</span> <span class="dv">100</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    snip <span class="op">=</span> np.zeros((img.shape[<span class="dv">0</span>], img.shape[<span class="dv">1</span>]), dtype <span class="op">=</span><span class="st">"uint8"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    snip <span class="op">=</span> img[(img.shape[<span class="dv">0</span>] <span class="op">-</span> aa):(img.shape[<span class="dv">0</span>] <span class="op">-</span> cc), (<span class="dv">0</span>):(img.shape[<span class="dv">1</span>])]</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    hsv <span class="op">=</span> cv2.cvtColor(snip, cv2.COLOR_BGR2HSV)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> cv2.inRange(hsv, lower_blue, upper_blue)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># image contours</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    contours, _ <span class="op">=</span> cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> contours:</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        longest_contour <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        max_contour_length <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find longest contour</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        longest_contour <span class="op">=</span> contours[<span class="dv">0</span>]</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> contour <span class="kw">in</span> contours:</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>            contour_length <span class="op">=</span> cv2.arcLength(contour, <span class="va">True</span>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> contour_length <span class="op">&gt;</span> max_contour_length:</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>                max_contour_length <span class="op">=</span> contour_length</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>                longest_contour <span class="op">=</span> contour</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        vx, vy, x, y <span class="op">=</span> cv2.fitLine(longest_contour, cv2.DIST_L2, <span class="dv">0</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        contour_length <span class="op">=</span> cv2.arcLength(longest_contour, <span class="va">True</span>)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># determine line slope</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> vy <span class="op">/</span> vx</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># draw line</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        left_point <span class="op">=</span> (<span class="bu">int</span>(x <span class="op">-</span> <span class="dv">1000</span> <span class="op">*</span> vx), <span class="bu">int</span>(y <span class="op">-</span> <span class="dv">1000</span> <span class="op">*</span> vy))</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        right_point <span class="op">=</span> (<span class="bu">int</span>(x <span class="op">+</span> <span class="dv">1000</span> <span class="op">*</span> vx), <span class="bu">int</span>(y <span class="op">+</span> <span class="dv">1000</span> <span class="op">*</span> vy))</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        line_image <span class="op">=</span> cv2.line(snip, left_point, right_point, (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), <span class="dv">2</span>)</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>        <span class="co">#cv2.imshow("Mask",mask)</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Line"</span>,line_image)</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return angle, line position</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slope[<span class="dv">0</span>], y[<span class="dv">0</span>], contour_length</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No blue line found in the image."</span>)</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_blue(image):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    original_image <span class="op">=</span> image.copy()  <span class="co"># preserve original img</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.array(image)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># blue color range</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    lower_blue <span class="op">=</span> np.array([<span class="dv">70</span>,<span class="dv">68</span>,<span class="dv">90</span>])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    upper_blue <span class="op">=</span> np.array([<span class="dv">200</span>,<span class="dv">255</span>,<span class="dv">255</span>])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    cc <span class="op">=</span> <span class="dv">0</span> <span class="co"># snip bounds</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    aa <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    snip <span class="op">=</span> np.zeros((img.shape[<span class="dv">0</span>], img.shape[<span class="dv">1</span>]), dtype <span class="op">=</span><span class="st">"uint8"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    snip <span class="op">=</span> img[(img.shape[<span class="dv">0</span>] <span class="op">-</span> aa):(img.shape[<span class="dv">0</span>] <span class="op">-</span> cc), (<span class="dv">0</span>):(img.shape[<span class="dv">1</span>])]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    hsv <span class="op">=</span> cv2.cvtColor(snip, cv2.COLOR_BGR2HSV)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    mask <span class="op">=</span> cv2.inRange(hsv, lower_blue, upper_blue)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># image contours</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    contours, _ <span class="op">=</span> cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> contours:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        longest_contour <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        max_contour_length <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find longest contour</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        longest_contour <span class="op">=</span> contours[<span class="dv">0</span>]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> contour <span class="kw">in</span> contours:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>            contour_length <span class="op">=</span> cv2.arcLength(contour, <span class="va">True</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> contour_length <span class="op">&gt;</span> max_contour_length:</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                max_contour_length <span class="op">=</span> contour_length</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                longest_contour <span class="op">=</span> contour</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        vx, vy, x, y <span class="op">=</span> cv2.fitLine(longest_contour, cv2.DIST_L2, <span class="dv">0</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        contour_length <span class="op">=</span> cv2.arcLength(longest_contour, <span class="va">True</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># determine line slope</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        slope <span class="op">=</span> vy <span class="op">/</span> vx</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># draw line</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        left_point <span class="op">=</span> (<span class="bu">int</span>(x <span class="op">-</span> <span class="dv">1000</span> <span class="op">*</span> vx), <span class="bu">int</span>(y <span class="op">-</span> <span class="dv">1000</span> <span class="op">*</span> vy))</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        right_point <span class="op">=</span> (<span class="bu">int</span>(x <span class="op">+</span> <span class="dv">1000</span> <span class="op">*</span> vx), <span class="bu">int</span>(y <span class="op">+</span> <span class="dv">1000</span> <span class="op">*</span> vy))</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        line_image <span class="op">=</span> cv2.line(snip, left_point, right_point, (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), <span class="dv">2</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="co">#cv2.imshow("Mask",mask)</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Line"</span>,line_image)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># return angle, line position</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> slope[<span class="dv">0</span>], y[<span class="dv">0</span>], contour_length</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"No blue line found in the image."</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="environment-perception-and-object-identification" class="level3">
@@ -582,16 +613,16 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    ep_robot <span class="op">=</span> robot.Robot()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    ep_robot.initialize(conn_type<span class="op">=</span><span class="st">"ap"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ep_camera <span class="op">=</span> ep_robot.camera</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ep_camera.start_video_stream(display<span class="op">=</span><span class="va">False</span>, resolution<span class="op">=</span>camera.STREAM_360P)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ep_chassis <span class="op">=</span> ep_robot.chassis</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    ep_gripper <span class="op">=</span> ep_robot.gripper</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    ep_arm <span class="op">=</span> ep_robot.robotic_arm</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> YOLO(<span class="st">'&lt;Filepath of Trained Model&gt;'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    ep_robot <span class="op">=</span> robot.Robot()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    ep_robot.initialize(conn_type<span class="op">=</span><span class="st">"ap"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    ep_camera <span class="op">=</span> ep_robot.camera</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ep_camera.start_video_stream(display<span class="op">=</span><span class="va">False</span>, resolution<span class="op">=</span>camera.STREAM_360P)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    ep_chassis <span class="op">=</span> ep_robot.chassis</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    ep_gripper <span class="op">=</span> ep_robot.gripper</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ep_arm <span class="op">=</span> ep_robot.robotic_arm</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> YOLO(<span class="st">'&lt;Filepath of Trained Model&gt;'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <ul>
 <li><p>findLego(model) – Rotates the robot until a Lego is detected, then stops once the target is located.</p></li>
@@ -601,75 +632,75 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> findLego(model):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># spin until lego found</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    legoFound <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    z_val <span class="op">=</span> <span class="dv">40</span> <span class="co"># degrees to spin</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="kw">not</span> legoFound:</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        frame <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="dv">5</span>)  </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Frame"</span>,frame)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> model.predict(source<span class="op">=</span>frame, conf<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># stop spinning once lego is found</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(results[<span class="dv">0</span>]) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            legoFound <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span>z_val, timeout<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Stop spinning</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> driveToLego(model):</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    dist <span class="op">=</span> []</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    target_distance <span class="op">=</span> <span class="fl">1.6</span> <span class="co"># arbitrary</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    distance_tol <span class="op">=</span> <span class="fl">0.07</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    box_offset_tol <span class="op">=</span> <span class="dv">3</span> <span class="co"># num pixels left/right of center</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    ON_TARGET <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>(<span class="kw">not</span> ON_TARGET): </span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        frame <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="dv">5</span>)  </span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> np.array(frame)</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Frame"</span>,frame)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> model.predict(source<span class="op">=</span>frame, conf<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        conf <span class="op">=</span> results[<span class="dv">0</span>].boxes.conf</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        conf <span class="op">=</span> conf.cpu()</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(conf) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>            best <span class="op">=</span> np.argmax(conf)</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        coords <span class="op">=</span> results[<span class="dv">0</span>].boxes.xywh</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find coords for bounding box w/ highest confidence</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> coords[best]</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        x_center <span class="op">=</span> <span class="bu">int</span>(img.shape[<span class="dv">1</span>]<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">0</span>])</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">1</span>])</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">2</span>])</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">3</span>])</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        box_offset <span class="op">=</span> x_center <span class="op">-</span> x</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        distance <span class="op">=</span> box_distance(dist, w, h)</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="bu">abs</span>(box_offset) <span class="op">&gt;</span> box_offset_tol) <span class="kw">and</span> <span class="kw">not</span> ON_TARGET:</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>            <span class="co"># turn till box is in the center</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>            Kz <span class="op">=</span> <span class="op">-</span><span class="fl">0.15</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>            z_val <span class="op">=</span> box_offset <span class="op">*</span> Kz</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span>z_val, timeout<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (<span class="bu">abs</span>(distance <span class="op">-</span> target_distance) <span class="op">&gt;=</span> distance_tol) <span class="kw">and</span> <span class="kw">not</span> ON_TARGET :</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>            <span class="co"># move till box is at target distance</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>            Kx <span class="op">=</span> <span class="fl">0.175</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>            x_val <span class="op">=</span> (distance <span class="op">-</span> target_distance) <span class="op">*</span> Kx</span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>            <span class="co"># print(distance)</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span>x_val, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (<span class="bu">abs</span>(distance <span class="op">-</span> target_distance) <span class="op">&lt;</span> distance_tol):</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>            <span class="co"># done movement</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>            ON_TARGET <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>            x_val <span class="op">=</span> <span class="fl">0.21</span> <span class="co"># move slightly further - adjust as needed</span></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>            ep_chassis.move(x<span class="op">=</span>x_val, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, xy_speed<span class="op">=</span><span class="fl">0.7</span>).wait_for_completed()</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    cv2.destroyAllWindows()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> findLego(model):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># spin until lego found</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    legoFound <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    z_val <span class="op">=</span> <span class="dv">40</span> <span class="co"># degrees to spin</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="kw">not</span> legoFound:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        frame <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="dv">5</span>)  </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Frame"</span>,frame)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> model.predict(source<span class="op">=</span>frame, conf<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># stop spinning once lego is found</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(results[<span class="dv">0</span>]) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            legoFound <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span>z_val, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Stop spinning</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> driveToLego(model):</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    dist <span class="op">=</span> []</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    target_distance <span class="op">=</span> <span class="fl">1.6</span> <span class="co"># arbitrary</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    distance_tol <span class="op">=</span> <span class="fl">0.07</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    box_offset_tol <span class="op">=</span> <span class="dv">3</span> <span class="co"># num pixels left/right of center</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    ON_TARGET <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>(<span class="kw">not</span> ON_TARGET): </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        frame <span class="op">=</span> ep_camera.read_cv2_image(strategy<span class="op">=</span><span class="st">"newest"</span>, timeout<span class="op">=</span><span class="dv">5</span>)  </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> np.array(frame)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        cv2.imshow(<span class="st">"Frame"</span>,frame)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        cv2.waitKey(<span class="dv">10</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> model.predict(source<span class="op">=</span>frame, conf<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        conf <span class="op">=</span> results[<span class="dv">0</span>].boxes.conf</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        conf <span class="op">=</span> conf.cpu()</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(conf) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>            best <span class="op">=</span> np.argmax(conf)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        coords <span class="op">=</span> results[<span class="dv">0</span>].boxes.xywh</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># find coords for bounding box w/ highest confidence</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> coords[best]</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        x_center <span class="op">=</span> <span class="bu">int</span>(img.shape[<span class="dv">1</span>]<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">0</span>])</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">1</span>])</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">2</span>])</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="bu">int</span>(c[<span class="dv">3</span>])</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        box_offset <span class="op">=</span> x_center <span class="op">-</span> x</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>        distance <span class="op">=</span> box_distance(dist, w, h)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="bu">abs</span>(box_offset) <span class="op">&gt;</span> box_offset_tol) <span class="kw">and</span> <span class="kw">not</span> ON_TARGET:</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>            <span class="co"># turn till box is in the center</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>            Kz <span class="op">=</span> <span class="op">-</span><span class="fl">0.15</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>            z_val <span class="op">=</span> box_offset <span class="op">*</span> Kz</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span>z_val, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (<span class="bu">abs</span>(distance <span class="op">-</span> target_distance) <span class="op">&gt;=</span> distance_tol) <span class="kw">and</span> <span class="kw">not</span> ON_TARGET :</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>            <span class="co"># move till box is at target distance</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>            Kx <span class="op">=</span> <span class="fl">0.175</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>            x_val <span class="op">=</span> (distance <span class="op">-</span> target_distance) <span class="op">*</span> Kx</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>            <span class="co"># print(distance)</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span>x_val, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (<span class="bu">abs</span>(distance <span class="op">-</span> target_distance) <span class="op">&lt;</span> distance_tol):</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>            <span class="co"># done movement</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>            ON_TARGET <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>            x_val <span class="op">=</span> <span class="fl">0.21</span> <span class="co"># move slightly further - adjust as needed</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>            ep_chassis.drive_speed(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>            ep_chassis.move(x<span class="op">=</span>x_val, y<span class="op">=</span><span class="dv">0</span>, z<span class="op">=</span><span class="dv">0</span>, xy_speed<span class="op">=</span><span class="fl">0.7</span>).wait_for_completed()</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>    cv2.destroyAllWindows()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="autonomous-robot-communication" class="level3">
@@ -687,17 +718,17 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> zmq</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> zmq.Context()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create socket</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># server laptop ip addr</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    SERVER_ADDR <span class="op">=</span> <span class="st">""</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Connecting to communication server…"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    socket <span class="op">=</span> context.socket(zmq.REQ)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    socket.<span class="ex">connect</span>(SERVER_ADDR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> zmq</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> zmq.Context()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create socket</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># server laptop ip addr</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    SERVER_ADDR <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Connecting to communication server…"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    socket <span class="op">=</span> context.socket(zmq.REQ)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    socket.<span class="ex">connect</span>(SERVER_ADDR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="robot-1-passing-robot" class="level4">
@@ -707,19 +738,19 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release lego once other robot has arrived</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    socket.send(<span class="st">b"Reached line"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  wait on reply</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received reply [ </span><span class="sc">%s</span><span class="st"> ]"</span> <span class="op">%</span>  message)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release after short wait</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">3</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    ep_gripper.<span class="bu">open</span>(power<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    ep_gripper.pause()</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    ep_robot.close()</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release lego once other robot has arrived</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    socket.send(<span class="st">b"Reached line"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  wait on reply</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received reply [ </span><span class="sc">%s</span><span class="st"> ]"</span> <span class="op">%</span>  message)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># release after short wait</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">3</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ep_gripper.<span class="bu">open</span>(power<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">1</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    ep_gripper.pause()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    ep_robot.close()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 <section id="robot-2-receiving-robot" class="level4">
@@ -729,23 +760,23 @@ Show code
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received request: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> message)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    startMsgReceived <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> socket.recv()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Received request: </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span> message)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    startMsgReceived <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <p>Once the synchronization message has been received, Robot 2 proceeds with detection and pickup logic.</p>
 <details>
 <summary>
 Show code
 </summary>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># search either for lego or robot</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">'lego'</span> <span class="kw">and</span> startMsgReceived:</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"x: </span><span class="sc">{}</span><span class="st">, y: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x, y))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Width of Box: </span><span class="sc">{}</span><span class="st">, Height of Box: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(w, h))</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Distance: "</span> <span class="op">+</span> <span class="bu">str</span>(distance_from_box_size(w, h)))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Detected object: "</span>, name)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">## rest of code executes handoff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    <span class="co"># search either for lego or robot</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="op">==</span> <span class="st">'lego'</span> <span class="kw">and</span> startMsgReceived:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"x: </span><span class="sc">{}</span><span class="st">, y: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(x, y))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Width of Box: </span><span class="sc">{}</span><span class="st">, Height of Box: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(w, h))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Distance: "</span> <span class="op">+</span> <span class="bu">str</span>(distance_from_box_size(w, h)))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"Detected object: "</span>, name)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">## rest of code executes handoff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </section>
 </section>
@@ -858,7 +889,7 @@ Show code
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/AustLin\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1189,10 +1220,23 @@ Show code
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-      &nbsp;
-    </div>   
+<p>© 2026 Austin Lin</p>
+</div>   
     <div class="nav-footer-center">
-      &nbsp;
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin">
+      <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+</ul>
     </div>
     <div class="nav-footer-right">
 <p>Built with <a href="https://quarto.org">Quarto</a></p>

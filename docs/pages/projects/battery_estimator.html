@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-05-01">
 <meta name="description" content="Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter.">
 
 <title>Battery SOC Estimator Interactive Web Simulation – Austin Lin’s Portfolio</title>
@@ -31,16 +32,17 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-95068bf9caf6f0a8732bbf81f7dd2f37.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8ac4c25f1646ef7008541698ebc0693b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -100,6 +102,18 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Battery SOC Estimator Interactive Web Simulation – Austin Lin’s Portfolio">
+<meta property="og:description" content="Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter.">
+<meta property="og:image" content="https://AustLin.github.io/assets/soc_estimator/soc_estimator.png">
+<meta property="og:site_name" content="Austin Lin's Portfolio">
+<meta property="og:image:height" content="527">
+<meta property="og:image:width" content="696">
+<meta name="twitter:title" content="Battery SOC Estimator Interactive Web Simulation – Austin Lin’s Portfolio">
+<meta name="twitter:description" content="Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter.">
+<meta name="twitter:image" content="https://AustLin.github.io/assets/soc_estimator/soc_estimator.png">
+<meta name="twitter:image-height" content="527">
+<meta name="twitter:image-width" content="696">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -128,8 +142,20 @@ window.Quarto = {
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../assets/ALin Resume.pdf"> 
+    <a class="nav-link" href="../../assets/ALin Resume.pdf" target="_blank"> 
 <span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -163,7 +189,12 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Battery SOC Estimator Interactive Web Simulation</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Controls</div>
+    <div class="quarto-category">Simulation</div>
+    <div class="quarto-category">Web App</div>
+  </div>
+  </div>
 
 <div>
   <div class="description">
@@ -175,6 +206,12 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 1, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -194,8 +231,10 @@ window.Quarto = {
 </section>
 <section id="simulation" class="level2">
 <h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
-<iframe src="https://austlin.shinyapps.io/battery_estimator/" width="100%" height="800" style="border:1px solid #ccc;">
+<div class="embed-frame">
+<iframe src="https://austlin.shinyapps.io/battery_estimator/" height="800">
 </iframe>
+</div>
 <section id="true-battery-soc-and-voc-model" class="level3">
 <h3 class="anchored" data-anchor-id="true-battery-soc-and-voc-model">True Battery SOC and VOC Model</h3>
 <p>The battery is modeled as an RC pair with a series resistance of 0.05 Ω and a capacity of 7920 coulombs. These parameters correspond roughly to a typical 2200 mAh lithium-ion cell, which operates at approximately 3.6 V<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The initial state-of-charge (SOC) estimate is set to 50%.</p>
@@ -329,7 +368,7 @@ V_\text{true}(t) = V_\text{OCV}(SOC(t)) + R_s \, I(t)
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/AustLin\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -660,10 +699,23 @@ V_\text{true}(t) = V_\text{OCV}(SOC(t)) + R_s \, I(t)
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-      &nbsp;
-    </div>   
+<p>© 2026 Austin Lin</p>
+</div>   
     <div class="nav-footer-center">
-      &nbsp;
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin">
+      <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+</ul>
     </div>
     <div class="nav-footer-right">
 <p>Built with <a href="https://quarto.org">Quarto</a></p>

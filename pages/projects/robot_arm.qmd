@@ -2,6 +2,8 @@
 title: "Wake & Manipulate: Robot Arm"
 description: "Rapid prototyping of a robotic arm, controller, and graphical user interface."
 image: "../../assets/robot_arm/robot_arm.png"
+date: "2023-12-01"
+categories: [Robotics, Embedded, Prototyping]
 lightbox: true
 ---
 
@@ -23,11 +25,9 @@ Joint angles are transmitted to the host computer, where the Processing applicat
 
 ## Demo
 ```{=html}
-<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-  <iframe 
-    src="https://www.youtube.com/embed/VY-bdd3kWyU" 
-    style="position:absolute;top:0;left:0;width:100%;height:100%;" 
-    frameborder="0"
+<div class="embed-16x9">
+  <iframe
+    src="https://www.youtube.com/embed/VY-bdd3kWyU"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen>
   </iframe>

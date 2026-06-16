@@ -1,0 +1,124 @@
+/*-- scss:defaults --*/
+
+// Navy-slate base + single muted accent
+$navy:        #22303f;   // deep slate-navy (primary / navbar)
+$navy-700:    #1a2530;   // darker navy for footer / hovers
+$accent:      #2c7a9c;   // muted blue-teal accent
+$accent-600:  #246a89;   // accent hover
+$slate-100:   #f5f7f9;   // page tint
+$slate-300:   #d7dde3;   // borders
+
+// Bootstrap theme variables
+$primary:        $navy;
+$link-color:     $accent;
+$link-hover-color: $accent-600;
+$body-color:     #2b333b;
+$border-color:   $slate-300;
+
+// Typography 
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+$font-family-monospace:  "JetBrains Mono", "SFMono-Regular", ui-monospace, "Cascadia Code", Consolas, monospace;
+$headings-font-weight:   600;
+$headings-color:         $navy;
+
+// Navbar 
+$navbar-bg: $navy;
+$navbar-fg: #e9eef2;
+
+// Footer
+$footer-bg: $navy-700;
+$footer-fg: #c7d0d8;
+
+/*-- scss:rules --*/
+
+// --- Listing cards: subtle lift + accent on hover ---
+.quarto-grid-item.card {
+  border: 1px solid $slate-300;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.quarto-grid-item.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(34, 48, 63, 0.14);
+  border-color: $accent;
+}
+.quarto-grid-item .card-img-top {
+  object-fit: cover;
+  aspect-ratio: 16 / 10;
+  background: $slate-100;
+}
+.quarto-grid-item .listing-categories .listing-category {
+  background: rgba(44, 122, 156, 0.10);
+  color: $accent-600;
+  border: 1px solid rgba(44, 122, 156, 0.25);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+// --- Hero block on the landing page ---
+.hero {
+  padding: 2.4rem 0 1.6rem;
+  border-bottom: 1px solid $slate-300;
+  margin-bottom: 2rem;
+}
+.hero h1 {
+  margin-bottom: 0.25rem;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+}
+.hero .tagline {
+  color: $accent-600;
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+.hero .bio {
+  max-width: 42rem;
+  color: #4a545d;
+  margin-bottom: 1.25rem;
+}
+.hero .hero-actions .btn {
+  margin: 0 0.4rem 0.4rem 0;
+}
+
+// --- Consistent media embeds (Shiny, 3D STL viewers, etc.) ---
+.embed-frame {
+  width: 100%;
+  border: 1px solid $slate-300;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: $slate-100;
+}
+.embed-frame iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
+
+// Responsive 16:9 wrapper for video embeds
+.embed-16x9 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid $slate-300;
+}
+.embed-16x9 iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+// --- Navbar polish ---
+.navbar-brand { font-weight: 700; letter-spacing: 0.2px; }
+.navbar .nav-link { font-weight: 700; }
+
+// --- Footer links ---
+.nav-footer a { color: $footer-fg; }
+.nav-footer a:hover { color: #ffffff; }

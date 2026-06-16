@@ -2,6 +2,8 @@
 title: "Collaborative Lego Passing Robots"
 description: "Programming two robots to autonomously transfer Legos, integrating vision-based detection, path planning, and real-time obstacle avoidance."
 image: "../../assets/lego_pass/start.png"
+date: "2024-05-01"
+categories: [Robotics, Computer Vision, ROS]
 lightbox: true
 ---
 ## Overview
@@ -36,14 +38,6 @@ Starting from a defined start position, Robot 1 locates Legos, picks them up, an
 Robot 2 follows a similar routine: avoiding obstacles, detecting the blue line, identifying Legos, picking them up, and planning a path to deliver them to the goal. This process repeats as more Legos become available.
 
 Expanding the training dataset to identify labeled boxes was considered but ultimately impractical due to time constraints, although it could have improved detection accuracy.
-
-<details>
-<summary>Show code</summary>
-
-```python
-
-```
-</details>
 
 ## Key Functions
 

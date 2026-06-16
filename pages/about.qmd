@@ -5,8 +5,22 @@ about:
   image: ../assets/about_page/AustinCoral.png
   links:
     - icon: github
+      text: GitHub
       href: https://github.com/AustLin
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/austin-lin/
 ---
+
+Systems & Mechanical Engineer with a passion for robotics, controls, and
+building things end-to-end — from CAD and embedded firmware to autonomy and
+interactive simulation.
+
+## Skills
+
+**Design & Mechanical:** SolidWorks, CAD, 3D printing, rapid prototyping
+**Software:** Python, C/C++, MATLAB, OpenCV, Processing
+**Robotics & Controls:** ROS2, LiDAR navigation, computer vision (YOLO), state estimation, embedded systems (Arduino)
 
 ## Education
 

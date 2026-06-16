@@ -2,6 +2,8 @@
 title: "Battery SOC Estimator Interactive Web Simulation"
 description: "Explore battery State-of-Charge estimation in your browser using a Fixed-Gain Observer or Kalman Filter."
 image: "../../assets/soc_estimator/soc_estimator.png"
+date: "2025-05-01"
+categories: [Controls, Simulation, Web App]
 lightbox: true
 ---
 
@@ -18,11 +20,9 @@ Different battery chemistries and physical properties have distinctive curves as
 Environmental factors such as temperature and the formation of dendrites as the battery ages means the "true" model can evolve dynamically overtime, so maintaining an accurate SOC estimate requires the estimator model to also evolve accurately with the true behavior.
 
 ## Simulation
-<iframe src="https://austlin.shinyapps.io/battery_estimator/" 
-        width="100%" 
-        height="800" 
-        style="border:1px solid #ccc;">
-</iframe>
+::: {.embed-frame}
+<iframe src="https://austlin.shinyapps.io/battery_estimator/" height="800"></iframe>
+:::
 
 
 ### True Battery SOC and VOC Model

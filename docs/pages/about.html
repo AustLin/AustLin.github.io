@@ -30,15 +30,16 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../assets/favicon.svg" rel="icon" type="image/svg+xml">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-95068bf9caf6f0a8732bbf81f7dd2f37.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8ac4c25f1646ef7008541698ebc0693b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,6 +70,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Austin Lin – Austin Lin’s Portfolio">
+<meta property="og:description" content="Austin Lin — Systems &amp; Mechanical Engineer. Projects in robotics, controls, embedded systems, and rapid prototyping.">
+<meta property="og:site_name" content="Austin Lin's Portfolio">
+<meta name="twitter:title" content="Austin Lin – Austin Lin’s Portfolio">
+<meta name="twitter:description" content="Austin Lin — Systems &amp; Mechanical Engineer. Projects in robotics, controls, embedded systems, and rapid prototyping.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -97,8 +104,20 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../assets/ALin Resume.pdf"> 
+    <a class="nav-link" href="../assets/ALin Resume.pdf" target="_blank"> 
 <span class="menu-text">Resume</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -115,7 +134,8 @@ ul.task-list li input[type="checkbox"] {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
   <ul>
-  <li><a href="#education" id="toc-education" class="nav-link active" data-scroll-target="#education">Education</a></li>
+  <li><a href="#skills" id="toc-skills" class="nav-link active" data-scroll-target="#skills">Skills</a></li>
+  <li><a href="#education" id="toc-education" class="nav-link" data-scroll-target="#education">Education</a></li>
   <li><a href="#experience" id="toc-experience" class="nav-link" data-scroll-target="#experience">Experience</a></li>
   </ul>
 </nav>
@@ -135,12 +155,21 @@ ul.task-list li input[type="checkbox"] {
     <div class="about-links">
   <a href="https://github.com/AustLin" class="about-link" rel="" target="">
     <i class="bi bi-github"></i>
-     <span class="about-link-text"></span>
+     <span class="about-link-text">GitHub</span>
+  </a>
+  <a href="https://www.linkedin.com/in/austin-lin/" class="about-link" rel="" target="">
+    <i class="bi bi-linkedin"></i>
+     <span class="about-link-text">LinkedIn</span>
   </a>
 </div>
   </div>
   <div class="about-contents"><main class="content" id="quarto-document-content">
 
+<p>Systems &amp; Mechanical Engineer with a passion for robotics, controls, and building things end-to-end — from CAD and embedded firmware to autonomy and interactive simulation.</p>
+<section id="skills" class="level2">
+<h2 data-anchor-id="skills">Skills</h2>
+<p><strong>Design &amp; Mechanical:</strong> SolidWorks, CAD, 3D printing, rapid prototyping <strong>Software:</strong> Python, C/C++, MATLAB, OpenCV, Processing <strong>Robotics &amp; Controls:</strong> ROS2, LiDAR navigation, computer vision (YOLO), state estimation, embedded systems (Arduino)</p>
+</section>
 <section id="education" class="level2">
 <h2 data-anchor-id="education">Education</h2>
 <p><strong>University of Maryland, College Park</strong> | 2020 - 2024<br>
@@ -231,7 +260,7 @@ B.S. Mechanical Engineering<br>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/AustLin\.github\.io");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -562,10 +591,23 @@ B.S. Mechanical Engineering<br>
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-      &nbsp;
-    </div>   
+<p>© 2026 Austin Lin</p>
+</div>   
     <div class="nav-footer-center">
-      &nbsp;
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AustLin">
+      <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/austin-lin/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+</ul>
     </div>
     <div class="nav-footer-right">
 <p>Built with <a href="https://quarto.org">Quarto</a></p>
