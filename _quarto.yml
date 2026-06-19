@@ -16,9 +16,8 @@ website:
         text: Projects
       - href: pages/about.qmd
         text: About Me
-      - href: "assets/ALin Resume.pdf"
+      - href: pages/resume.qmd
         text: Resume
-        target: _blank
     right:
       - icon: github
         href: https://github.com/AustLin
@@ -44,6 +43,8 @@ format:
       - cosmo
       - theme.scss
     css: styles.css
+    include-in-header:
+      - file: _cloudflare-analytics.html
     toc: true
     code-fold: show
     code-summary: "Show code"
