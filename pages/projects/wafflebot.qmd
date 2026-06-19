@@ -2,7 +2,7 @@
 title: "Autonomous Maze Navigation with ROS2 and LiDAR"
 description: "A ROS2-based LiDAR navigation algorithm enabling autonomous maze escape on a TurtleBot3 platform."
 image: "../../assets/maze_follower/simulation.png"
-date: "2024-12-01"
+date: "2024-05-18"
 categories: [Robotics, ROS, LiDAR]
 lightbox: true
 ---
